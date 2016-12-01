@@ -13,7 +13,7 @@ import org.json.simple.parser.JSONParser;
 
 import vos.MovieBoxInfo;
 
-public class DailyBOList {
+public class DailyBOList {/////변화!
 
 	private ArrayList<String> titleList;
 	private ArrayList<String> dList;
