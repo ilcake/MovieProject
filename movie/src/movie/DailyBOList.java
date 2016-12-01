@@ -26,7 +26,7 @@ public class DailyBOList {
 		dList = new ArrayList<String>();
 		dateList = new ArrayList<String>();
 		codeList = new ArrayList<String>();
-		// 전일대비순위증감 넣을까 말까
+		// 전일대비순위증감 넣을까 말까//
 
 		JSONParser jsonparser = new JSONParser(); // 영화제목
 		JSONObject jsonobject = (JSONObject) jsonparser.parse(readUrl());
