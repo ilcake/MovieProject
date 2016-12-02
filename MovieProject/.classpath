@@ -2,5 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kita/Downloads/TestLookAndFeel/TestLookAndFeel/lib/idw-gpl.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kita/Downloads/TestLookAndFeel/TestLookAndFeel/lib/JTattoo.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kita/Downloads/TestLookAndFeel/TestLookAndFeel/lib/liquidlnf.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kita/Downloads/TestLookAndFeel/TestLookAndFeel/lib/quaqua.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
