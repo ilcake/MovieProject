@@ -2,6 +2,7 @@ package server;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -48,20 +49,25 @@ public class ServerDBwork {
 		}
 	}
 
-	public boolean login(String id, String pw) {
+	public User login(String id, String pw) {
 		Connection con = new ConnectionManager().getConnection();
+		User u = null;
 		try {
 			String sql = "select * from usertable where userid = ? and userpw = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, id);
 			ps.setString(2, pw);
-			
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				u = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
+				gui.setMessage(u.getId() + " 회원이 접속하였습니다.");
+			}
 
 		} catch (Exception e) {
 
 		}
 
-		return false;
+		return u;
 	}
 
 	public int searchUserCol(String colName) {

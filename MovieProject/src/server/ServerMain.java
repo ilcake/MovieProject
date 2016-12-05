@@ -7,5 +7,4 @@ public class ServerMain {
 		new ServerGui();
 
 	}
-
 }

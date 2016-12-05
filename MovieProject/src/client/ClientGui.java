@@ -29,13 +29,15 @@ import javax.swing.JPasswordField;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import java.awt.Component;
+import java.awt.Container;
+
 import javax.swing.Box;
 import net.miginfocom.swing.MigLayout;
 
 public class ClientGui extends JFrame {
 	private static final int fwidth = 900;
 	private static final int fheight = 540;
-	private JPanel pnLogin, pnMain, pnMovie;
+	private JPanel pnBOARD, pnLogin, pnMain, pnMovie;
 	private JPanel lg2, lg1;
 	private JPanel lg2_1, lg2_2;
 	private JTextField tf_id;
@@ -56,6 +58,13 @@ public class ClientGui extends JFrame {
 	private JPasswordField rg_pw;
 	private ClientManager mg;
 	private String whoAmI;
+	private Container mainBOARD;
+	private JPanel mm1_1;
+	private JPanel mm1_2;
+	private JPanel mm1_3;
+	private JPanel mm1_4;
+	private JPanel mv2_1;
+	private JPanel mv2_2;
 
 	public ClientGui() {
 		try {
@@ -63,14 +72,16 @@ public class ClientGui extends JFrame {
 		} catch (Exception e) {
 			System.out.println("dd");
 		}
+		mainBOARD = getContentPane();
+		pnBOARD = new JPanel();
 		setTitle("MovieLovers");
 		setSize(fwidth, fheight);
 		mainCard = new CardLayout(0, 0);
-		getContentPane().setLayout(mainCard);
+		mainBOARD.setLayout(mainCard);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		pnLogin = new JPanel();
-		getContentPane().add(pnLogin, "name_15049258855123");
+		mainBOARD.add(pnLogin, "pnLogin");
 		pnLogin.setLayout(new GridLayout(1, 2, 0, 0));
 
 		lg1 = new JPanel();
@@ -169,17 +180,30 @@ public class ClientGui extends JFrame {
 		lg2_2.add(bt_rgReg);
 
 		pnMain = new JPanel();
-		getContentPane().add(pnMain, "name_15181910601831");
+		mainBOARD.add(pnMain, "pnMain");
 		pnMain.setLayout(new GridLayout(1, 2, 0, 0));
 
 		JPanel mn1 = new JPanel();
 		pnMain.add(mn1);
+		mn1.setLayout(new CardLayout(0, 0));
+		
+		mm1_1 = new JPanel();
+		mn1.add(mm1_1, "name_28853304489764");
+		
+		mm1_2 = new JPanel();
+		mn1.add(mm1_2, "name_28858938190096");
+		
+		mm1_3 = new JPanel();
+		mn1.add(mm1_3, "name_28882569109417");
+		
+		mm1_4 = new JPanel();
+		mn1.add(mm1_4, "name_28884992067110");
 
 		JPanel mn2 = new JPanel();
 		pnMain.add(mn2);
 
 		pnMovie = new JPanel();
-		getContentPane().add(pnMovie, "name_15183354017821");
+		mainBOARD.add(pnMovie, "pnMovie");
 		pnMovie.setLayout(new GridLayout(1, 2, 0, 0));
 
 		JPanel mv1 = new JPanel();
@@ -187,6 +211,13 @@ public class ClientGui extends JFrame {
 
 		JPanel mv2 = new JPanel();
 		pnMovie.add(mv2);
+		mv2.setLayout(new CardLayout(0, 0));
+		
+		mv2_1 = new JPanel();
+		mv2.add(mv2_1, "name_29075740000102");
+		
+		mv2_2 = new JPanel();
+		mv2.add(mv2_2, "name_29078634968268");
 
 		setVisible(true);
 
@@ -200,6 +231,7 @@ public class ClientGui extends JFrame {
 		goRegi.addMouseListener(ma);
 		bt_rgReg.addMouseListener(ma);
 		bt_rgCancel.addMouseListener(ma);
+		bt_Login.addMouseListener(ma);
 	}
 
 	public class acl implements ActionListener {
@@ -222,6 +254,8 @@ public class ClientGui extends JFrame {
 
 			} else if (e.getSource() == bt_rgCancel) {
 				lg2Card.show(lg2, "lg2_1");
+			} else if (e.getSource() == bt_Login) {
+				login();
 			}
 		}
 	}
@@ -237,8 +271,8 @@ public class ClientGui extends JFrame {
 		switch (reaction) {
 		case Data.FAIL:
 			JOptionPane.showMessageDialog(null, "중복된 아이디가 이미 존재합니다.", "회원가입 에러", JOptionPane.ERROR_MESSAGE);
+			rg_id.setText("");
 			break;
-
 		case Data.RG_SUCCESS:
 			JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
 			lg2Card.show(lg2, "lg2_1");
@@ -249,6 +283,24 @@ public class ClientGui extends JFrame {
 	public void login() {
 		String id = tf_id.getText();
 		String pw = tf_pw.getText();
-		boolean result = mg.login(id, pw);
+		if (id.equals("")) {
+			JOptionPane.showMessageDialog(null, "아이디를 입력해 주십시오", "로그인 에러", JOptionPane.ERROR_MESSAGE);
+			tf_id.grabFocus();
+			return;
+		} else if (pw.equals("")) {
+			JOptionPane.showMessageDialog(null, "비밀번호를 입력해 주십시오", "로그인 에러", JOptionPane.ERROR_MESSAGE);
+			tf_pw.grabFocus();
+			return;
+		}
+		User result = mg.login(id, pw);
+		if (result != null) {
+			JOptionPane.showMessageDialog(null, "로그인이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
+			mainCard.show(mainBOARD, "pnMain");
+
+		} else {
+			JOptionPane.showMessageDialog(null, "아이디 혹은 패스워드가 일치하지않습니다.", "로그인 에러", JOptionPane.ERROR_MESSAGE);
+			tf_id.grabFocus();
+		}
+
 	}
 }

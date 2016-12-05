@@ -32,13 +32,13 @@ public class ClientManager {
 		return -1;
 	}
 
-	public boolean login(String id, String pw) {
+	public User login(String id, String pw) {
 		Object[] what = new Object[] { Data.LOGIN, id, pw };
 		Object result = whatTodo(what);
 		if (result != null) {
-			return (boolean) result;
+			return (User) result;
 		}
-		return false;
+		return null;
 	}
 
 	public boolean logOut() {
