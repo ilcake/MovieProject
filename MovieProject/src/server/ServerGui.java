@@ -4,11 +4,14 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import vos.MovieBoxInfo;
+
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -26,10 +29,13 @@ public class ServerGui extends JFrame {
 	private JLabel lb_c;
 	private ServerReceiver sr;
 	private JTextArea log;
+	private ArrayList<MovieBoxInfo> mblist;
+	private GetBoxInfo dd;
 
 	public ServerGui() {
 		setTitle("MovieServer");
 		setSize(fwidth, fheight);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -74,6 +80,7 @@ public class ServerGui extends JFrame {
 
 		setVisible(true);
 
+		activate();
 		sr = new ServerReceiver(this);
 	}
 
@@ -93,6 +100,25 @@ public class ServerGui extends JFrame {
 
 		}
 
+	}
+
+	public void activate() {
+		try {
+			dd = new GetBoxInfo();
+			mblist = dd.getMmlist();
+			setMessage("박스오피스 갱신완료!");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<MovieBoxInfo> getMblist() {
+		return mblist;
+	}
+
+	public void setMblist(ArrayList<MovieBoxInfo> mblist) {
+		this.mblist = mblist;
 	}
 
 }

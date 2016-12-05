@@ -1,4 +1,4 @@
-package client.db;
+package server;
 
 import java.io.BufferedInputStream;
 import java.net.URL;
@@ -15,15 +15,25 @@ import vos.MovieBoxInfo;
 
 public class DailyBOList {///// 변화!
 
-	public DailyBOList() throws Exception {
-
-	}
-
 	private ArrayList<String> titleList;
 	private ArrayList<String> dList;
 	private ArrayList<String> dateList;
 	private ArrayList<String> codeList;
 	private ArrayList<MovieBoxInfo> mlist;
+
+	// public static void main(String[] args) {
+	// // TODO Auto-generated method stub
+	// try {
+	// new DailyBOList();
+	// } catch (Exception e) {
+	// // TODO Auto-generated catch block//
+	// e.printStackTrace();
+	// }
+	// }
+
+	public DailyBOList() {
+		// fetchBoxList();
+	}
 
 	public void fetchBoxList() throws Exception { // json parsing
 		titleList = new ArrayList<String>();
@@ -68,18 +78,18 @@ public class DailyBOList {///// 변화!
 			}
 		}
 
-		System.out.println(titleList.toString());
-		System.out.println(codeList.toString());
-		System.out.println(dateList.toString());
-		System.out.println(dList.toString());
+		// System.out.println(titleList.toString());
+		// System.out.println(codeList.toString());
+		// System.out.println(dateList.toString());
+		// System.out.println(dList.toString());
 
 		mlist = new ArrayList<MovieBoxInfo>();
 
 		for (int i = 0; i < 10; i++) {
 			mlist.add(new MovieBoxInfo(titleList.get(i), codeList.get(i), dList.get(i), dateList.get(i)));
 		}
-		for (MovieBoxInfo mm : mlist)
-			System.out.println(mm);
+		// for (MovieBoxInfo mm : mlist)
+		// System.out.println(mm);
 	}
 
 	private static String readUrl() throws Exception {// api로 json받아오기
@@ -134,15 +144,5 @@ public class DailyBOList {///// 변화!
 
 	public void setMlist(ArrayList<MovieBoxInfo> mlist) {
 		this.mlist = mlist;
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		try {
-			new DailyBOList();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block//
-			e.printStackTrace();
-		}
 	}
 }

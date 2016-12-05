@@ -2,9 +2,11 @@ package client;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import datas.Data;
 import datas.User;
+import vos.MovieBoxInfo;
 
 import java.awt.CardLayout;
 import javax.swing.JPanel;
@@ -17,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
@@ -26,6 +30,8 @@ import java.awt.Container;
 
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.JScrollPane;
 
 public class ClientGui extends JFrame {
 	private static final int fwidth = 900;
@@ -59,12 +65,27 @@ public class ClientGui extends JFrame {
 	private JPanel mv2_1;
 	private JPanel mv2_2;
 	private JTable mBoxTable;
+	private ArrayList<MovieBoxInfo> dblist;
+	private JScrollPane tableView;
 
 	public ClientGui() {
+		/*
+		 * try { //
+		 * UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel15"
+		 * ); UIManager.setLookAndFeel(
+		 * "com.seaglasslookandfeel.SeaGlassLookAndFeel"); } catch (Exception e)
+		 * { System.out.println("dd"); }
+		 */
 		try {
-			UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel15");
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
 		} catch (Exception e) {
-			System.out.println("dd");
+			// If Nimbus is not available, you can set the GUI to another look
+			// and feel.
 		}
 		mainBOARD = getContentPane();
 		pnBOARD = new JPanel();
@@ -75,10 +96,12 @@ public class ClientGui extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		pnLogin = new JPanel();
+		pnLogin.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mainBOARD.add(pnLogin, "pnLogin");
 		pnLogin.setLayout(new GridLayout(1, 2, 0, 0));
 
 		lg1 = new JPanel();
+		lg1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnLogin.add(lg1);
 		lg1.setLayout(null);
 
@@ -90,6 +113,7 @@ public class ClientGui extends JFrame {
 		lg1.add(lblNewLabel_3);
 
 		lg2 = new JPanel();
+		lg2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnLogin.add(lg2);
 		lg2Card = new CardLayout(0, 0);
 		lg2.setLayout(lg2Card);
@@ -174,10 +198,12 @@ public class ClientGui extends JFrame {
 		lg2_2.add(bt_rgReg);
 
 		pnMain = new JPanel();
+		pnMain.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mainBOARD.add(pnMain, "pnMain");
 		pnMain.setLayout(new GridLayout(1, 2, 0, 0));
 
 		JPanel mn1 = new JPanel();
+		mn1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnMain.add(mn1);
 		mn1.setLayout(new CardLayout(0, 0));
 
@@ -185,10 +211,12 @@ public class ClientGui extends JFrame {
 		mn1.add(mm1_1, "name_28853304489764");
 		mm1_1.setLayout(null);
 
-		mBoxTable = new JTable();
-		mBoxTable.setBounds(44, 53, 360, 315);
+		tableView = new JScrollPane();
+		tableView.setBounds(44, 53, 360, 315);
+		mm1_1.add(tableView);
 
-		mm1_1.add(mBoxTable);
+		mBoxTable = new JTable();
+		tableView.setViewportView(mBoxTable);
 
 		JPanel panel = new JPanel();
 		panel.setBounds(44, 390, 360, 68);
@@ -209,16 +237,20 @@ public class ClientGui extends JFrame {
 		mn1.add(mm1_4, "name_28884992067110");
 
 		JPanel mn2 = new JPanel();
+		mn2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnMain.add(mn2);
 
 		pnMovie = new JPanel();
+		pnMovie.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mainBOARD.add(pnMovie, "pnMovie");
 		pnMovie.setLayout(new GridLayout(1, 2, 0, 0));
 
 		JPanel mv1 = new JPanel();
+		mv1.setBorder(new LineBorder(Color.BLACK));
 		pnMovie.add(mv1);
 
 		JPanel mv2 = new JPanel();
+		mv2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnMovie.add(mv2);
 		mv2.setLayout(new CardLayout(0, 0));
 
@@ -256,6 +288,7 @@ public class ClientGui extends JFrame {
 				lg2Card.show(lg2, "lg2_1");
 			} else if (e.getSource() == bt_Login) {
 				login();
+
 			}
 		}
 	}
@@ -296,6 +329,7 @@ public class ClientGui extends JFrame {
 		if (result != null) {
 			JOptionPane.showMessageDialog(null, "로그인이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
 			mainCard.show(mainBOARD, "pnMain");
+			setMovieBoxInfo();
 
 		} else {
 			JOptionPane.showMessageDialog(null, "아이디 혹은 패스워드가 일치하지않습니다.", "로그인 에러", JOptionPane.ERROR_MESSAGE);
@@ -304,6 +338,29 @@ public class ClientGui extends JFrame {
 	}
 
 	public void setMovieBoxInfo() {
+		dblist = mg.getMovieBoxInfo();
+		Vector<String> column = new Vector();
+		column.addElement("순위");
+		column.addElement("제목");
+		column.addElement("감독");
+		column.addElement("개봉일");
 
+		Vector<String> elements = null;
+		Vector<Vector> rowData1 = new Vector();
+		for (int i = 0; i < dblist.size(); i++) {
+			MovieBoxInfo h = dblist.get(i);
+			elements = new Vector();
+			String whois = "";
+			String oth = "";
+			elements.addElement((i + 1) + "");
+			elements.addElement(h.getMovieNm());
+			elements.addElement(h.getDirector());
+			elements.addElement(h.getOpenDt());
+			rowData1.addElement(elements);
+		}
+
+		mBoxTable = new JTable(rowData1, column);
+		tableView.setViewportView(mBoxTable);
+		mBoxTable.addMouseListener(new mcl());
 	}
 }

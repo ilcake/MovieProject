@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import datas.ConnectionManager;
 import datas.Data;
 import datas.User;
+import vos.MovieBoxInfo;
 
 public class ServerDBwork {
 	private ConnectionManager cm;
@@ -68,11 +70,6 @@ public class ServerDBwork {
 		}
 
 		return u;
-	}
-
-	public int searchUserCol(String colName) {
-
-		return Data.FAIL;
 	}
 
 }

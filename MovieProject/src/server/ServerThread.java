@@ -59,6 +59,10 @@ public class ServerThread implements Runnable {
 
 			break;
 
+		case Data.GETMOVIEBOXINFO:
+			result = gui.getMblist();
+			break;
+
 		}
 
 		try {
