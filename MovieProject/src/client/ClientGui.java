@@ -27,11 +27,13 @@ import javax.swing.JPasswordField;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import java.awt.Container;
+import java.awt.Dimension;
 
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
 
 public class ClientGui extends JFrame {
 	private static final int fwidth = 900;
@@ -67,6 +69,9 @@ public class ClientGui extends JFrame {
 	private JTable mBoxTable;
 	private ArrayList<MovieBoxInfo> dblist;
 	private JScrollPane tableView;
+	private JTextField mn_search;
+	private JButton bt_search;
+	private JComboBox cb;
 
 	public ClientGui() {
 		/*
@@ -212,7 +217,7 @@ public class ClientGui extends JFrame {
 		mm1_1.setLayout(null);
 
 		tableView = new JScrollPane();
-		tableView.setBounds(44, 117, 360, 228);
+		tableView.setBounds(44, 130, 360, 214);
 		mm1_1.add(tableView);
 
 		mBoxTable = new JTable();
@@ -250,6 +255,46 @@ public class ClientGui extends JFrame {
 		JPanel mn2 = new JPanel();
 		mn2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnMain.add(mn2);
+		mn2.setLayout(null);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(42, 31, 360, 78);
+		mn2.add(panel_2);
+		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
+
+		JLabel label_3 = new JLabel("");
+		label_3.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		label_3.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_2.add(label_3);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_3.setBounds(42, 307, 360, 144);
+		mn2.add(panel_3);
+		panel_3.setLayout(null);
+
+		JLabel lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		lblNewLabel_4.setBounds(31, 12, 120, 120);
+		panel_3.add(lblNewLabel_4);
+
+		JLabel label_4 = new JLabel("");
+		label_4.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		label_4.setBounds(207, 12, 120, 120);
+		panel_3.add(label_4);
+
+		cb = new JComboBox();
+		cb.setBounds(72, 161, 99, 26);
+		mn2.add(cb);
+
+		mn_search = new JTextField();
+		mn_search.setBounds(196, 162, 172, 24);
+		mn2.add(mn_search);
+		mn_search.setColumns(10);
+
+		bt_search = new JButton("SEARCH");
+		bt_search.setBounds(261, 213, 107, 27);
+		mn2.add(bt_search);
 
 		pnMovie = new JPanel();
 		pnMovie.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -299,7 +344,9 @@ public class ClientGui extends JFrame {
 				lg2Card.show(lg2, "lg2_1");
 			} else if (e.getSource() == bt_Login) {
 				login();
-
+			} else if (e.getSource() == mBoxTable) {
+				int who = mBoxTable.getSelectedRow();
+				System.out.println(dblist.get(who));
 			}
 		}
 	}
@@ -371,6 +418,9 @@ public class ClientGui extends JFrame {
 		}
 
 		mBoxTable = new JTable(rowData1, column);
+		mBoxTable.getTableHeader().setReorderingAllowed(false);
+		mBoxTable.setPreferredSize(new Dimension(tableView.getSize()));
+		mBoxTable.setDragEnabled(false);
 		tableView.setViewportView(mBoxTable);
 		mBoxTable.addMouseListener(new mcl());
 	}
