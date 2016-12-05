@@ -212,20 +212,31 @@ public class ClientGui extends JFrame {
 		mm1_1.setLayout(null);
 
 		tableView = new JScrollPane();
-		tableView.setBounds(44, 53, 360, 315);
+		tableView.setBounds(44, 117, 360, 228);
 		mm1_1.add(tableView);
 
 		mBoxTable = new JTable();
 		tableView.setViewportView(mBoxTable);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(44, 390, 360, 68);
+		panel.setBounds(44, 374, 360, 78);
 		mm1_1.add(panel);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel lb_img = new JLabel("");
-		lb_img.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.add(lb_img);
+		JLabel lb_img1 = new JLabel("");
+		lb_img1.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		panel.add(lb_img1);
+		lb_img1.setHorizontalAlignment(SwingConstants.CENTER);
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(44, 27, 360, 78);
+		mm1_1.add(panel_1);
+		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+
+		JLabel lb_img2 = new JLabel("");
+		lb_img2.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		lb_img2.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(lb_img2);
 
 		mm1_2 = new JPanel();
 		mn1.add(mm1_2, "name_28858938190096");
