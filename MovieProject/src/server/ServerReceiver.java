@@ -39,7 +39,7 @@ public class ServerReceiver {
 			ObjectInputStream ois = new ObjectInputStream(sk.getInputStream());
 			usersList.add(oos);
 			gui.setUserCount(usersList.size());
-			gui.setMessage(sk.getInetAddress() + "/ Á¢¼ÓÇÏ¿´½À´Ï´Ù.");
+			gui.setMessage(sk.getInetAddress() + "/ ì ‘ì†í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			Thread th = new Thread(new ServerThread(sk, oos, ois, usersList, gui));
 			th.start();
 		} catch (Exception e) {

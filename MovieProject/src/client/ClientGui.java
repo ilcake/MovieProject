@@ -9,30 +9,23 @@ import datas.User;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
-import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
-import javax.swing.BoxLayout;
 import javax.swing.JPasswordField;
 import java.awt.Color;
 import javax.swing.ImageIcon;
-import java.awt.Component;
 import java.awt.Container;
 
-import javax.swing.Box;
-import net.miginfocom.swing.MigLayout;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 public class ClientGui extends JFrame {
 	private static final int fwidth = 900;
@@ -65,10 +58,11 @@ public class ClientGui extends JFrame {
 	private JPanel mm1_4;
 	private JPanel mv2_1;
 	private JPanel mv2_2;
+	private JTable mBoxTable;
 
 	public ClientGui() {
 		try {
-			UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");
+			UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel15");
 		} catch (Exception e) {
 			System.out.println("dd");
 		}
@@ -186,16 +180,31 @@ public class ClientGui extends JFrame {
 		JPanel mn1 = new JPanel();
 		pnMain.add(mn1);
 		mn1.setLayout(new CardLayout(0, 0));
-		
+
 		mm1_1 = new JPanel();
 		mn1.add(mm1_1, "name_28853304489764");
-		
+		mm1_1.setLayout(null);
+
+		mBoxTable = new JTable();
+		mBoxTable.setBounds(44, 53, 360, 315);
+
+		mm1_1.add(mBoxTable);
+
+		JPanel panel = new JPanel();
+		panel.setBounds(44, 390, 360, 68);
+		mm1_1.add(panel);
+		panel.setLayout(new GridLayout(0, 1, 0, 0));
+
+		JLabel lb_img = new JLabel("");
+		lb_img.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(lb_img);
+
 		mm1_2 = new JPanel();
 		mn1.add(mm1_2, "name_28858938190096");
-		
+
 		mm1_3 = new JPanel();
 		mn1.add(mm1_3, "name_28882569109417");
-		
+
 		mm1_4 = new JPanel();
 		mn1.add(mm1_4, "name_28884992067110");
 
@@ -212,10 +221,10 @@ public class ClientGui extends JFrame {
 		JPanel mv2 = new JPanel();
 		pnMovie.add(mv2);
 		mv2.setLayout(new CardLayout(0, 0));
-		
+
 		mv2_1 = new JPanel();
 		mv2.add(mv2_1, "name_29075740000102");
-		
+
 		mv2_2 = new JPanel();
 		mv2.add(mv2_2, "name_29078634968268");
 
@@ -232,15 +241,6 @@ public class ClientGui extends JFrame {
 		bt_rgReg.addMouseListener(ma);
 		bt_rgCancel.addMouseListener(ma);
 		bt_Login.addMouseListener(ma);
-	}
-
-	public class acl implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-		}
-
 	}
 
 	public class mcl extends MouseAdapter {
@@ -270,11 +270,11 @@ public class ClientGui extends JFrame {
 		int reaction = mg.register(nUser);
 		switch (reaction) {
 		case Data.FAIL:
-			JOptionPane.showMessageDialog(null, "Áßº¹µÈ ¾ÆÀÌµğ°¡ ÀÌ¹Ì Á¸ÀçÇÕ´Ï´Ù.", "È¸¿ø°¡ÀÔ ¿¡·¯", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ì¤‘ë³µëœ ì•„ì´ë””ê°€ ì´ë¯¸ ì¡´ì¬í•©ë‹ˆë‹¤.", "íšŒì›ê°€ì… ì—ëŸ¬", JOptionPane.ERROR_MESSAGE);
 			rg_id.setText("");
 			break;
 		case Data.RG_SUCCESS:
-			JOptionPane.showMessageDialog(null, "È¸¿ø°¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!", "È¯¿µÇÕ´Ï´Ù", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "íšŒì›ê°€ì…ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤!", "í™˜ì˜í•©ë‹ˆë‹¤", JOptionPane.INFORMATION_MESSAGE);
 			lg2Card.show(lg2, "lg2_1");
 			break;
 		}
@@ -284,23 +284,26 @@ public class ClientGui extends JFrame {
 		String id = tf_id.getText();
 		String pw = tf_pw.getText();
 		if (id.equals("")) {
-			JOptionPane.showMessageDialog(null, "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØ ÁÖ½Ê½Ã¿À", "·Î±×ÀÎ ¿¡·¯", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ì•„ì´ë””ë¥¼ ì…ë ¥í•´ ì£¼ì‹­ì‹œì˜¤", "ë¡œê·¸ì¸ ì—ëŸ¬", JOptionPane.ERROR_MESSAGE);
 			tf_id.grabFocus();
 			return;
 		} else if (pw.equals("")) {
-			JOptionPane.showMessageDialog(null, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØ ÁÖ½Ê½Ã¿À", "·Î±×ÀÎ ¿¡·¯", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ ì£¼ì‹­ì‹œì˜¤", "ë¡œê·¸ì¸ ì—ëŸ¬", JOptionPane.ERROR_MESSAGE);
 			tf_pw.grabFocus();
 			return;
 		}
 		User result = mg.login(id, pw);
 		if (result != null) {
-			JOptionPane.showMessageDialog(null, "·Î±×ÀÎÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!", "È¯¿µÇÕ´Ï´Ù", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ë¡œê·¸ì¸ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤!", "í™˜ì˜í•©ë‹ˆë‹¤", JOptionPane.INFORMATION_MESSAGE);
 			mainCard.show(mainBOARD, "pnMain");
 
 		} else {
-			JOptionPane.showMessageDialog(null, "¾ÆÀÌµğ È¤Àº ÆĞ½º¿öµå°¡ ÀÏÄ¡ÇÏÁö¾Ê½À´Ï´Ù.", "·Î±×ÀÎ ¿¡·¯", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ì•„ì´ë”” í˜¹ì€ íŒ¨ìŠ¤ì›Œë“œê°€ ì¼ì¹˜í•˜ì§€ì•ŠìŠµë‹ˆë‹¤.", "ë¡œê·¸ì¸ ì—ëŸ¬", JOptionPane.ERROR_MESSAGE);
 			tf_id.grabFocus();
 		}
+	}
+
+	public void setMovieBoxInfo() {
 
 	}
 }

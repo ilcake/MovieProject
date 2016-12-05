@@ -29,13 +29,12 @@ public class ServerThread implements Runnable {
 		mg = new ServerDBwork(gui);
 	}
 
-	@Override
 	public void run() {
 
 		while (flag) {
 			try {
 				obj = (Object[]) ois.readObject();
-				int protocol = (int) obj[0];
+				int protocol = (Integer) obj[0];
 				process(protocol);
 
 			} catch (Exception e) {

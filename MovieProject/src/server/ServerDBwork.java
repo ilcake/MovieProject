@@ -33,7 +33,7 @@ public class ServerDBwork {
 			con.setAutoCommit(true);
 			cm.close(con);
 
-			gui.setMessage(u.getId() + "À¯Àú°¡ °¡ÀÔÇÏ¿´½À´Ï´Ù.");
+			gui.setMessage(u.getId() + "ìœ ì €ê°€ ê°€ì…í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			return Data.RG_SUCCESS;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -44,7 +44,7 @@ public class ServerDBwork {
 			} catch (SQLException e1) {
 			}
 			e.printStackTrace();
-			gui.setMessage("À¯Àú°¡ È¸¿ø°¡ÀÔ¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+			gui.setMessage("ìœ ì €ê°€ íšŒì›ê°€ì…ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			return Data.FAIL;
 		}
 	}
@@ -60,7 +60,7 @@ public class ServerDBwork {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				u = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
-				gui.setMessage(u.getId() + " È¸¿øÀÌ Á¢¼ÓÇÏ¿´½À´Ï´Ù.");
+				gui.setMessage(u.getId() + " íšŒì›ì´ ì ‘ì†í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			}
 
 		} catch (Exception e) {

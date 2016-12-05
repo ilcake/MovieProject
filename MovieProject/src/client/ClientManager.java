@@ -26,7 +26,7 @@ public class ClientManager {
 		Object[] what = new Object[] { Data.REGISTER, us };
 		Object result = whatTodo(what);
 		if (result != null) {
-			int type = (int) result;
+			int type = (Integer) result;
 			return type;
 		}
 		return -1;
@@ -45,7 +45,7 @@ public class ClientManager {
 		Object[] what = new Object[] { Data.LOGOUT };
 		Object result = whatTodo(what);
 		if (result != null) {
-			return (boolean) result;
+			return (Boolean) result;
 		}
 		return false;
 	}

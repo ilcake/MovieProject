@@ -82,14 +82,14 @@ public class ServerGui extends JFrame {
 	}
 
 	public void setUserCount(int count) {
-		lb_c.setText(count + " Έν");
+		lb_c.setText(count + " λª…");
 
 	}
 
 	public class ActionLis implements ActionListener {
 
-		@Override
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 
 		}
 
