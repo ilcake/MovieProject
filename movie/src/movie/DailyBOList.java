@@ -13,7 +13,7 @@ import org.json.simple.parser.JSONParser;
 
 import vos.MovieBoxInfo;
 
-public class DailyBOList {/////변화!
+public class DailyBOList {///// 변화!
 
 	private ArrayList<String> titleList;
 	private ArrayList<String> dList;
@@ -122,6 +122,14 @@ public class DailyBOList {/////변화!
 				reader1.close();
 		}
 
+	}
+
+	public ArrayList<MovieBoxInfo> getMlist() {
+		return mlist;
+	}
+
+	public void setMlist(ArrayList<MovieBoxInfo> mlist) {
+		this.mlist = mlist;
 	}
 
 	public static void main(String[] args) {
