@@ -16,6 +16,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/05-12/Downloads/JSON-java-master.zip"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

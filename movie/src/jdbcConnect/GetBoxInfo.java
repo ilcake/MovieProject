@@ -3,6 +3,7 @@ package jdbcConnect;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import movie.DailyBOList;
@@ -14,7 +15,6 @@ public class GetBoxInfo {
 	public ConnectionManager cm;
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		new GetBoxInfo();
 	}
 
@@ -24,11 +24,30 @@ public class GetBoxInfo {
 			mmlist = dbl.getMlist();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		maketable();
 		setTable();
+	}
+
+	public void maketable() {
+		Connection con = new ConnectionManager().getConnection();
+		String sql = "";
+		Statement st;
+		try {
+			sql = "drop table movieboxinfo";
+			st = con.createStatement();
+			st.executeUpdate(sql);
+
+			sql = "create table movieboxinfo(moviecd varchar2(30),movienm varchar2(50),directornm varchar2(50),opendt varchar2(30),rank number(5),constraint movieb_pk primary key (moviecd))";
+			st = con.createStatement();
+			st.executeUpdate(sql);
+
+		} catch (Exception e) {
+
+		}
+		cm.close(con);
+
 	}
 
 	public void setTable() {
@@ -36,19 +55,18 @@ public class GetBoxInfo {
 		String sql = "";
 		PreparedStatement ps;
 		try {
-			for (int i = 1; i < mmlist.size() + 1; i++) {
+			for (int i = 0; i < mmlist.size(); i++) {
+				sql = "insert into movieboxinfo values(?, ?, ?, ?, ?)";
+				ps = con.prepareStatement(sql);
 				String mc = mmlist.get(i).getMovieCd();
 				String nm = mmlist.get(i).getMovieNm();
 				String dr = mmlist.get(i).getDirector();
 				String dt = mmlist.get(i).getOpenDt();
-				int rank = i;
-				sql = "insert into movieboxinfo values(?, ?, ?, ?, ?)";
-				ps = con.prepareStatement(sql);
 				ps.setString(1, mc);
 				ps.setString(2, nm);
 				ps.setString(3, dr);
 				ps.setString(4, dt);
-				ps.setInt(5, rank);
+				ps.setInt(5, i + 1);
 				ps.executeUpdate();
 			}
 		} catch (Exception e) {

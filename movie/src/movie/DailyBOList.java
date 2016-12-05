@@ -15,13 +15,17 @@ import vos.MovieBoxInfo;
 
 public class DailyBOList {///// 변화!
 
+	public DailyBOList() throws Exception {
+
+	}
+
 	private ArrayList<String> titleList;
 	private ArrayList<String> dList;
 	private ArrayList<String> dateList;
 	private ArrayList<String> codeList;
 	private ArrayList<MovieBoxInfo> mlist;
 
-	public DailyBOList() throws Exception { // json parsing
+	public void fetchBoxList() throws Exception { // json parsing
 		titleList = new ArrayList<String>();
 		dList = new ArrayList<String>();
 		dateList = new ArrayList<String>();
