@@ -7,13 +7,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ServerManager {
+public class ServerReceiver {
 	private ServerSocket ss;
 	private boolean flag;
 	public static ArrayList<ObjectOutputStream> usersList = new ArrayList();
+	private ServerGui gui;
 
-	public ServerManager() {
+	public ServerReceiver(ServerGui gui) {
 		flag = true;
+		this.gui = gui;
+
 		serverOn();
 		while (flag) {
 			connection();
@@ -35,7 +38,9 @@ public class ServerManager {
 			ObjectOutputStream oos = new ObjectOutputStream(sk.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(sk.getInputStream());
 			usersList.add(oos);
-			Thread th = new Thread(new ServerThread(sk, oos, ois, usersList));
+			gui.setUserCount(usersList.size());
+			gui.setMessage(sk.getInetAddress() + "/ 접속하였습니다.");
+			Thread th = new Thread(new ServerThread(sk, oos, ois, usersList, gui));
 			th.start();
 		} catch (Exception e) {
 			e.printStackTrace();

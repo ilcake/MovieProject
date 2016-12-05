@@ -55,6 +55,7 @@ public class ClientGui extends JFrame {
 	private JButton bt_rgReg;
 	private JPasswordField rg_pw;
 	private ClientManager mg;
+	private String whoAmI;
 
 	public ClientGui() {
 		try {
@@ -190,7 +191,7 @@ public class ClientGui extends JFrame {
 		setVisible(true);
 
 		addListeners();
-		// mg = new ClientManager(this);
+		mg = new ClientManager(this);
 
 	}
 
@@ -234,16 +235,20 @@ public class ClientGui extends JFrame {
 		User nUser = new User(id, pw, mail, phN);
 		int reaction = mg.register(nUser);
 		switch (reaction) {
-		case Data.RG_IDDUB:
+		case Data.FAIL:
+			JOptionPane.showMessageDialog(null, "중복된 아이디가 이미 존재합니다.", "회원가입 에러", JOptionPane.ERROR_MESSAGE);
 			break;
-		case Data.RG_MAILDUB:
-			break;
-		case Data.RG_PHDUB:
-			break;
+
 		case Data.RG_SUCCESS:
-			JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!");
+			JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
 			lg2Card.show(lg2, "lg2_1");
 			break;
 		}
+	}
+
+	public void login() {
+		String id = tf_id.getText();
+		String pw = tf_pw.getText();
+		boolean result = mg.login(id, pw);
 	}
 }

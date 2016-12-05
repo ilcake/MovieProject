@@ -17,19 +17,20 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.Component;
+import javax.swing.JTextArea;
 
 public class ServerGui extends JFrame {
 	private static final int fwidth = 400;
 	private static final int fheight = 500;
 	private JButton bt_r;
 	private JLabel lb_c;
-	private JList list;
+	private ServerReceiver sr;
+	private JTextArea log;
 
 	public ServerGui() {
 		setTitle("MovieServer");
-		setLNF();
 		setSize(fwidth, fheight);
-		
+
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		JPanel panel = new JPanel();
@@ -68,10 +69,21 @@ public class ServerGui extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		panel_2.add(scrollPane);
 
-		list = new JList();
-		scrollPane.setViewportView(list);
+		log = new JTextArea();
+		scrollPane.setViewportView(log);
 
 		setVisible(true);
+
+		sr = new ServerReceiver(this);
+	}
+
+	public void setMessage(String message) {
+		log.append(message + "\n");
+	}
+
+	public void setUserCount(int count) {
+		lb_c.setText(count + " Έν");
+
 	}
 
 	public class ActionLis implements ActionListener {
@@ -81,15 +93,6 @@ public class ServerGui extends JFrame {
 
 		}
 
-	}
-
-	public void setLNF() {
-		/*
-		 * try { UIManager.setLookAndFeel(
-		 * "com.sun.java.swing.plaf.windows.WindowsLookAndFeel"); } catch
-		 * (Exception e) { e.printStackTrace(); }
-		 * SwingUtilities.updateComponentTreeUI(this); this.pack();
-		 */
 	}
 
 }
