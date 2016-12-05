@@ -29,6 +29,7 @@ public class ServerGui extends JFrame {
 		setTitle("MovieServer");
 		setLNF();
 		setSize(fwidth, fheight);
+		
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		JPanel panel = new JPanel();
