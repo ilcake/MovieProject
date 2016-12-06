@@ -17,6 +17,7 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 	private String genre;
 	private String showTm;
 	private String actor;
+	private String director;// 이거
 	private ArrayList<String> codeList;
 	private ArrayList<String> storyList;
 	private ArrayList<String> titleList;
@@ -24,6 +25,7 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 	private ArrayList<String> thumbnailList;
 	private ArrayList<String> showTmList;
 	private ArrayList<String> actorList;
+	private ArrayList<String> directorList; // 이거
 
 	public SearchBy() {
 
@@ -38,6 +40,7 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 		thumbnailList = new ArrayList<String>();
 		showTmList = new ArrayList<String>();
 		actorList = new ArrayList<String>();
+		directorList = new ArrayList<String>(); // 이거
 
 		if (type == 1) {
 			codeList = jsonParsingforKodis("directorNm", name); // 감독으로 코드 받아오기
@@ -75,6 +78,11 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 			thumbnailList.add(thumbnail);
 		}
 
+		for (String code : codeList) { // 감독검색
+			director = jsonParsingforKodis2("directors", code);
+			directorList.add(director);
+		}
+
 		System.out.println(codeList.toString());
 		System.out.println(titleList.toString());
 		System.out.println(genreList.toString());
@@ -82,6 +90,7 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 		System.out.println(thumbnailList.toString());
 		System.out.println(showTmList.toString());
 		System.out.println(actorList.toString());
+		System.out.println(directorList.toString());
 	}
 
 	public String jsonParsingforDaum(String pra, String title) throws Exception { // 다음에서
@@ -138,8 +147,8 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 				result = (String) entity.get("genreNm");
 				return result;
 			}
-		} else if (pra.equals("actors")) {
-			JSONArray array = (JSONArray) json2.get("actors");
+		} else if (pra.equals("actors") || pra.equals("directors")) {// 이거
+			JSONArray array = (JSONArray) json2.get(pra);
 			for (int i = 0; i < array.size(); i++) {
 				JSONObject entity = (JSONObject) array.get(i);
 				result = (String) entity.get("peopleNm");

@@ -86,7 +86,7 @@ public class ServerGui extends JFrame {
 	}
 
 	public void setUserCount(int count) {
-		lb_c.setText(count + " ��");
+		lb_c.setText(count + "명");
 
 	}
 
