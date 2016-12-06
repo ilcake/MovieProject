@@ -9,7 +9,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
+import vos.MovieSearchInfo;
+
+public class SearchBy { // 제목으로 검색(1) 또는 감독(2)으로 검색
 
 	private String thumbnail;
 	private String story;
@@ -17,6 +19,7 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 	private String genre;
 	private String showTm;
 	private String actor;
+	private String director;// 이거
 	private ArrayList<String> codeList;
 	private ArrayList<String> storyList;
 	private ArrayList<String> titleList;
@@ -24,9 +27,30 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 	private ArrayList<String> thumbnailList;
 	private ArrayList<String> showTmList;
 	private ArrayList<String> actorList;
+	private ArrayList<MovieSearchInfo> searchList;
+	private ArrayList<String> directorList; // 이거
+
+	// public static void main(String[] args) {
+	// new SearchBy();
+	// }
 
 	public SearchBy() {
 
+		// try {
+		// Search(2, "크리스토퍼 놀란");
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+
+	}
+
+	public ArrayList<MovieSearchInfo> getSearchList() {
+		return searchList;
+	}
+
+	public void setSearchList(ArrayList<MovieSearchInfo> searchList) {
+		this.searchList = searchList;
 	}
 
 	public void Search(int type, String name) throws Exception {
@@ -38,10 +62,11 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 		thumbnailList = new ArrayList<String>();
 		showTmList = new ArrayList<String>();
 		actorList = new ArrayList<String>();
+		directorList = new ArrayList<String>(); // 이거
 
-		if (type == 1) {
+		if (type == 2) {
 			codeList = jsonParsingforKodis("directorNm", name); // 감독으로 코드 받아오기
-		} else if (type == 2) {
+		} else if (type == 1) {
 			codeList = jsonParsingforKodis("movieNm", name); // 제목으로 코드 받아오기
 		}
 
@@ -75,13 +100,18 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 			thumbnailList.add(thumbnail);
 		}
 
-		System.out.println(codeList.toString());
-		System.out.println(titleList.toString());
-		System.out.println(genreList.toString());
-		System.out.println(storyList.toString());
-		System.out.println(thumbnailList.toString());
-		System.out.println(showTmList.toString());
-		System.out.println(actorList.toString());
+		for (String code : codeList) { // 감독검색
+			director = jsonParsingforKodis2("directors", code);
+			directorList.add(director);
+		}
+
+		searchList = new ArrayList();
+
+		for (int i = 0; i < codeList.size(); i++) {
+			searchList.add(new MovieSearchInfo(codeList.get(i), titleList.get(i), genreList.get(i), directorList.get(i),
+					actorList.get(i), thumbnailList.get(i), storyList.get(i), showTmList.get(i)));
+		}
+
 	}
 
 	public String jsonParsingforDaum(String pra, String title) throws Exception { // 다음에서
@@ -138,8 +168,8 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 				result = (String) entity.get("genreNm");
 				return result;
 			}
-		} else if (pra.equals("actors")) {
-			JSONArray array = (JSONArray) json2.get("actors");
+		} else if (pra.equals("actors") || pra.equals("directors")) {// 이거
+			JSONArray array = (JSONArray) json2.get(pra);
 			for (int i = 0; i < array.size(); i++) {
 				JSONObject entity = (JSONObject) array.get(i);
 				result = (String) entity.get("peopleNm");
