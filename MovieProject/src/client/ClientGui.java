@@ -6,6 +6,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import datas.Data;
 import datas.User;
+import net.infonode.util.ImageUtils;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
 
@@ -13,6 +14,7 @@ import java.awt.CardLayout;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.beans.AppletInitializer;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -115,6 +118,7 @@ public class ClientGui extends JFrame {
 	private JLabel lb_mvGen;
 	private JLabel lb_mvShowT;
 	private JLabel lb_mvActor;
+	private JLabel lb_img2;
 
 	public ClientGui() {
 		/*
@@ -284,7 +288,7 @@ public class ClientGui extends JFrame {
 		mm1_1.add(panel_1);
 		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel lb_img2 = new JLabel("");
+		lb_img2 = new JLabel("");
 		lb_img2.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
 		lb_img2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lb_img2);
@@ -344,13 +348,13 @@ public class ClientGui extends JFrame {
 		panel_3.setLayout(null);
 
 		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setBounds(47, 12, 76, 76);
+		lblNewLabel_4.setBounds(47, 12, 75, 75);
 		panel_3.add(lblNewLabel_4);
 		lblNewLabel_4.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\50195-1920x1080.jpg"));
 
 		JLabel label_4 = new JLabel("");
 		label_4.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\super-mario-8-bit-wallpaper.jpg"));
-		label_4.setBounds(195, 12, 76, 76);
+		label_4.setBounds(195, 12, 75, 75);
 		panel_3.add(label_4);
 
 		panel_6 = new JPanel();
@@ -377,6 +381,15 @@ public class ClientGui extends JFrame {
 		bt_search.setBounds(191, 90, 107, 27);
 		panel_6.add(bt_search);
 
+		JLabel lblNewLabel_5 = new JLabel("id");
+		lblNewLabel_5.setBounds(94, 94, 62, 18);
+		panel_6.add(lblNewLabel_5);
+
+		JLabel lblNewLabel_6 = new JLabel("img");
+		lblNewLabel_6.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		lblNewLabel_6.setBounds(24, 77, 56, 53);
+		panel_6.add(lblNewLabel_6);
+
 		pnMovie = new JPanel();
 		pnMovie.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mainBOARD.add(pnMovie, "pnMovie");
@@ -388,14 +401,14 @@ public class ClientGui extends JFrame {
 		mv1.setLayout(null);
 
 		lb_mvIcon = new JLabel("", new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"), SwingConstants.CENTER);
-		lb_mvIcon.setSize(new Dimension(171, 213));
+		lb_mvIcon.setSize(new Dimension(170, 215));
 		lb_mvIcon.setBounds(31, 49, 171, 222);
 		mv1.add(lb_mvIcon);
 
 		lb_mvTitle = new JLabel();
 		lb_mvTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lb_mvTitle.setFont(new Font("Dialog", Font.PLAIN, 25));
-		lb_mvTitle.setBounds(226, 49, 191, 80);
+		lb_mvTitle.setFont(new Font("Dialog", Font.PLAIN, 21));
+		lb_mvTitle.setBounds(236, 49, 181, 80);
 		mv1.add(lb_mvTitle);
 
 		mv1_jsp = new JScrollPane();
@@ -408,7 +421,7 @@ public class ClientGui extends JFrame {
 		ta_mvStory.setEditable(false);
 
 		pn_label = new JPanel();
-		pn_label.setBounds(226, 151, 64, 120);
+		pn_label.setBounds(236, 151, 64, 120);
 		mv1.add(pn_label);
 		pn_label.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -474,6 +487,11 @@ public class ClientGui extends JFrame {
 		mv2_2 = new JPanel();
 		mv2.add(mv2_2, "v2_2");
 
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		int locWidth = (int) ((d.getWidth() - fwidth) / 2);
+		int locHeight = (int) ((d.getHeight() - fheight) / 2);
+		setLocation(locWidth, locHeight);
+
 		setVisible(true);
 
 		addListeners();
@@ -507,17 +525,20 @@ public class ClientGui extends JFrame {
 			} else if (e.getSource() == bt_Login) {
 				login();
 			} else if (e.getSource() == mBoxTable) {
-				int who = mBoxTable.getSelectedRow();
-				mainCard.show(mainBOARD, "pnMovie");
-				System.out.println(dblist.get(who).getMovieCd() + dblist.get(who).getMovieNm());
+				MediaPlayer md = new MediaPlayer();
+				// int who = mBoxTable.getSelectedRow();
+				// mainCard.show(mainBOARD, "pnMovie");
+				// System.out.println(dblist.get(who).getMovieCd() +
+				// dblist.get(who).getMovieNm());
 			} else if (e.getSource() == tb_search) {
 				int who = tb_search.getSelectedRow();
-				mainCard.show(mainBOARD, "pnMovie");
 				setMovieInfoPage(scList.get(who).getMvCode());
+				mainCard.show(mainBOARD, "pnMovie");
 			} else if (e.getSource() == bt_mv2Return) {
 				mainCard.show(mainBOARD, "pnMain");
 			} else if (e.getSource() == bt_search) {
 				searchByAction();
+				System.out.println(lb_img2.getWidth() + "////" + lb_img2.getHeight());
 			} else if (e.getSource() == bt_mm1_2Return) {
 				mn1Card.show(mn1, "mm1_1");
 			}
@@ -680,10 +701,11 @@ public class ClientGui extends JFrame {
 		String story = m.getMvStory();
 
 		try {
-			BufferedImage img = ImageIO.read(new URL(iconURL));
-			ImageIcon bbimg = new ImageIcon(img);
-			Image ddimg = img;
-			Image reSized = ddimg.getScaledInstance(171, 213, 0);
+			ImageIcon imgicon = new ImageIcon(ImageIO.read(new URL(iconURL)));
+			Image image = imgicon.getImage();
+			Image reSized = image.getScaledInstance(171, 213, Image.SCALE_SMOOTH);
+			imgicon = new ImageIcon(reSized);
+			lb_mvIcon.setIcon(imgicon);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -691,32 +713,46 @@ public class ClientGui extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		lb_mvIcon = new JLabel("", new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"), SwingConstants.CENTER);
-		lb_mvIcon.setSize(new Dimension(171, 213));
-		lb_mvIcon.setBounds(31, 36, 171, 213);
-
-		lb_mvTitle.setText("신비한 동물사전");
+		//
+		// lb_mvIcon.setSize(new Dimension(170, 215));
+		// lb_mvIcon.setBounds(31, 49, 171, 222);
+		lb_mvTitle.setText("");
+		lb_mvTitle.setText(title);
+		int fontSize = 30;
+		int titleLength = title.length();
+		System.out.println(titleLength);
+		if (titleLength > 8) {
+			fontSize -= 3;
+		} else if (titleLength > 10) {
+			fontSize -= 5;
+		} else if (titleLength > 20) {
+			fontSize -= 10;
+		} else if (titleLength > 30) {
+			fontSize -= 20;
+		}
 		lb_mvTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lb_mvTitle.setFont(new Font("Dialog", Font.PLAIN, 25));
+		lb_mvTitle.setFont(new Font("Dialog", Font.PLAIN, fontSize));
 		lb_mvTitle.setBounds(216, 49, 191, 80);
 
+		lb_mvDirector.setHorizontalAlignment(SwingConstants.CENTER);
+		lb_mvDirector.setText(director);
+
 		lb_mvGen.setHorizontalAlignment(SwingConstants.CENTER);
-		lb_mvGen.setText("판타지");
+		lb_mvGen.setText(genre);
 
 		lb_mvShowT.setHorizontalAlignment(SwingConstants.CENTER);
-		lb_mvShowT.setText("132분");
+		lb_mvShowT.setText(showTm);
 
 		lb_mvActor.setHorizontalAlignment(SwingConstants.CENTER);
-		lb_mvActor.setText("에디 레드메인");
-
-		// 줄거리를 여기에
-		story = "\u2018해리 포터\u2019 마법의 시작!\r\n신비한 동물들 탈출, 뉴욕 최대의 위기! 새로운 마법의 시대가 열린다!\r\n\r\n1926년 뉴욕, \u2018검은 존재\u2019가 거리를 쑥대밭으로 만들고 미국의 마법의회 MACUSA의 대통령과 어둠의 마법사를 체포하는 오러의 수장 그레이브스가 이를 추적하는 혼돈 속에 영국의 마법사 뉴트 스캐맨더가 이 곳을 찾는다. 그의 목적은 세계 곳곳에 숨어있는 신비한 동물들을 찾기 위한 것. 여행을 하면서 다양한 크기의 신비한 동물을 구조해 안에 마법의 공간이 있는 가방에 넣어 다니며 보살핀다. 하지만 은행을 지나던 중 금은보화를 좋아하는 신비한 동물인 니플러가 가방 안에서 탈출을 하고 이 일로 전직 오러였던 티나와 노마지 제이콥과 엮이게 된다. 이 사고로 뉴트와 제이콥의 가방이 바뀌면서 신비한 동물들이 대거 탈출을 하고 그들은 동물들을 찾기 위해 뉴욕 곳곳을 누빈다. 한편, \u2018검은 존재\u2019의 횡포는 더욱 거세져 결국 인간 사회와 마법 사회를 발칵 뒤집는 사건이 발생하고, 이 모든 것이 뉴트의 소행이라는 오해를 받게 되는데\u2026";
+		lb_mvActor.setText(actor);
 
 		String[] sArr = story.split("\r\n");
 		for (int i = 0; i < sArr.length; i++) {
 			ta_mvStory.append(sArr[i] + "\n");
 		}
+		ta_mvStory.setCaretPosition(0);
 		//////////////////
+		mv1.repaint();
+		mv1.revalidate();
 	}
 }

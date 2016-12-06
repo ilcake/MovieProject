@@ -15,9 +15,11 @@ import vos.MovieBoxInfo;
 public class ServerDBwork {
 	private ConnectionManager cm;
 	private ServerGui gui;
+	private ServerThread thth;
 
-	public ServerDBwork(ServerGui gui) {
+	public ServerDBwork(ServerGui gui, ServerThread thth) {
 		this.gui = gui;
+		this.thth = thth;
 	}
 
 	public int register(User u) {
@@ -63,6 +65,7 @@ public class ServerDBwork {
 			while (rs.next()) {
 				u = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
 				gui.setMessage(u.getId() + " 회원이 접속하였습니다.");
+				thth.setUserID(u.getId());
 			}
 
 		} catch (Exception e) {
