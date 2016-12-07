@@ -50,7 +50,7 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "»ç¿ëÀÚ Á¤º¸ [ ¾ÆÀÌµğ : " + id + ", ÀÌ¸ŞÀÏ : " + mail + ", ÀüÈ­¹øÈ£ : " + phN + "]";
+		return "ì‚¬ìš©ì ì •ë³´ [ ì•„ì´ë”” : " + id + ", ì´ë©”ì¼ : " + mail + ", ì „í™”ë²ˆí˜¸ : " + phN + "]";
 	}
 
 }

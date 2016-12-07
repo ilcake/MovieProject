@@ -5,9 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import datas.Data;
 import datas.User;
+import vos.MovieBoxInfo;
 
 public class ClientManager {
 	private Socket sk;
@@ -26,28 +28,33 @@ public class ClientManager {
 		Object[] what = new Object[] { Data.REGISTER, us };
 		Object result = whatTodo(what);
 		if (result != null) {
-			int type = (int) result;
+			int type = (Integer) result;
 			return type;
 		}
 		return -1;
 	}
 
-	public boolean login(String id, String pw) {
+	public User login(String id, String pw) {
 		Object[] what = new Object[] { Data.LOGIN, id, pw };
 		Object result = whatTodo(what);
 		if (result != null) {
-			return (boolean) result;
+			return (User) result;
 		}
-		return false;
+		return null;
 	}
 
 	public boolean logOut() {
 		Object[] what = new Object[] { Data.LOGOUT };
 		Object result = whatTodo(what);
 		if (result != null) {
-			return (boolean) result;
+			return (Boolean) result;
 		}
 		return false;
+	}
+
+	public ArrayList<MovieBoxInfo> getMovieBoxInfo() {
+		Object[] what = new Object[] { Data.GETMOVIEBOXINFO };
+		return (ArrayList<MovieBoxInfo>) whatTodo(what);
 	}
 
 	public void connection() {

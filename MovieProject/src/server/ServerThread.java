@@ -18,6 +18,15 @@ public class ServerThread implements Runnable {
 	private Object[] obj;
 	private ServerDBwork mg;
 	private ServerGui gui;
+	private String userID;
+
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
 
 	public ServerThread(Socket sk, ObjectOutputStream oos, ObjectInputStream ois,
 			ArrayList<ObjectOutputStream> usersList, ServerGui gui) {
@@ -26,20 +35,22 @@ public class ServerThread implements Runnable {
 		this.ois = ois;
 		this.usersList = usersList;
 		this.gui = gui;
-		mg = new ServerDBwork(gui);
+		mg = new ServerDBwork(gui, this);
 	}
 
-	@Override
 	public void run() {
 
 		while (flag) {
 			try {
 				obj = (Object[]) ois.readObject();
-				int protocol = (int) obj[0];
+				int protocol = (Integer) obj[0];
 				process(protocol);
 
 			} catch (Exception e) {
 				flag = false;
+				usersList.remove(oos);
+				gui.setMessage(userID + " 회원이 프로그램을 종료하였습니다.");
+				gui.setUserCount(usersList.size());
 			}
 
 		}
@@ -58,6 +69,10 @@ public class ServerThread implements Runnable {
 
 		case Data.LOGOUT:
 
+			break;
+
+		case Data.GETMOVIEBOXINFO:
+			result = gui.getMblist();
 			break;
 
 		}
