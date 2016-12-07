@@ -573,6 +573,7 @@ public class ClientGui extends JFrame {
 		} else {
 			JOptionPane.showMessageDialog(null, "아이디 혹은 패스워드가 일치하지않습니다.", "로그인 에러", JOptionPane.ERROR_MESSAGE);
 			tf_id.grabFocus();
+			/////
 		}
 	}
 
