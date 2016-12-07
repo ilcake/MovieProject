@@ -9,17 +9,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JList;
+import javax.swing.JPanel;
 
 public class ChatGUI extends JFrame implements ActionListener {
 
-	private JScrollPane scrollPane;
-	private JTextArea textArea;
-	private JTextField textField;
-	private JButton btnNewButton;
-	private JScrollPane scrollPane_1;
-	private JList list;
+	private JScrollPane scrollPane;	//채팅
+	private JTextArea textArea;	//채팅
+	private JTextField textField;	//채팅입력
+	private JButton btnNewButton;	//채팅버튼
+	private JScrollPane scrollPane_1;	//유저리스트
+	private JList list;	//유저리스트
+	private JPanel panel;	//배너
 	
-	public ChatGUI() {//
+	public ChatGUI() {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Movie Lovers Chat");
@@ -27,7 +29,7 @@ public class ChatGUI extends JFrame implements ActionListener {
 		getContentPane().setLayout(null);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 10, 175, 451);
+		scrollPane.setBounds(12, 78, 175, 383);
 		getContentPane().add(scrollPane);
 
 		textArea = new JTextArea();
@@ -45,14 +47,18 @@ public class ChatGUI extends JFrame implements ActionListener {
 		btnNewButton = new JButton("GO");
 		btnNewButton.setBounds(221, 470, 51, 23);
 		getContentPane().add(btnNewButton);
+		btnNewButton.addActionListener(this);
 		
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(199, 10, 73, 451);
+		scrollPane_1.setBounds(199, 78, 73, 383);
 		getContentPane().add(scrollPane_1);
 		
 		list = new JList();
 		scrollPane_1.setViewportView(list);
-		btnNewButton.addActionListener(this);
+		
+		panel = new JPanel();
+		panel.setBounds(12, 10, 260, 58);
+		getContentPane().add(panel);
 
 		setSize(300, 540);
 		setVisible(true);
@@ -60,7 +66,7 @@ public class ChatGUI extends JFrame implements ActionListener {
 
 	//이벤트처리
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("GO")) {
+		if (e.getActionCommand().equals("GO") || e.getSource()==textField) {	//버튼눌렀을때,엔터
 			String ms = textField.getText();
 			//ms쓰레드에 보내주기
 			//보내고 텍스트필드 지워줌
