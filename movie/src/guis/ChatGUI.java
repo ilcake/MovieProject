@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-public class ChatGUI extends JFrame implements ActionListener {
+public class ChatGUI extends JFrame implements ActionListener {//
 
 	private JScrollPane scrollPane;	//채팅스크롤
 	private JTextArea textArea;	//채팅
