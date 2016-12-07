@@ -1,4 +1,4 @@
-package server;
+package client.chat;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,39 +8,38 @@ import java.util.ArrayList;
 
 import datas.Data;
 
-public class ServerChat implements Runnable {
-
-	public ArrayList<ObjectOutputStream> chatusersList;
-	public ArrayList<String> userNicks;
+public class ChatThread implements Runnable {
 	private Socket sk;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
+	private ArrayList<String> userNicks;
 	private boolean flag;
+	private ChatManager cm;
 
-	public ServerChat(ArrayList<ObjectOutputStream> chatusersList, ArrayList<String> userNicks, Socket sk,
-			ObjectInputStream ois, ObjectOutputStream oos) {
-		this.chatusersList = chatusersList;
-		this.userNicks = userNicks;
+	public ChatThread(Socket sk, ObjectInputStream ois, ObjectOutputStream oos, ChatManager cm) {
 		this.sk = sk;
 		this.ois = ois;
 		this.oos = oos;
+		this.cm = cm;
+		userNicks = new ArrayList<String>();
 		flag = true;
 	}
 
 	@Override
 	public void run() {
+		int protocols = -1;
+
 		while (flag) {
+
 			try {
 				Object[] obj = (Object[]) ois.readObject();
+				protocols = (int) obj[0];
 
-				int pro = (int) obj[0];
-				switch (pro) {
+				switch (protocols) {
 				case Data.CHATLOGIN:
 					break;
-
 				case Data.CHATLOGOUT:
 					break;
-
 				case Data.CHATMESSAGE:
 					break;
 				}
@@ -49,8 +48,8 @@ public class ServerChat implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				flag = false;
+				e.printStackTrace();
 			}
 
 		}

@@ -40,10 +40,12 @@ public class ServerReceiver {
 			ObjectOutputStream oos = new ObjectOutputStream(sk.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(sk.getInputStream());
 
-			Socket sk2 = ss.accept();
-			ObjectOutputStream oos2 = new ObjectOutputStream(sk2.getOutputStream());
-			ObjectInputStream ois2 = new ObjectInputStream(sk2.getInputStream());
-			chatusersList.add(oos2);
+			/*
+			 * Socket sk2 = ss.accept(); ObjectOutputStream oos2 = new
+			 * ObjectOutputStream(sk2.getOutputStream()); ObjectInputStream ois2
+			 * = new ObjectInputStream(sk2.getInputStream());
+			 * chatusersList.add(oos2);
+			 */
 
 			usersList.add(oos);
 			gui.setUserCount(usersList.size());

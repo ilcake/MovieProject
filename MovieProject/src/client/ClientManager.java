@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import client.chat.ChatManager;
 import datas.Data;
 import datas.User;
 import vos.MovieBoxInfo;
@@ -19,6 +20,7 @@ public class ClientManager {
 	private ObjectInputStream ois2;
 	private ClientGui gui;
 	private Object[] obj;
+	private ChatManager cm;
 
 	public ClientManager(ClientGui gui) {
 		this.gui = gui;
@@ -64,10 +66,6 @@ public class ClientManager {
 			sk = new Socket("localhost", 17771);
 			oos = new ObjectOutputStream(sk.getOutputStream());
 			ois = new ObjectInputStream(sk.getInputStream());
-
-			sk2 = new Socket("localhost", 17771);
-			oos2 = new ObjectOutputStream(sk2.getOutputStream());
-			ois2 = new ObjectInputStream(sk2.getInputStream());
 
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

@@ -52,6 +52,7 @@ public class ServerThread implements Runnable {
 				flag = false;
 				usersList.remove(oos);
 				gui.setMessage(userID + " 회원이 프로그램을 종료하였습니다.");
+				userNicks.remove(userID);
 				gui.setUserCount(usersList.size());
 			}
 

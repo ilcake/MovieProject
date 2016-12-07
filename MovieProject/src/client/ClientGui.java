@@ -48,6 +48,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import client.chat.ChatGUI;
 import client.db.SearchBy;
 
 import javax.swing.JScrollPane;
@@ -76,16 +77,9 @@ public class ClientGui extends JFrame {
 	private CardLayout mainCard, lg2Card;
 	private JLabel lblNewLabel_2;
 	private JTextField rg_id;
-	private JLabel label;
-	private JLabel label_1;
-	private JLabel label_2;
-	private JLabel lb_mvIcon;
-	private JLabel lb_mvTitle;
-	private JLabel lb_miG;
-	private JTextField rg_ph;
-	private JTextField rg_ma;
-	private JButton bt_rgCancel;
-	private JButton bt_rgReg;
+	private JLabel label, label_1, label_2, lb_mvIcon, lb_mvTitle, lb_miG;
+	private JTextField rg_ph, rg_ma;
+	private JButton bt_rgCancel, bt_rgReg;
 	private JPasswordField rg_pw;
 	private ClientManager mg;
 	private String whoAmI;
@@ -109,16 +103,11 @@ public class ClientGui extends JFrame {
 	private JButton bt_mm1_2Return;
 	private JLabel lb_miD;
 	private JPanel pn_label;
-	private JLabel lb_miT;
-	private JLabel lb_miA;
-	private JLabel lb_mvDirector;
-	private JLabel lb_mvGen;
-	private JLabel lb_mvShowT;
-	private JLabel lb_mvActor;
-	private JLabel lb_img2;
-	private ImageIcon mainL, mainR, noImg;
-	private JLabel lb_like;
-	private JLabel lb_comm;
+	private JLabel lb_miT, lb_miA, lb_mvDirector, lb_mvGen, lb_mvShowT, lb_mvActor, lb_img2;
+	private ImageIcon noImg;
+	private JLabel lb_like, lb_comm;
+	private ChatGUI chat;
+	private JButton bt_chat;
 
 	public ClientGui() {////
 
@@ -139,7 +128,6 @@ public class ClientGui extends JFrame {
 				System.out.println("dd");
 			}
 		} //
-		setIcons();
 
 		mainBOARD = getContentPane();
 		pnBOARD = new JPanel();
@@ -154,8 +142,14 @@ public class ClientGui extends JFrame {
 		mainBOARD.add(pnLogin, "pnLogin");
 		pnLogin.setLayout(new GridLayout(1, 2, 0, 0));
 
-		ImageIcon img = new ImageIcon("./img/mainL.png");
-		lg1 = new JPanel();
+		ImageIcon img = new ImageIcon("img/mainL.png");
+		lg1 = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(img.getImage(), 0, 0, null); // 이미지 원래사이즈로 넣기
+				Dimension d = getSize();
+				g.drawImage(img.getImage(), 0, 0, d.width, d.height, null); // 컴포넌트사이즈에맞게
+			}
+		};
 		lg1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnLogin.add(lg1);
 		lg1.setLayout(null);
@@ -166,7 +160,14 @@ public class ClientGui extends JFrame {
 		lg2Card = new CardLayout(0, 0);
 		lg2.setLayout(lg2Card);
 
-		lg2_1 = new JPanel();
+		ImageIcon img2 = new ImageIcon("img/mainR.jpg");
+		lg2_1 = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(img2.getImage(), 0, 0, null); // 이미지 원래사이즈로 넣기
+				Dimension d = getSize();
+				g.drawImage(img2.getImage(), 0, 0, d.width, d.height, null); // 컴포넌트사이즈에맞게
+			}
+		};
 		lg2.add(lg2_1, "lg2_1");
 		lg2_1.setLayout(null);
 
@@ -378,6 +379,10 @@ public class ClientGui extends JFrame {
 		bt_search.setBounds(191, 122, 107, 27);
 		panel_6.add(bt_search);
 
+		bt_chat = new JButton("채팅 활성화하기");
+		bt_chat.setBounds(14, 122, 107, 27);
+		panel_6.add(bt_chat);
+
 		pnMovie = new JPanel();
 		pnMovie.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mainBOARD.add(pnMovie, "pnMovie");
@@ -482,13 +487,10 @@ public class ClientGui extends JFrame {
 
 		setVisible(true);
 
-		setIcons();
-		drwaImages(lg1, mainL);
-		drwaImages(lg2, mainR);
-
 		addListeners();
 		mg = new ClientManager(this);
 		sb = new SearchBy();
+		setIcon();
 
 	}
 
@@ -501,6 +503,7 @@ public class ClientGui extends JFrame {
 		bt_search.addMouseListener(ma);
 		bt_mv2Return.addMouseListener(ma);
 		bt_mm1_2Return.addMouseListener(ma);
+		bt_chat.addMouseListener(ma);
 	}
 
 	public class mcl extends MouseAdapter {
@@ -528,6 +531,8 @@ public class ClientGui extends JFrame {
 				searchByAction();
 			} else if (e.getSource() == bt_mm1_2Return) {
 				mn1Card.show(mn1, "mm1_1");
+			} else if (e.getSource() == bt_chat) {
+				chat.windowOn();
 			}
 		}
 	}
@@ -568,6 +573,8 @@ public class ClientGui extends JFrame {
 		if (result != null) {
 			JOptionPane.showMessageDialog(null, "로그인이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
 			mainCard.show(mainBOARD, "pnMain");
+			whoAmI = id;
+			chat = new ChatGUI(id, this);
 			setMovieBoxInfo();
 
 		} else {
@@ -688,18 +695,22 @@ public class ClientGui extends JFrame {
 		String director = m.getMvDirector();
 		String story = m.getMvStory();
 
-		try {
-			ImageIcon imgicon = new ImageIcon(ImageIO.read(new URL(iconURL)));
-			Image image = imgicon.getImage();
-			Image reSized = image.getScaledInstance(171, 213, Image.SCALE_SMOOTH);
-			imgicon = new ImageIcon(reSized);
-			lb_mvIcon.setIcon(imgicon);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (iconURL.equals("")) {
+			lb_mvIcon.setIcon(noImg);
+		} else {
+			try {
+				ImageIcon imgicon = new ImageIcon(ImageIO.read(new URL(iconURL)));
+				Image image = imgicon.getImage();
+				Image reSized = image.getScaledInstance(171, 213, Image.SCALE_SMOOTH);
+				imgicon = new ImageIcon(reSized);
+				lb_mvIcon.setIcon(imgicon);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if (iconURL.equals("")) {
 			lb_mvIcon.setIcon(noImg);
@@ -711,7 +722,6 @@ public class ClientGui extends JFrame {
 		lb_mvTitle.setText(title);
 		int fontSize = 30;
 		int titleLength = title.length();
-		System.out.println(titleLength);
 		if (titleLength > 8) {
 			fontSize -= 3;
 		} else if (titleLength > 10) {
@@ -748,15 +758,7 @@ public class ClientGui extends JFrame {
 		mv1.revalidate();
 	}
 
-	public void setIcons() {
-		mainL = new ImageIcon("./img/mainL.png");
-		mainR = new ImageIcon("./img/mainR.jpg");
-		noImg = new ImageIcon("./img/noImg.jpg");
+	public void setIcon() {
+		noImg = new ImageIcon("img/noImg.jpg");
 	}
-
-	public void drwaImages(JComponent j, ImageIcon img) {
-		System.out.println(j.getWidth() + "dd" + j.getHeight());
-		j.getGraphics().drawImage(img.getImage(), j.getWidth(), j.getHeight(), null);
-	}
-
 }
