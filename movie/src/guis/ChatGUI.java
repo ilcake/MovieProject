@@ -2,6 +2,7 @@ package guis;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,11 +14,11 @@ import javax.swing.JPanel;
 
 public class ChatGUI extends JFrame implements ActionListener {
 
-	private JScrollPane scrollPane;	//채팅
+	private JScrollPane scrollPane;	//채팅스크롤
 	private JTextArea textArea;	//채팅
 	private JTextField textField;	//채팅입력
 	private JButton btnNewButton;	//채팅버튼
-	private JScrollPane scrollPane_1;	//유저리스트
+	private JScrollPane scrollPane_1;	//유저리스트스크롤
 	private JList list;	//유저리스트
 	private JPanel panel;	//배너
 	
@@ -77,5 +78,9 @@ public class ChatGUI extends JFrame implements ActionListener {
 	public void talk(String message){	//스트링이 들어오면 textArea로 append
 		textArea.append(message);
 		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+	}
+	
+	public void setUserList(ArrayList<String> userList){
+		list.setListData(userList.toArray());
 	}
 }
