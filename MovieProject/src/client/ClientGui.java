@@ -120,7 +120,7 @@ public class ClientGui extends JFrame {
 	private JLabel lb_like;
 	private JLabel lb_comm;
 
-	public ClientGui() {//
+	public ClientGui() {////
 
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
