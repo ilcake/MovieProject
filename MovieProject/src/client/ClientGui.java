@@ -14,6 +14,7 @@ import java.awt.CardLayout;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.JLabel;
@@ -35,6 +36,8 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.ImageIcon;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -49,6 +52,7 @@ import client.db.SearchBy;
 
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import java.awt.Font;
@@ -61,8 +65,9 @@ public class ClientGui extends JFrame {
 	private static final int fwidth = 900;
 	private static final int fheight = 540;
 	private JPanel pnBOARD, pnLogin, pnMain, pnMovie;
-	private JPanel lg2, lg1;
-	private JPanel lg2_1, lg2_2;
+	private JPanel lg2, lg1, lg2_1, lg2_2;
+	private JPanel mm1_1, mm1_2, mm1_3, mm1_4, mv2_1, mv2_2, mv1, panel_6, mv2_panel, mn1;
+	private JPanel pn_search, pn_info;
 	private JTextField tf_id;
 	private JPasswordField tf_pw;
 	private JLabel lblNewLabel_3;
@@ -72,9 +77,12 @@ public class ClientGui extends JFrame {
 	private JLabel lblNewLabel_2;
 	private JTextField rg_id;
 	private JLabel label;
-	private JTextField rg_ph;
 	private JLabel label_1;
 	private JLabel label_2;
+	private JLabel lb_mvIcon;
+	private JLabel lb_mvTitle;
+	private JLabel lb_miG;
+	private JTextField rg_ph;
 	private JTextField rg_ma;
 	private JButton bt_rgCancel;
 	private JButton bt_rgReg;
@@ -82,12 +90,6 @@ public class ClientGui extends JFrame {
 	private ClientManager mg;
 	private String whoAmI;
 	private Container mainBOARD;
-	private JPanel mm1_1;
-	private JPanel mm1_2;
-	private JPanel mm1_3;
-	private JPanel mm1_4;
-	private JPanel mv2_1;
-	private JPanel mv2_2;
 	private JTable mBoxTable;
 	private ArrayList<MovieBoxInfo> dblist;
 	private ArrayList<MovieSearchInfo> scList;
@@ -97,41 +99,29 @@ public class ClientGui extends JFrame {
 	private JComboBox cb;
 	private JTable tb_search;
 	private JScrollPane sp_search;
-	private JPanel mv1;
-	private JLabel lb_mvIcon;
-	private JLabel lb_mvTitle;
-	private JLabel lb_miG;
 	private JTextArea ta_mvStory;
 	private JScrollPane mv1_jsp;
 	private JButton bt_mv2Return;
-	private JPanel panel_6;
-	private JPanel mv2_panel;
 	private JButton bt_mv2Write;
 	private JButton bt_mv2Like;
 	private SearchBy sb;
-	private JPanel mn1;
 	private CardLayout mn1Card;
 	private JButton bt_mm1_2Return;
-	private JPanel pn_search;
 	private JLabel lb_miD;
 	private JPanel pn_label;
 	private JLabel lb_miT;
 	private JLabel lb_miA;
-	private JPanel pn_info;
 	private JLabel lb_mvDirector;
 	private JLabel lb_mvGen;
 	private JLabel lb_mvShowT;
 	private JLabel lb_mvActor;
 	private JLabel lb_img2;
+	private ImageIcon mainL, mainR, noImg;
+	private JLabel lb_like;
+	private JLabel lb_comm;
 
 	public ClientGui() {
-		/*
-		 * try { //
-		 * UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel15"
-		 * ); UIManager.setLookAndFeel(
-		 * "com.seaglasslookandfeel.SeaGlassLookAndFeel"); } catch (Exception e)
-		 * { System.out.println("dd"); }
-		 */
+
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -142,7 +132,15 @@ public class ClientGui extends JFrame {
 		} catch (Exception e) {
 			// If Nimbus is not available, you can set the GUI to another look
 			// and feel.
+			try { //
+				UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel15");
+				UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+			} catch (Exception e1) {
+				System.out.println("dd");
+			}
 		}
+		setIcons();
+
 		mainBOARD = getContentPane();
 		pnBOARD = new JPanel();
 		setTitle("MovieLovers");
@@ -156,17 +154,11 @@ public class ClientGui extends JFrame {
 		mainBOARD.add(pnLogin, "pnLogin");
 		pnLogin.setLayout(new GridLayout(1, 2, 0, 0));
 
+		ImageIcon img = new ImageIcon("./img/mainL.png");
 		lg1 = new JPanel();
 		lg1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnLogin.add(lg1);
 		lg1.setLayout(null);
-
-		// lblNewLabel_3 = new JLabel("");
-		// ImageIcon bmo = new ImageIcon("./img/mainL.png");
-		//
-		// lblNewLabel_3.setIcon(bmo);
-		// lblNewLabel_3.setBounds(60, 79, 321, 319);
-		// lg1.add(lblNewLabel_3);
 
 		lg2 = new JPanel();
 		lg2.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -282,7 +274,7 @@ public class ClientGui extends JFrame {
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JLabel lb_img1 = new JLabel("");
-		lb_img1.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		lb_img1.setIcon(new ImageIcon("./img/boLogo.png"));
 		panel.add(lb_img1);
 		lb_img1.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -293,7 +285,7 @@ public class ClientGui extends JFrame {
 		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
 
 		lb_img2 = new JLabel("");
-		lb_img2.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		lb_img2.setIcon(new ImageIcon("./img/boLogo.png"));
 		lb_img2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lb_img2);
 
@@ -340,7 +332,7 @@ public class ClientGui extends JFrame {
 		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JLabel label_3 = new JLabel("");
-		label_3.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		label_3.setIcon(new ImageIcon("./img/banner.png"));
 		label_3.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_2.add(label_3);
 
@@ -351,48 +343,40 @@ public class ClientGui extends JFrame {
 		mn2.add(panel_3);
 		panel_3.setLayout(null);
 
-		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setBounds(47, 12, 75, 75);
-		panel_3.add(lblNewLabel_4);
-		lblNewLabel_4.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\50195-1920x1080.jpg"));
+		lb_comm = new JLabel("");
+		lb_comm.setBounds(47, 12, 75, 75);
+		lb_comm.setIcon(new ImageIcon("./img/lg_comm.png"));
 
-		JLabel label_4 = new JLabel("");
-		label_4.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\super-mario-8-bit-wallpaper.jpg"));
-		label_4.setBounds(195, 12, 75, 75);
-		panel_3.add(label_4);
+		lb_like = new JLabel("");
+		lb_like.setBounds(195, 12, 75, 75);
+		lb_like.setIcon(new ImageIcon("./img/lg_like.png"));
+
+		panel_3.add(lb_like);
+		panel_3.add(lb_comm);
 
 		panel_6 = new JPanel();
 		panel_6.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		panel_6.setBackground(new Color(192, 192, 192));
-		panel_6.setBounds(72, 172, 312, 147);
+		panel_6.setBounds(72, 137, 312, 182);
 		mn2.add(panel_6);
 		panel_6.setLayout(null);
 
 		cb = new JComboBox();
-		cb.setBounds(14, 29, 99, 26);
+		cb.setBounds(14, 44, 99, 26);
 		panel_6.add(cb);
 		cb.addItem("=====");
 		cb.addItem("제목검색");
 		cb.addItem("감독검색");
 
 		mn_search = new JTextField();
-		mn_search.setBounds(127, 30, 171, 24);
+		mn_search.setBounds(127, 45, 171, 24);
 		panel_6.add(mn_search);
 		mn_search.setColumns(10);
 
 		bt_search = new JButton("SEARCH");
 		bt_search.setFont(new Font("굴림", Font.BOLD, 15));
-		bt_search.setBounds(191, 90, 107, 27);
+		bt_search.setBounds(191, 122, 107, 27);
 		panel_6.add(bt_search);
-
-		JLabel lblNewLabel_5 = new JLabel("id");
-		lblNewLabel_5.setBounds(94, 94, 62, 18);
-		panel_6.add(lblNewLabel_5);
-
-		JLabel lblNewLabel_6 = new JLabel("img");
-		lblNewLabel_6.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
-		lblNewLabel_6.setBounds(24, 77, 56, 53);
-		panel_6.add(lblNewLabel_6);
 
 		pnMovie = new JPanel();
 		pnMovie.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -498,20 +482,12 @@ public class ClientGui extends JFrame {
 
 		setVisible(true);
 
+		setIcons();
+		drwaImages(lg1, mainL);
+		drwaImages(lg2, mainR);
+
 		addListeners();
 		mg = new ClientManager(this);
-
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-
-		JMenu mnNewMenu = new JMenu("New menu");
-		menuBar.add(mnNewMenu);
-
-		JMenuItem mntmNewMenuItem = new JMenuItem("New menu item");
-		mnNewMenu.add(mntmNewMenuItem);
-
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("New menu item");
-		mnNewMenu.add(mntmNewMenuItem_1);
 		sb = new SearchBy();
 
 	}
@@ -724,6 +700,9 @@ public class ClientGui extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if (iconURL.equals("")) {
+			lb_mvIcon.setIcon(noImg);
+		}
 		//
 		// lb_mvIcon.setSize(new Dimension(170, 215));
 		// lb_mvIcon.setBounds(31, 49, 171, 222);
@@ -767,4 +746,16 @@ public class ClientGui extends JFrame {
 		mv1.repaint();
 		mv1.revalidate();
 	}
+
+	public void setIcons() {
+		mainL = new ImageIcon("./img/mainL.png");
+		mainR = new ImageIcon("./img/mainR.jpg");
+		noImg = new ImageIcon("./img/noImg.jpg");
+	}
+
+	public void drwaImages(JComponent j, ImageIcon img) {
+		System.out.println(j.getWidth() + "dd" + j.getHeight());
+		j.getGraphics().drawImage(img.getImage(), j.getWidth(), j.getHeight(), null);
+	}
+
 }

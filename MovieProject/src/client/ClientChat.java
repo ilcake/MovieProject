@@ -22,6 +22,7 @@ public class ClientChat implements Runnable {
 
 	@Override
 	public void run() {
+
 		while (flag) {
 
 		}

@@ -19,7 +19,7 @@ public class ServerThread implements Runnable {
 	private Object[] obj;
 	private ServerDBwork mg;
 	private ServerGui gui;
-	private String userID;
+	private String userID = "미접속";
 
 	public String getUserID() {
 		return userID;
