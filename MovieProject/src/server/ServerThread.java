@@ -14,11 +14,12 @@ public class ServerThread implements Runnable {
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 	public ArrayList<ObjectOutputStream> usersList;
+	public ArrayList<String> userNicks;
 	private boolean flag = true;
 	private Object[] obj;
 	private ServerDBwork mg;
 	private ServerGui gui;
-	private String userID;
+	private String userID = "미접속";
 
 	public String getUserID() {
 		return userID;
@@ -29,11 +30,12 @@ public class ServerThread implements Runnable {
 	}
 
 	public ServerThread(Socket sk, ObjectOutputStream oos, ObjectInputStream ois,
-			ArrayList<ObjectOutputStream> usersList, ServerGui gui) {
+			ArrayList<ObjectOutputStream> usersList, ArrayList<String> userNicks, ServerGui gui) {
 		this.sk = sk;
 		this.oos = oos;
 		this.ois = ois;
 		this.usersList = usersList;
+		this.userNicks = userNicks;
 		this.gui = gui;
 		mg = new ServerDBwork(gui, this);
 	}
@@ -50,6 +52,7 @@ public class ServerThread implements Runnable {
 				flag = false;
 				usersList.remove(oos);
 				gui.setMessage(userID + " 회원이 프로그램을 종료하였습니다.");
+				userNicks.remove(userID);
 				gui.setUserCount(usersList.size());
 			}
 

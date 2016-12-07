@@ -14,6 +14,7 @@ import java.awt.CardLayout;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.JLabel;
@@ -35,6 +36,8 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.ImageIcon;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -45,20 +48,27 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import client.chat.ChatGUI;
 import client.db.SearchBy;
 
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import java.awt.Font;
+import java.awt.Graphics;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class ClientGui extends JFrame {
 	private static final int fwidth = 900;
 	private static final int fheight = 540;
 	private JPanel pnBOARD, pnLogin, pnMain, pnMovie;
-	private JPanel lg2, lg1;
-	private JPanel lg2_1, lg2_2;
+	private JPanel lg2, lg1, lg2_1, lg2_2;
+	private JPanel mm1_1, mm1_2, mm1_3, mm1_4, mv2_1, mv2_2, mv1, panel_6, mv2_panel, mn1;
+	private JPanel pn_search, pn_info;
 	private JTextField tf_id;
 	private JPasswordField tf_pw;
 	private JLabel lblNewLabel_3;
@@ -67,23 +77,13 @@ public class ClientGui extends JFrame {
 	private CardLayout mainCard, lg2Card;
 	private JLabel lblNewLabel_2;
 	private JTextField rg_id;
-	private JLabel label;
-	private JTextField rg_ph;
-	private JLabel label_1;
-	private JLabel label_2;
-	private JTextField rg_ma;
-	private JButton bt_rgCancel;
-	private JButton bt_rgReg;
+	private JLabel label, label_1, label_2, lb_mvIcon, lb_mvTitle, lb_miG;
+	private JTextField rg_ph, rg_ma;
+	private JButton bt_rgCancel, bt_rgReg;
 	private JPasswordField rg_pw;
 	private ClientManager mg;
 	private String whoAmI;
 	private Container mainBOARD;
-	private JPanel mm1_1;
-	private JPanel mm1_2;
-	private JPanel mm1_3;
-	private JPanel mm1_4;
-	private JPanel mv2_1;
-	private JPanel mv2_2;
 	private JTable mBoxTable;
 	private ArrayList<MovieBoxInfo> dblist;
 	private ArrayList<MovieSearchInfo> scList;
@@ -93,41 +93,24 @@ public class ClientGui extends JFrame {
 	private JComboBox cb;
 	private JTable tb_search;
 	private JScrollPane sp_search;
-	private JPanel mv1;
-	private JLabel lb_mvIcon;
-	private JLabel lb_mvTitle;
-	private JLabel lb_miG;
 	private JTextArea ta_mvStory;
 	private JScrollPane mv1_jsp;
 	private JButton bt_mv2Return;
-	private JPanel panel_6;
-	private JPanel mv2_panel;
 	private JButton bt_mv2Write;
 	private JButton bt_mv2Like;
 	private SearchBy sb;
-	private JPanel mn1;
 	private CardLayout mn1Card;
 	private JButton bt_mm1_2Return;
-	private JPanel pn_search;
 	private JLabel lb_miD;
 	private JPanel pn_label;
-	private JLabel lb_miT;
-	private JLabel lb_miA;
-	private JPanel pn_info;
-	private JLabel lb_mvDirector;
-	private JLabel lb_mvGen;
-	private JLabel lb_mvShowT;
-	private JLabel lb_mvActor;
-	private JLabel lb_img2;
+	private JLabel lb_miT, lb_miA, lb_mvDirector, lb_mvGen, lb_mvShowT, lb_mvActor, lb_img2;
+	private ImageIcon noImg;
+	private JLabel lb_like, lb_comm;
+	private ChatGUI chat;
+	private JButton bt_chat;
 
-	public ClientGui() {
-		/*
-		 * try { //
-		 * UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel15"
-		 * ); UIManager.setLookAndFeel(
-		 * "com.seaglasslookandfeel.SeaGlassLookAndFeel"); } catch (Exception e)
-		 * { System.out.println("dd"); }
-		 */
+	public ClientGui() {////
+
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -138,7 +121,14 @@ public class ClientGui extends JFrame {
 		} catch (Exception e) {
 			// If Nimbus is not available, you can set the GUI to another look
 			// and feel.
-		}
+			try { //
+				UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel15");
+				UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+			} catch (Exception e1) {
+				System.out.println("dd");
+			}
+		} //
+
 		mainBOARD = getContentPane();
 		pnBOARD = new JPanel();
 		setTitle("MovieLovers");
@@ -152,17 +142,17 @@ public class ClientGui extends JFrame {
 		mainBOARD.add(pnLogin, "pnLogin");
 		pnLogin.setLayout(new GridLayout(1, 2, 0, 0));
 
-		lg1 = new JPanel();
+		ImageIcon img = new ImageIcon("img/mainL.png");
+		lg1 = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(img.getImage(), 0, 0, null); // 이미지 원래사이즈로 넣기
+				Dimension d = getSize();
+				g.drawImage(img.getImage(), 0, 0, d.width, d.height, null); // 컴포넌트사이즈에맞게
+			}
+		};
 		lg1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnLogin.add(lg1);
 		lg1.setLayout(null);
-
-		lblNewLabel_3 = new JLabel("");
-		ImageIcon bmo = new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif");
-
-		lblNewLabel_3.setIcon(bmo);
-		lblNewLabel_3.setBounds(60, 79, 321, 319);
-		lg1.add(lblNewLabel_3);
 
 		lg2 = new JPanel();
 		lg2.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -170,7 +160,14 @@ public class ClientGui extends JFrame {
 		lg2Card = new CardLayout(0, 0);
 		lg2.setLayout(lg2Card);
 
-		lg2_1 = new JPanel();
+		ImageIcon img2 = new ImageIcon("img/mainR.jpg");
+		lg2_1 = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(img2.getImage(), 0, 0, null); // 이미지 원래사이즈로 넣기
+				Dimension d = getSize();
+				g.drawImage(img2.getImage(), 0, 0, d.width, d.height, null); // 컴포넌트사이즈에맞게
+			}
+		};
 		lg2.add(lg2_1, "lg2_1");
 		lg2_1.setLayout(null);
 
@@ -278,7 +275,7 @@ public class ClientGui extends JFrame {
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JLabel lb_img1 = new JLabel("");
-		lb_img1.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		lb_img1.setIcon(new ImageIcon("./img/boLogo.png"));
 		panel.add(lb_img1);
 		lb_img1.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -289,7 +286,7 @@ public class ClientGui extends JFrame {
 		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
 
 		lb_img2 = new JLabel("");
-		lb_img2.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		lb_img2.setIcon(new ImageIcon("./img/boLogo.png"));
 		lb_img2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lb_img2);
 
@@ -336,7 +333,7 @@ public class ClientGui extends JFrame {
 		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JLabel label_3 = new JLabel("");
-		label_3.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		label_3.setIcon(new ImageIcon("./img/banner.png"));
 		label_3.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_2.add(label_3);
 
@@ -347,48 +344,44 @@ public class ClientGui extends JFrame {
 		mn2.add(panel_3);
 		panel_3.setLayout(null);
 
-		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setBounds(47, 12, 75, 75);
-		panel_3.add(lblNewLabel_4);
-		lblNewLabel_4.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\50195-1920x1080.jpg"));
+		lb_comm = new JLabel("");
+		lb_comm.setBounds(47, 12, 75, 75);
+		lb_comm.setIcon(new ImageIcon("./img/lg_comm.png"));
 
-		JLabel label_4 = new JLabel("");
-		label_4.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\super-mario-8-bit-wallpaper.jpg"));
-		label_4.setBounds(195, 12, 75, 75);
-		panel_3.add(label_4);
+		lb_like = new JLabel("");
+		lb_like.setBounds(195, 12, 75, 75);
+		lb_like.setIcon(new ImageIcon("./img/lg_like.png"));
+
+		panel_3.add(lb_like);
+		panel_3.add(lb_comm);
 
 		panel_6 = new JPanel();
 		panel_6.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		panel_6.setBackground(new Color(192, 192, 192));
-		panel_6.setBounds(72, 172, 312, 147);
+		panel_6.setBounds(72, 137, 312, 182);
 		mn2.add(panel_6);
 		panel_6.setLayout(null);
 
 		cb = new JComboBox();
-		cb.setBounds(14, 29, 99, 26);
+		cb.setBounds(14, 44, 99, 26);
 		panel_6.add(cb);
 		cb.addItem("=====");
 		cb.addItem("제목검색");
 		cb.addItem("감독검색");
 
 		mn_search = new JTextField();
-		mn_search.setBounds(127, 30, 171, 24);
+		mn_search.setBounds(127, 45, 171, 24);
 		panel_6.add(mn_search);
 		mn_search.setColumns(10);
 
 		bt_search = new JButton("SEARCH");
 		bt_search.setFont(new Font("굴림", Font.BOLD, 15));
-		bt_search.setBounds(191, 90, 107, 27);
+		bt_search.setBounds(191, 122, 107, 27);
 		panel_6.add(bt_search);
 
-		JLabel lblNewLabel_5 = new JLabel("id");
-		lblNewLabel_5.setBounds(94, 94, 62, 18);
-		panel_6.add(lblNewLabel_5);
-
-		JLabel lblNewLabel_6 = new JLabel("img");
-		lblNewLabel_6.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
-		lblNewLabel_6.setBounds(24, 77, 56, 53);
-		panel_6.add(lblNewLabel_6);
+		bt_chat = new JButton("채팅 활성화하기");
+		bt_chat.setBounds(14, 122, 107, 27);
+		panel_6.add(bt_chat);
 
 		pnMovie = new JPanel();
 		pnMovie.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -497,6 +490,7 @@ public class ClientGui extends JFrame {
 		addListeners();
 		mg = new ClientManager(this);
 		sb = new SearchBy();
+		setIcon();
 
 	}
 
@@ -509,6 +503,7 @@ public class ClientGui extends JFrame {
 		bt_search.addMouseListener(ma);
 		bt_mv2Return.addMouseListener(ma);
 		bt_mm1_2Return.addMouseListener(ma);
+		bt_chat.addMouseListener(ma);
 	}
 
 	public class mcl extends MouseAdapter {
@@ -525,11 +520,7 @@ public class ClientGui extends JFrame {
 			} else if (e.getSource() == bt_Login) {
 				login();
 			} else if (e.getSource() == mBoxTable) {
-				MediaPlayer md = new MediaPlayer();
-				// int who = mBoxTable.getSelectedRow();
-				// mainCard.show(mainBOARD, "pnMovie");
-				// System.out.println(dblist.get(who).getMovieCd() +
-				// dblist.get(who).getMovieNm());
+				////////////////////////////////////////////
 			} else if (e.getSource() == tb_search) {
 				int who = tb_search.getSelectedRow();
 				setMovieInfoPage(scList.get(who).getMvCode());
@@ -538,9 +529,10 @@ public class ClientGui extends JFrame {
 				mainCard.show(mainBOARD, "pnMain");
 			} else if (e.getSource() == bt_search) {
 				searchByAction();
-				System.out.println(lb_img2.getWidth() + "////" + lb_img2.getHeight());
 			} else if (e.getSource() == bt_mm1_2Return) {
 				mn1Card.show(mn1, "mm1_1");
+			} else if (e.getSource() == bt_chat) {
+				chat.windowOn();
 			}
 		}
 	}
@@ -581,11 +573,14 @@ public class ClientGui extends JFrame {
 		if (result != null) {
 			JOptionPane.showMessageDialog(null, "로그인이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
 			mainCard.show(mainBOARD, "pnMain");
+			whoAmI = id;
+			chat = new ChatGUI(id, this);
 			setMovieBoxInfo();
 
 		} else {
 			JOptionPane.showMessageDialog(null, "아이디 혹은 패스워드가 일치하지않습니다.", "로그인 에러", JOptionPane.ERROR_MESSAGE);
 			tf_id.grabFocus();
+			/////
 		}
 	}
 
@@ -700,18 +695,25 @@ public class ClientGui extends JFrame {
 		String director = m.getMvDirector();
 		String story = m.getMvStory();
 
-		try {
-			ImageIcon imgicon = new ImageIcon(ImageIO.read(new URL(iconURL)));
-			Image image = imgicon.getImage();
-			Image reSized = image.getScaledInstance(171, 213, Image.SCALE_SMOOTH);
-			imgicon = new ImageIcon(reSized);
-			lb_mvIcon.setIcon(imgicon);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (iconURL.equals("")) {
+			lb_mvIcon.setIcon(noImg);
+		} else {
+			try {
+				ImageIcon imgicon = new ImageIcon(ImageIO.read(new URL(iconURL)));
+				Image image = imgicon.getImage();
+				Image reSized = image.getScaledInstance(171, 213, Image.SCALE_SMOOTH);
+				imgicon = new ImageIcon(reSized);
+				lb_mvIcon.setIcon(imgicon);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (iconURL.equals("")) {
+			lb_mvIcon.setIcon(noImg);
 		}
 		//
 		// lb_mvIcon.setSize(new Dimension(170, 215));
@@ -720,7 +722,6 @@ public class ClientGui extends JFrame {
 		lb_mvTitle.setText(title);
 		int fontSize = 30;
 		int titleLength = title.length();
-		System.out.println(titleLength);
 		if (titleLength > 8) {
 			fontSize -= 3;
 		} else if (titleLength > 10) {
@@ -746,6 +747,7 @@ public class ClientGui extends JFrame {
 		lb_mvActor.setHorizontalAlignment(SwingConstants.CENTER);
 		lb_mvActor.setText(actor);
 
+		ta_mvStory.setText("");
 		String[] sArr = story.split("\r\n");
 		for (int i = 0; i < sArr.length; i++) {
 			ta_mvStory.append(sArr[i] + "\n");
@@ -754,5 +756,9 @@ public class ClientGui extends JFrame {
 		//////////////////
 		mv1.repaint();
 		mv1.revalidate();
+	}
+
+	public void setIcon() {
+		noImg = new ImageIcon("img/noImg.jpg");
 	}
 }

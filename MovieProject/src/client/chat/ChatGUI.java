@@ -1,10 +1,13 @@
-package guis;
+package client.chat;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -15,6 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import client.ClientGui;
+
 import java.awt.Toolkit;
 
 public class ChatGUI extends JFrame implements ActionListener { //
@@ -25,12 +31,28 @@ public class ChatGUI extends JFrame implements ActionListener { //
 	private JButton btnNewButton; // 채팅버튼
 	private JScrollPane scrollPane_1; // 유저리스트스크롤
 	private JList list; // 유저리스트
-	private ImageIcon chatBack;
+	private JPanel panel; // 배너
+	private String id;
+	private ClientGui mgui;
+	private ChatManager cm;
 
-	public ChatGUI() {
+	public ChatGUI(String id, ClientGui mgui) {
+		this.id = id;
+		this.mgui = mgui;
+
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				super.windowClosing(e);
+				windowClose();
+			}
+
+		});
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage("img/chatIcon2.png"));
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Movie Lovers Chat");
 
 		getContentPane().setLayout(null);
@@ -63,13 +85,13 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		scrollPane_1.setViewportView(list);
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		chatBack = new ImageIcon("img/chatBG.png");
+		final ImageIcon icon1 = new ImageIcon("img/chatBG.png");
 		JPanel chatPanel = new JPanel() {
 			public void paintComponent(Graphics g) {
-				g.drawImage(chatBack.getImage(), 0, 0, null); // 이미지 원래사이즈로 넣기
+				g.drawImage(icon1.getImage(), 0, 0, null); // 이미지 원래사이즈로 넣기
 				Dimension d = getSize();
-				g.drawImage(chatBack.getImage(), 0, 0, d.width, d.height, null); // 컴포넌트사이즈에맞게
-		////////////////////////////////////////////////////////////////////////////////////////
+				g.drawImage(icon1.getImage(), 0, 0, d.width, d.height, null); // 컴포넌트사이즈에맞게
+				////////////////////////////////////////////////////////////////////////////////////////
 			}
 		};
 		chatPanel.setBounds(new Rectangle(0, 0, 300, 540));
@@ -77,6 +99,9 @@ public class ChatGUI extends JFrame implements ActionListener { //
 
 		setSize(300, 540);
 		setVisible(true);
+		Point d = mgui.getLocation();
+		setLocation(d.x + 900, d.y);
+
 	}
 
 	// 이벤트처리
@@ -98,7 +123,11 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		list.setListData(userList.toArray());
 	}
 
-/*	public static void main(String[] args) {
-		new ChatGUI();
-	}*/
+	public void windowOn() {
+		this.setVisible(true);
+	}
+
+	public void windowClose() {
+		this.setVisible(false);
+	}
 }
