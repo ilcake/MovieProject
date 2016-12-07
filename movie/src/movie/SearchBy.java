@@ -18,6 +18,7 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 	private String showTm;
 	private String actor;
 	private String director;// 이거
+	private ArrayList<String> directorList; // 이거
 	private ArrayList<String> codeList;
 	private ArrayList<String> storyList;
 	private ArrayList<String> titleList;
@@ -25,7 +26,6 @@ public class SearchBy { // 감독으로 검색(1) 또는 제목(2)으로 검색
 	private ArrayList<String> thumbnailList;
 	private ArrayList<String> showTmList;
 	private ArrayList<String> actorList;
-	private ArrayList<String> directorList; // 이거
 
 	public SearchBy() {
 
