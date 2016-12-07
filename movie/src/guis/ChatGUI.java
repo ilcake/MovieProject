@@ -19,7 +19,7 @@ public class ChatGUI extends JFrame implements ActionListener {
 	private JScrollPane scrollPane_1;
 	private JList list;
 	
-	public ChatGUI() {
+	public ChatGUI() {//
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Movie Lovers Chat");
