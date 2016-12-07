@@ -14,6 +14,7 @@ public class ServerThread implements Runnable {
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 	public ArrayList<ObjectOutputStream> usersList;
+	public ArrayList<String> userNicks;
 	private boolean flag = true;
 	private Object[] obj;
 	private ServerDBwork mg;
@@ -29,11 +30,12 @@ public class ServerThread implements Runnable {
 	}
 
 	public ServerThread(Socket sk, ObjectOutputStream oos, ObjectInputStream ois,
-			ArrayList<ObjectOutputStream> usersList, ServerGui gui) {
+			ArrayList<ObjectOutputStream> usersList, ArrayList<String> userNicks, ServerGui gui) {
 		this.sk = sk;
 		this.oos = oos;
 		this.ois = ois;
 		this.usersList = usersList;
+		this.userNicks = userNicks;
 		this.gui = gui;
 		mg = new ServerDBwork(gui, this);
 	}

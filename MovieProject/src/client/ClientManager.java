@@ -12,9 +12,11 @@ import datas.User;
 import vos.MovieBoxInfo;
 
 public class ClientManager {
-	private Socket sk;
-	private ObjectInputStream ois;
+	private Socket sk, sk2;
 	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos2;
+	private ObjectInputStream ois2;
 	private ClientGui gui;
 	private Object[] obj;
 
@@ -60,8 +62,12 @@ public class ClientManager {
 	public void connection() {
 		try {
 			sk = new Socket("localhost", 17771);
-			ois = new ObjectInputStream(sk.getInputStream());
 			oos = new ObjectOutputStream(sk.getOutputStream());
+			ois = new ObjectInputStream(sk.getInputStream());
+
+			sk2 = new Socket("localhost", 17771);
+			oos2 = new ObjectOutputStream(sk2.getOutputStream());
+			ois2 = new ObjectInputStream(sk2.getInputStream());
 
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

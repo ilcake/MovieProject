@@ -52,6 +52,10 @@ import javax.swing.JComboBox;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import java.awt.Font;
+import java.awt.Graphics;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class ClientGui extends JFrame {
 	private static final int fwidth = 900;
@@ -157,12 +161,12 @@ public class ClientGui extends JFrame {
 		pnLogin.add(lg1);
 		lg1.setLayout(null);
 
-		lblNewLabel_3 = new JLabel("");
-		ImageIcon bmo = new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif");
-
-		lblNewLabel_3.setIcon(bmo);
-		lblNewLabel_3.setBounds(60, 79, 321, 319);
-		lg1.add(lblNewLabel_3);
+		// lblNewLabel_3 = new JLabel("");
+		// ImageIcon bmo = new ImageIcon("./img/mainL.png");
+		//
+		// lblNewLabel_3.setIcon(bmo);
+		// lblNewLabel_3.setBounds(60, 79, 321, 319);
+		// lg1.add(lblNewLabel_3);
 
 		lg2 = new JPanel();
 		lg2.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -496,6 +500,18 @@ public class ClientGui extends JFrame {
 
 		addListeners();
 		mg = new ClientManager(this);
+
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+
+		JMenu mnNewMenu = new JMenu("New menu");
+		menuBar.add(mnNewMenu);
+
+		JMenuItem mntmNewMenuItem = new JMenuItem("New menu item");
+		mnNewMenu.add(mntmNewMenuItem);
+
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("New menu item");
+		mnNewMenu.add(mntmNewMenuItem_1);
 		sb = new SearchBy();
 
 	}
@@ -525,11 +541,7 @@ public class ClientGui extends JFrame {
 			} else if (e.getSource() == bt_Login) {
 				login();
 			} else if (e.getSource() == mBoxTable) {
-				MediaPlayer md = new MediaPlayer();
-				// int who = mBoxTable.getSelectedRow();
-				// mainCard.show(mainBOARD, "pnMovie");
-				// System.out.println(dblist.get(who).getMovieCd() +
-				// dblist.get(who).getMovieNm());
+				////////////////////////////////////////////
 			} else if (e.getSource() == tb_search) {
 				int who = tb_search.getSelectedRow();
 				setMovieInfoPage(scList.get(who).getMvCode());
@@ -538,7 +550,6 @@ public class ClientGui extends JFrame {
 				mainCard.show(mainBOARD, "pnMain");
 			} else if (e.getSource() == bt_search) {
 				searchByAction();
-				System.out.println(lb_img2.getWidth() + "////" + lb_img2.getHeight());
 			} else if (e.getSource() == bt_mm1_2Return) {
 				mn1Card.show(mn1, "mm1_1");
 			}
@@ -746,6 +757,7 @@ public class ClientGui extends JFrame {
 		lb_mvActor.setHorizontalAlignment(SwingConstants.CENTER);
 		lb_mvActor.setText(actor);
 
+		ta_mvStory.setText("");
 		String[] sArr = story.split("\r\n");
 		for (int i = 0; i < sArr.length; i++) {
 			ta_mvStory.append(sArr[i] + "\n");
