@@ -11,6 +11,8 @@ public class ServerReceiver {
 	private ServerSocket ss;
 	private boolean flag;
 	public static ArrayList<ObjectOutputStream> usersList = new ArrayList();
+	public static ArrayList<ObjectOutputStream> chatusersList = new ArrayList();
+	public static ArrayList<String> userNicks = new ArrayList();
 	private ServerGui gui;
 
 	public ServerReceiver(ServerGui gui) {
@@ -37,11 +39,20 @@ public class ServerReceiver {
 			Socket sk = ss.accept();
 			ObjectOutputStream oos = new ObjectOutputStream(sk.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(sk.getInputStream());
+
+			/*
+			 * Socket sk2 = ss.accept(); ObjectOutputStream oos2 = new
+			 * ObjectOutputStream(sk2.getOutputStream()); ObjectInputStream ois2
+			 * = new ObjectInputStream(sk2.getInputStream());
+			 * chatusersList.add(oos2);
+			 */
+
 			usersList.add(oos);
 			gui.setUserCount(usersList.size());
 			gui.setMessage(sk.getInetAddress() + "/ 접속하였습니다.");
-			Thread th = new Thread(new ServerThread(sk, oos, ois, usersList, gui));
+			Thread th = new Thread(new ServerThread(sk, oos, ois, usersList, userNicks, gui));
 			th.start();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			flag = false;
