@@ -2,7 +2,6 @@ package guis;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +25,7 @@ public class ChatGUI extends JFrame implements ActionListener { //
 	private JButton btnNewButton; // 채팅버튼
 	private JScrollPane scrollPane_1; // 유저리스트스크롤
 	private JList list; // 유저리스트
-	private JPanel panel; // 배너
+	private ImageIcon chatBack;
 
 	public ChatGUI() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("img/chatIcon2.png"));
@@ -64,12 +63,12 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		scrollPane_1.setViewportView(list);
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		final ImageIcon icon1 = new ImageIcon("img/chatBG.png");
+		chatBack = new ImageIcon("img/chatBG.png");
 		JPanel chatPanel = new JPanel() {
 			public void paintComponent(Graphics g) {
-				g.drawImage(icon1.getImage(), 0, 0, null); // 이미지 원래사이즈로 넣기
+				g.drawImage(chatBack.getImage(), 0, 0, null); // 이미지 원래사이즈로 넣기
 				Dimension d = getSize();
-				g.drawImage(icon1.getImage(), 0, 0, d.width, d.height, null); // 컴포넌트사이즈에맞게
+				g.drawImage(chatBack.getImage(), 0, 0, d.width, d.height, null); // 컴포넌트사이즈에맞게
 		////////////////////////////////////////////////////////////////////////////////////////
 			}
 		};
@@ -99,7 +98,7 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		list.setListData(userList.toArray());
 	}
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		new ChatGUI();
-	}
+	}*/
 }
