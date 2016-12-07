@@ -138,7 +138,7 @@ public class ClientGui extends JFrame {
 			} catch (Exception e1) {
 				System.out.println("dd");
 			}
-		}
+		} //
 		setIcons();
 
 		mainBOARD = getContentPane();
