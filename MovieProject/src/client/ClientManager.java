@@ -7,20 +7,27 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import client.chat.ChatManager;
+import client.chat.ChatGUI;
+import client.chat.ChatThread;
 import datas.Data;
 import datas.User;
 import vos.MovieBoxInfo;
 
 public class ClientManager {
 	private Socket sk, sk2;
-	private ObjectOutputStream oos;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos2;
-	private ObjectInputStream ois2;
+	private ObjectOutputStream oos, oos2;
+	private ObjectInputStream ois, ois2;
 	private ClientGui gui;
-	private Object[] obj;
-	private ChatManager cm;
+	private ChatThread ct;
+	private String userId;
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public ClientManager(ClientGui gui) {
 		this.gui = gui;
@@ -67,6 +74,10 @@ public class ClientManager {
 			oos = new ObjectOutputStream(sk.getOutputStream());
 			ois = new ObjectInputStream(sk.getInputStream());
 
+			sk2 = new Socket("localhost", 17771);
+			oos2 = new ObjectOutputStream(sk2.getOutputStream());
+			ois2 = new ObjectInputStream(sk2.getInputStream());
+
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,9 +89,12 @@ public class ClientManager {
 
 	public Object whatTodo(Object[] what) {
 		try {
-			oos.writeObject(what);
-			Object result = ois.readObject();
-			return result;
+			synchronized (this) {
+				oos.writeObject(what);
+				Object result = ois.readObject();
+				return result;
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -88,6 +102,10 @@ public class ClientManager {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void startChat() {
+		ChatGUI gi = new ChatGUI(userId, gui, this, sk2, oos2, ois2);
 	}
 
 }

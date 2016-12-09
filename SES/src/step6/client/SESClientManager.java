@@ -64,8 +64,6 @@ public class SESClientManager extends Thread implements SEManager {
 		try {
 			System.out.println("cm:>" + "go!");
 			oos.writeObject(obj);
-			Thread.sleep(200);
-
 			System.out.println("cm:>" + "im waiting....");
 			result = workResult[1];
 			System.out.println("cm:>" + "got it " + result);

@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -20,6 +24,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import client.ClientGui;
+import client.ClientManager;
+import datas.Data;
 
 import java.awt.Toolkit;
 
@@ -34,11 +40,22 @@ public class ChatGUI extends JFrame implements ActionListener { //
 	private JPanel panel; // 배너
 	private String id;
 	private ClientGui mgui;
-	private ChatManager cm;
+	private ClientManager mg;
+	private Socket sk;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
 
-	public ChatGUI(String id, ClientGui mgui) {
+	public ChatGUI(String id, ClientGui mgui, ClientManager mg, Socket sk, ObjectOutputStream oos,
+			ObjectInputStream ois) {
 		this.id = id;
 		this.mgui = mgui;
+		this.mg = mg;
+		this.sk = sk;
+		this.oos = oos;
+		this.ois = ois;
+
+		Thread thd = new Thread(new ChatThread(sk, oos, ois, this));
+		thd.start();
 
 		addWindowListener(new WindowAdapter() {
 
@@ -63,6 +80,7 @@ public class ChatGUI extends JFrame implements ActionListener { //
 
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
+		textArea.setLineWrap(true);
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 
@@ -98,10 +116,11 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		this.add(chatPanel);
 
 		setSize(300, 540);
+		setResizable(false);
 		setVisible(true);
-		Point d = mgui.getLocation();
-		setLocation(d.x + 900, d.y);
+		setThisLocation();
 
+		login();
 	}
 
 	// 이벤트처리
@@ -109,13 +128,14 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		if (e.getActionCommand().equals("GO") || e.getSource() == textField) { // 버튼눌렀을때,엔터
 			String ms = textField.getText();
 			// ms쓰레드에 보내주기
+			sendMessage(ms);
 			// 보내고 텍스트필드 지워줌
 			textField.setText("");
 		}
 	}
 
 	public void talk(String message) { // 스트링이 들어오면 textArea로 append
-		textArea.append(message);
+		textArea.append(message + "\n");
 		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}
 
@@ -129,5 +149,29 @@ public class ChatGUI extends JFrame implements ActionListener { //
 
 	public void windowClose() {
 		this.setVisible(false);
+	}
+
+	public void setThisLocation() {
+		Point d = mgui.getLocation();
+		setLocation(d.x + 900, d.y);
+	}
+
+	public void sendMessage(String message) {
+		try {
+			oos.writeObject(new Object[] { Data.CHATMESSAGE, id + " : " + message });
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void login() {
+		try {
+			oos.writeObject(new Object[] { Data.CHATLOGIN, id });
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }

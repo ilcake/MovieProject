@@ -10,48 +10,48 @@ import datas.Data;
 
 public class ChatThread implements Runnable {
 	private Socket sk;
-	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
-	private ArrayList<String> userNicks;
+	private ObjectInputStream ois;
 	private boolean flag;
-	private ChatManager cm;
+	private ArrayList<String> userlist;
+	private ChatGUI gui;
 
-	public ChatThread(Socket sk, ObjectInputStream ois, ObjectOutputStream oos, ChatManager cm) {
+	public ChatThread(Socket sk, ObjectOutputStream oos, ObjectInputStream ois, ChatGUI gui) {
 		this.sk = sk;
-		this.ois = ois;
 		this.oos = oos;
-		this.cm = cm;
-		userNicks = new ArrayList<String>();
+		this.ois = ois;
+		this.gui = gui;
 		flag = true;
+		userlist = new ArrayList<>();
 	}
 
 	@Override
 	public void run() {
-		int protocols = -1;
-
 		while (flag) {
-
 			try {
 				Object[] obj = (Object[]) ois.readObject();
-				protocols = (int) obj[0];
+				int proto = (int) obj[0];
 
-				switch (protocols) {
+				switch (proto) {
 				case Data.CHATLOGIN:
+					userlist = (ArrayList<String>) obj[1];
+					gui.setUserList(userlist);
+
 					break;
 				case Data.CHATLOGOUT:
+					userlist = (ArrayList<String>) obj[1];
 					break;
 				case Data.CHATMESSAGE:
+					gui.talk((String) obj[1]);
 					break;
 				}
-
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				flag = false;
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 
 	}

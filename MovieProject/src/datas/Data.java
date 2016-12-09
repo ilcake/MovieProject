@@ -16,5 +16,6 @@ public class Data implements Serializable {
 	public static final int CHATLOGIN = 22;
 	public static final int CHATLOGOUT = 33;
 	public static final int CHATMESSAGE = 44;
+	public static final int CHATUSERLIST = 55;
 
 }

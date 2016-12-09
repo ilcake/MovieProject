@@ -29,12 +29,10 @@ public class ClientThread extends Thread {
 			try {
 				System.out.println("ct >" + "wait for server");
 				obj = (Object[]) ois.readObject();
-				synchronized (this) {
-					System.out.println("ct >" + "i got orders");
-					setObj(obj);
-					refresh((ArrayList<Human>) obj[0]);
-					System.out.println("ct >" + "OK start");
-				}
+				System.out.println("ct >" + "i got orders");
+				setObj(obj);
+				refresh((ArrayList<Human>) obj[0]);
+				System.out.println("ct >" + "OK start");
 			} catch (Exception e) {
 
 				e.printStackTrace();

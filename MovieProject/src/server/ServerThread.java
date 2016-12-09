@@ -20,6 +20,7 @@ public class ServerThread implements Runnable {
 	private ServerDBwork mg;
 	private ServerGui gui;
 	private String userID = "미접속";
+	private ServerReceiver sr;
 
 	public String getUserID() {
 		return userID;
@@ -30,13 +31,14 @@ public class ServerThread implements Runnable {
 	}
 
 	public ServerThread(Socket sk, ObjectOutputStream oos, ObjectInputStream ois,
-			ArrayList<ObjectOutputStream> usersList, ArrayList<String> userNicks, ServerGui gui) {
+			ArrayList<ObjectOutputStream> usersList, ArrayList<String> userNicks, ServerGui gui, ServerReceiver sr) {
 		this.sk = sk;
 		this.oos = oos;
 		this.ois = ois;
 		this.usersList = usersList;
 		this.userNicks = userNicks;
 		this.gui = gui;
+		this.sr = sr;
 		mg = new ServerDBwork(gui, this);
 	}
 
@@ -71,7 +73,6 @@ public class ServerThread implements Runnable {
 			break;
 
 		case Data.LOGOUT:
-
 			break;
 
 		case Data.GETMOVIEBOXINFO:
