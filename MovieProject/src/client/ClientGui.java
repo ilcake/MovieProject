@@ -323,7 +323,7 @@ public class ClientGui extends JFrame {
 		// g.drawImage(searchL.getImage(), 0, 0, d.width, d.height, null);
 		// }
 		// };
-
+		////
 		ImageIcon SL = new ImageIcon("./img/SL.jpg"); /////////////////////
 		mm1_2 = new JPanel() {
 			public void paintComponent(Graphics g) {
