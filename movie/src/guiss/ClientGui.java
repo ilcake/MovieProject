@@ -61,7 +61,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-public class ClientGui extends JFrame {
+public class ClientGui extends JFrame {//
 	private static final int fwidth = 900;
 	private static final int fheight = 540;
 	private JPanel pnBOARD, pnLogin, pnMain, pnMovie;
