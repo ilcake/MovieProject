@@ -106,6 +106,7 @@ public class ClientManager {
 
 	public void startChat() {
 		ChatGUI gi = new ChatGUI(userId, gui, this, sk2, oos2, ois2);
+		gui.setChatGUI(gi);
 	}
 
 }

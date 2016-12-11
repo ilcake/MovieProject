@@ -556,7 +556,7 @@ public class ClientGui extends JFrame {
 		int locWidth = (int) ((d.getWidth() - fwidth) / 2);
 		int locHeight = (int) ((d.getHeight() - fheight) / 2);
 		setLocation(locWidth, locHeight);
-
+		setResizable(false);
 		setVisible(true);
 
 		addListeners();
@@ -772,6 +772,9 @@ public class ClientGui extends JFrame {
 		String story = m.getMvStory();
 
 		if (iconURL.equals("")) {
+			Image image = noImg.getImage();
+			Image reSized = image.getScaledInstance(171, 213, Image.SCALE_SMOOTH);
+			noImg = new ImageIcon(reSized);
 			lb_mvIcon.setIcon(noImg);
 		} else {
 			try {
@@ -787,9 +790,6 @@ public class ClientGui extends JFrame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		if (iconURL.equals("")) {
-			lb_mvIcon.setIcon(noImg);
 		}
 		//
 		// lb_mvIcon.setSize(new Dimension(170, 215));
@@ -834,6 +834,10 @@ public class ClientGui extends JFrame {
 		mv1.revalidate();
 	}
 
+	public void setChatGUI(ChatGUI chat) {
+		this.chat = chat;
+	}
+
 	public void setIcon() {
 		noImg = new ImageIcon("img/noImg.jpg");
 	}
@@ -863,6 +867,5 @@ public class ClientGui extends JFrame {
 			if (chat != null)
 				chat.hide();
 		}
-
 	}
 }

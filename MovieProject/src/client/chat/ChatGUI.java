@@ -80,7 +80,6 @@ public class ChatGUI extends JFrame implements ActionListener { //
 
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
-		textArea.setLineWrap(true);
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 
@@ -109,16 +108,17 @@ public class ChatGUI extends JFrame implements ActionListener { //
 				g.drawImage(icon1.getImage(), 0, 0, null); // 이미지 원래사이즈로 넣기
 				Dimension d = getSize();
 				g.drawImage(icon1.getImage(), 0, 0, d.width, d.height, null); // 컴포넌트사이즈에맞게
-				////////////////////////////////////////////////////////////////////////////////////////
 			}
 		};
+		////////////////////////////////////////////////////////////////////////////////////////
 		chatPanel.setBounds(new Rectangle(0, 0, 300, 540));
 		this.add(chatPanel);
 
 		setSize(300, 540);
-		setResizable(false);
 		setVisible(true);
-		setThisLocation();
+		Point d = mgui.getLocation();
+		setLocation(d.x + 900, d.y);
+		setResizable(false);
 
 		login();
 	}
