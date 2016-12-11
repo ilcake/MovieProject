@@ -34,13 +34,15 @@ public class ChatThread implements Runnable {
 
 				switch (proto) {
 				case Data.CHATLOGIN:
+					System.out.println(gui.getId() + "//ct :  유저 리스트를 갱신합니다");
 					userlist = (ArrayList<String>) obj[1];
 					gui.setUserList(userlist);
-
 					break;
+
 				case Data.CHATLOGOUT:
 					userlist = (ArrayList<String>) obj[1];
 					break;
+
 				case Data.CHATMESSAGE:
 					gui.talk((String) obj[1]);
 					break;
@@ -51,6 +53,7 @@ public class ChatThread implements Runnable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				flag = false;
 			}
 		}
 

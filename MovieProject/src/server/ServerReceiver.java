@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import datas.User;
 import server.chat.ServerChat;
 
 public class ServerReceiver {
@@ -15,6 +16,7 @@ public class ServerReceiver {
 	public static ArrayList<ObjectOutputStream> usersList = new ArrayList();
 	public static ArrayList<ObjectOutputStream> chatusersList = new ArrayList();
 	public static ArrayList<String> userNicks = new ArrayList();
+	public static ArrayList<User> theUsers = new ArrayList();
 	private ServerGui gui;
 
 	public ServerReceiver(ServerGui gui) {
@@ -42,20 +44,12 @@ public class ServerReceiver {
 			ObjectOutputStream oos = new ObjectOutputStream(sk.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(sk.getInputStream());
 
-			Socket sk2 = ss.accept();
-			ObjectOutputStream oos2 = new ObjectOutputStream(sk2.getOutputStream());
-			chatusersList.add(oos2);
-			ObjectInputStream ois2 = new ObjectInputStream(sk2.getInputStream());
-
 			usersList.add(oos);
 			gui.setUserCount(usersList.size());
 			gui.setMessage(sk.getInetAddress() + "/ 접속하였습니다.");
-			ServerThread sth = new ServerThread(sk, oos, ois, usersList, userNicks, gui, this);
+			ServerThread sth = new ServerThread(sk, oos, ois, usersList, userNicks, theUsers, gui, this);
 			Thread th = new Thread(sth);
 			th.start();
-
-			Thread cth = new Thread(new ServerChat(chatusersList, userNicks, sk2, ois2, oos2));
-			cth.start();
 
 		} catch (Exception e) {
 			e.printStackTrace();

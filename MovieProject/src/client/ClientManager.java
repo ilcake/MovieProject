@@ -14,12 +14,31 @@ import datas.User;
 import vos.MovieBoxInfo;
 
 public class ClientManager {
-	private Socket sk, sk2;
-	private ObjectOutputStream oos, oos2;
-	private ObjectInputStream ois, ois2;
+	private Socket sk;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
 	private ClientGui gui;
-	private ChatThread ct;
+	private ChatGUI cgui;
+	private ClientThread cht;
 	private String userId;
+	private User me;
+
+	public ChatGUI getCgui() {
+		return cgui;
+	}
+
+	public void setCgui(ChatGUI cgui) {
+		this.cgui = cgui;
+		cht.setCgui(cgui);
+	}
+
+	public User getMe() {
+		return me;
+	}
+
+	public void setMe(User me) {
+		this.me = me;
+	}
 
 	public String getUserId() {
 		return userId;
@@ -35,38 +54,25 @@ public class ClientManager {
 
 	}
 
-	public int register(User us) {
+	public void register(User us) {
 		Object[] what = new Object[] { Data.REGISTER, us };
-		Object result = whatTodo(what);
-		if (result != null) {
-			int type = (Integer) result;
-			return type;
-		}
-		return -1;
+		whatTodo(what);
 	}
 
-	public User login(String id, String pw) {
+	public void login(String id, String pw) {
 		Object[] what = new Object[] { Data.LOGIN, id, pw };
-		Object result = whatTodo(what);
-		if (result != null) {
-			return (User) result;
-		}
-		return null;
+		whatTodo(what);
 	}
 
-	public boolean logOut() {
+	public void logOut() {
 		Object[] what = new Object[] { Data.LOGOUT };
-		Object result = whatTodo(what);
-		if (result != null) {
-			return (Boolean) result;
-		}
-		return false;
+		whatTodo(what);
 	}
 
-	public ArrayList<MovieBoxInfo> getMovieBoxInfo() {
-		Object[] what = new Object[] { Data.GETMOVIEBOXINFO };
-		return (ArrayList<MovieBoxInfo>) whatTodo(what);
-	}
+	// public void getMovieBoxInfo() {
+	// Object[] what = new Object[] { Data.GETMOVIEBOXINFO };
+	// whatTodo(what);
+	// }
 
 	public void connection() {
 		try {
@@ -74,9 +80,9 @@ public class ClientManager {
 			oos = new ObjectOutputStream(sk.getOutputStream());
 			ois = new ObjectInputStream(sk.getInputStream());
 
-			sk2 = new Socket("localhost", 17771);
-			oos2 = new ObjectOutputStream(sk2.getOutputStream());
-			ois2 = new ObjectInputStream(sk2.getInputStream());
+			cht = new ClientThread(ois, gui, this, cgui);
+			Thread th = new Thread(cht);
+			th.start();
 
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -87,26 +93,27 @@ public class ClientManager {
 		}
 	}
 
-	public Object whatTodo(Object[] what) {
+	public void whatTodo(Object[] what) {
 		try {
 			synchronized (this) {
+				System.out.println("cm : " + what[0]);
 				oos.writeObject(what);
-				Object result = ois.readObject();
-				return result;
 			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 
 	public void startChat() {
-		ChatGUI gi = new ChatGUI(userId, gui, this, sk2, oos2, ois2);
-		gui.setChatGUI(gi);
+		// cgui = new ChatGUI(this, gui);
+		Object[] what = new Object[] { Data.CHATLOGIN };
+		whatTodo(what);
+	}
+
+	public void sendMessage(String message) {
+		Object[] what = new Object[] { Data.CHATMESSAGE, message };
+		whatTodo(what);
+
 	}
 
 }

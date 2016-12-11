@@ -72,7 +72,7 @@ public class ServerDBwork {
 		} catch (Exception e) {
 
 		}
-
+		cm.close(con);
 		return u;
 	}
 

@@ -21,18 +21,23 @@ public class DailyBOList {///// 변화!
 	private ArrayList<String> codeList;
 	private ArrayList<MovieBoxInfo> mlist;
 
-	// public static void main(String[] args) {
-	// // TODO Auto-generated method stub
-	// try {
-	// new DailyBOList();
-	// } catch (Exception e) {
-	// // TODO Auto-generated catch block//
-	// e.printStackTrace();
-	// }
-	// }
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		try {
+			new DailyBOList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block//
+			e.printStackTrace();
+		}
+	}
 
 	public DailyBOList() {
-		// fetchBoxList();
+		try {
+			fetchBoxList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void fetchBoxList() throws Exception { // json parsing
@@ -71,11 +76,11 @@ public class DailyBOList {///// 변화!
 			JSONObject json2 = (JSONObject) json1.get("movieInfo");
 			JSONArray array2 = (JSONArray) json2.get("directors");
 
-			for (int i = 0; i < array2.size(); i++) {
-				JSONObject entity = (JSONObject) array2.get(i);
-				String director = (String) entity.get("peopleNm");
-				dList.add(director);
-			}
+			// for (int i = 0; i < array2.size(); i++) {
+			JSONObject entity = (JSONObject) array2.get(0);
+			String director = (String) entity.get("peopleNm");
+			dList.add(director);
+			// }
 		}
 
 		// System.out.println(titleList.toString());

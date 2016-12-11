@@ -618,17 +618,16 @@ public class ClientGui extends JFrame {
 		String phN = rg_ph.getText();
 
 		User nUser = new User(id, pw, mail, phN);
-		int reaction = mg.register(nUser);
-		switch (reaction) {
-		case Data.FAIL:
-			JOptionPane.showMessageDialog(null, "중복된 아이디가 이미 존재합니다.", "회원가입 에러", JOptionPane.ERROR_MESSAGE);
-			rg_id.setText("");
-			break;
-		case Data.RG_SUCCESS:
-			JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
-			lg2Card.show(lg2, "lg2_1");
-			break;
-		}
+		// int reaction =
+		mg.register(nUser);
+		/*
+		 * switch (reaction) { case Data.FAIL:
+		 * JOptionPane.showMessageDialog(null, "중복된 아이디가 이미 존재합니다.", "회원가입 에러",
+		 * JOptionPane.ERROR_MESSAGE); rg_id.setText(""); break; case
+		 * Data.RG_SUCCESS: JOptionPane.showMessageDialog(null,
+		 * "회원가입이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
+		 * lg2Card.show(lg2, "lg2_1"); break; }
+		 */
 	}
 
 	public void login() {
@@ -643,25 +642,27 @@ public class ClientGui extends JFrame {
 			tf_pw.grabFocus();
 			return;
 		}
-		User result = mg.login(id, pw);
-		if (result != null) {
-			JOptionPane.showMessageDialog(null, "로그인이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
-			mainCard.show(mainBOARD, "pnMain");
-			whoAmI = id;
-			mg.setUserId(id);
-			// chat = new ChatGUI(id, this, mg);
-			setMovieBoxInfo();
-			mg.startChat();
-
-		} else {
-			JOptionPane.showMessageDialog(null, "아이디 혹은 패스워드가 일치하지않습니다.", "로그인 에러", JOptionPane.ERROR_MESSAGE);
-			tf_id.grabFocus();
-			/////
-		}
+		mg.login(id, pw);
+		// if (result != null) {
+		// JOptionPane.showMessageDialog(null, "로그인이 완료되었습니다!", "환영합니다",
+		// JOptionPane.INFORMATION_MESSAGE);
+		// mainCard.show(mainBOARD, "pnMain");
+		// whoAmI = id;
+		// mg.setUserId(id);
+		// // chat = new ChatGUI(id, this, mg);
+		// setMovieBoxInfo();
+		// mg.startChat();
+		//
+		// } else {
+		// JOptionPane.showMessageDialog(null, "아이디 혹은 패스워드가 일치하지않습니다.", "로그인
+		// 에러", JOptionPane.ERROR_MESSAGE);
+		// tf_id.grabFocus();
+		// /////
+		// }
 	}
 
-	public void setMovieBoxInfo() {
-		dblist = mg.getMovieBoxInfo();
+	public void setMovieBoxInfo(ArrayList<MovieBoxInfo> malist) {
+		dblist = malist;
 		Vector<String> column = new Vector();
 		column.addElement("순위");
 		column.addElement("제목");
@@ -866,6 +867,38 @@ public class ClientGui extends JFrame {
 			super.componentHidden(e);
 			if (chat != null)
 				chat.hide();
+		}
+	}
+
+	public void registerReaction(int reaction) {
+		switch (reaction) {
+		case Data.FAIL:
+			JOptionPane.showMessageDialog(null, "중복된 아이디가 이미 존재합니다.", "회원가입 에러", JOptionPane.ERROR_MESSAGE);
+			rg_id.setText("");
+			break;
+		case Data.RG_SUCCESS:
+			JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
+			lg2Card.show(lg2, "lg2_1");
+			break;
+		}
+	}
+
+	public void loginReaction(User result) {
+		if (result != null) {
+			JOptionPane.showMessageDialog(null, "로그인이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
+			mainCard.show(mainBOARD, "pnMain");
+			whoAmI = result.getId();
+			mg.setUserId(result.getId());
+			chat = new ChatGUI(mg, this);
+			chat.setId(whoAmI);
+			mg.setCgui(chat);
+			mg.startChat();
+			// mg.getMovieBoxInfo();
+
+		} else {
+			JOptionPane.showMessageDialog(null, "아이디 혹은 패스워드가 일치하지않습니다.", "로그인 에러", JOptionPane.ERROR_MESSAGE);
+			tf_id.grabFocus();
+			/////
 		}
 	}
 }

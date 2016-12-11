@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 
 import client.ClientGui;
 import client.ClientManager;
+import client.ClientThread;
 import datas.Data;
 
 import java.awt.Toolkit;
@@ -36,26 +37,23 @@ public class ChatGUI extends JFrame implements ActionListener { //
 	private JTextField textField; // 채팅입력
 	private JButton btnNewButton; // 채팅버튼
 	private JScrollPane scrollPane_1; // 유저리스트스크롤
-	private JList list; // 유저리스트
+	public JList list; // 유저리스트
 	private JPanel panel; // 배너
 	private String id;
 	private ClientGui mgui;
 	private ClientManager mg;
-	private Socket sk;
-	private ObjectOutputStream oos;
-	private ObjectInputStream ois;
 
-	public ChatGUI(String id, ClientGui mgui, ClientManager mg, Socket sk, ObjectOutputStream oos,
-			ObjectInputStream ois) {
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
 		this.id = id;
-		this.mgui = mgui;
-		this.mg = mg;
-		this.sk = sk;
-		this.oos = oos;
-		this.ois = ois;
+	}
 
-		Thread thd = new Thread(new ChatThread(sk, oos, ois, this));
-		thd.start();
+	public ChatGUI(ClientManager mg, ClientGui mgui) {
+		this.mg = mg;
+		this.mgui = mgui;
 
 		addWindowListener(new WindowAdapter() {
 
@@ -120,16 +118,13 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		setLocation(d.x + 900, d.y);
 		setResizable(false);
 
-		login();
 	}
 
 	// 이벤트처리
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("GO") || e.getSource() == textField) { // 버튼눌렀을때,엔터
 			String ms = textField.getText();
-			// ms쓰레드에 보내주기
-			sendMessage(ms);
-			// 보내고 텍스트필드 지워줌
+			mg.sendMessage(id + " : " + ms);
 			textField.setText("");
 		}
 	}
@@ -156,22 +151,4 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		setLocation(d.x + 900, d.y);
 	}
 
-	public void sendMessage(String message) {
-		try {
-			oos.writeObject(new Object[] { Data.CHATMESSAGE, id + " : " + message });
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void login() {
-		try {
-			oos.writeObject(new Object[] { Data.CHATLOGIN, id });
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
 }
