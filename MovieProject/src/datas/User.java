@@ -7,13 +7,15 @@ public class User implements Serializable {
 	private String pw;
 	private String mail;
 	private String phN;
+	private String pic;
 
-	public User(String id, String pw, String mail, String phN) {
+	public User(String id, String pw, String mail, String phN, String pic) {
 		super();
 		this.id = id;
 		this.pw = pw;
 		this.mail = mail;
 		this.phN = phN;
+		this.pic = pic;
 	}
 
 	public String getId() {
@@ -46,6 +48,14 @@ public class User implements Serializable {
 
 	public void setPhN(String phN) {
 		this.phN = phN;
+	}
+
+	public String getPic() {
+		return pic;
+	}
+
+	public void setPic(String pic) {
+		this.pic = pic;
 	}
 
 	@Override
