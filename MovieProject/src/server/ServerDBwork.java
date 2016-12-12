@@ -26,12 +26,13 @@ public class ServerDBwork {
 		Connection con = new ConnectionManager().getConnection();
 		try {
 			con.setAutoCommit(false);
-			String sql = "insert into usertable values (?,?,?,?)";
+			String sql = "insert into usertable values (?,?,?,?,?)";
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, u.getId());
 			pst.setString(2, u.getPw());
 			pst.setString(3, u.getMail());
 			pst.setString(4, u.getPhN());
+			pst.setString(5, u.getPic());
 			int result = pst.executeUpdate();
 			con.commit();
 			con.setAutoCommit(true);
@@ -63,7 +64,7 @@ public class ServerDBwork {
 			ps.setString(2, pw);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				u = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
+				u = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
 				gui.setMessage(u.getId() + " 회원이 접속하였습니다.");
 				thth.setUserID(u.getId());
 			}
