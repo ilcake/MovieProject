@@ -6,7 +6,6 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import datas.Data;
 import datas.User;
-import net.infonode.util.ImageUtils;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
 
@@ -14,7 +13,6 @@ import java.awt.CardLayout;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.JLabel;
@@ -42,7 +40,6 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import java.awt.Color;
-import java.awt.Component;
 
 import javax.swing.ImageIcon;
 import java.awt.Container;
@@ -111,9 +108,15 @@ public class ClientGui extends JFrame {
 	private JPanel pn_label;
 	private JLabel lb_miT, lb_miA, lb_mvDirector, lb_mvGen, lb_mvShowT, lb_mvActor, lb_img2;
 	private ImageIcon noImg;
-	JButton bt_like, bt_comment;
 	private ChatGUI chat;
 	private JButton bt_chat;
+	
+	private JButton likeIcon;
+	private JButton commentIcon;
+	private JLabel  pIcon;
+	private JLabel searchRBack;
+	private ChangeIcon changeIconGUI;
+	private ImageIcon person;
 
 	public ClientGui() {////
 
@@ -324,7 +327,7 @@ public class ClientGui extends JFrame {
 		// }
 		// };
 		////
-		ImageIcon SL = new ImageIcon("./img/SL.jpg"); /////////////////////
+		ImageIcon SL = new ImageIcon("./img/searchL.png"); /////////////////////
 		mm1_2 = new JPanel() {
 			public void paintComponent(Graphics g) {
 				g.drawImage(SL.getImage(), 0, 0, this);
@@ -369,98 +372,94 @@ public class ClientGui extends JFrame {
 		mm1_4 = new JPanel();
 		mn1.add(mm1_4, "mm1_4");
 
-		ImageIcon mypage1 = new ImageIcon("./img/boxOfficeR.png");
+		ImageIcon boxOfficeR = new ImageIcon("./img/boxOfficeR.png");
 		mn2 = new JPanel() {
 			public void paintComponent(Graphics g) {
-				g.drawImage(mypage1.getImage(), 0, 0, null);
+				g.drawImage(boxOfficeR.getImage(), 0, 0, this);
 				Dimension d = getSize();
-				g.drawImage(mypage1.getImage(), 0, 0, d.width, d.height, null);
+				g.drawImage(boxOfficeR.getImage(), 0, 0, d.width, d.height, this);
 			}
-		};
-		// mn2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		// pnMain.add(mn2);
+		}; // 여기 mn2에 레이블추가해서 그림 넣기
 		mn2.setLayout(null);
 
-		// JPanel panel_2 = new JPanel();
-		// panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		// panel_2.setBounds(72, 31, 312, 78);
-		// mn2.add(panel_2);
-		// panel_2.setLayout(new GridLayout(0, 1, 0, 0));
-		//
-		// JLabel label_3 = new JLabel("");
-		// label_3.setIcon(new ImageIcon("./img/banner.png"));
-		// label_3.setHorizontalAlignment(SwingConstants.CENTER);
-		// panel_2.add(label_3);
-
-		// JPanel panel_3 = new JPanel();
-		//// panel_3.setBackground(UIManager.getColor("Button.background"));
-		// panel_3.setBackground(new Color(255, 0, 0, 0)); //패널 투명
-		//// panel_3.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		// panel_3.setBounds(72, 353, 312, 100);
-		// mn2.add(panel_3);
-		// panel_3.setLayout(null);
-
-		ImageIcon likeBt = new ImageIcon("img/likeBt.png");
-
-		ImageIcon commentBt = new ImageIcon("img/commentBt.png");
-
-		panel_6 = new JPanel();
-		panel_6.setBounds(72, 140, 300, 182);
-		mn2.add(panel_6);
-		// panel_6.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		// panel_6.setBackground(new Color(192, 192, 192));
-		panel_6.setLayout(null);
+		ImageIcon sRBack = new ImageIcon("img/searchR.png");
 
 		cb = new JComboBox();
-		cb.setBounds(14, 44, 99, 26);
-		panel_6.add(cb);
+		cb.setBounds(85, 185, 99, 26);
+		mn2.add(cb);
 		cb.addItem("=====");
 		cb.addItem("제목검색");
 		cb.addItem("감독검색");
 
 		mn_search = new JTextField();
-		mn_search.setBounds(127, 45, 160, 24);
-		panel_6.add(mn_search);
+		mn_search.setBounds(200, 185, 150, 24);
+		mn2.add(mn_search);
 		mn_search.setColumns(10);
 
 		bt_search = new JButton("SEARCH");
 		bt_search.setFont(new Font("굴림", Font.BOLD, 15));
-		bt_search.setBounds(180, 122, 107, 27);
-		panel_6.add(bt_search);
+		bt_search.setBounds(243, 260, 107, 27);
+		mn2.add(bt_search);
 
 		bt_chat = new JButton("CHAT");
 		bt_chat.setFont(new Font("굴림", Font.BOLD, 15));
-		bt_chat.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		bt_chat.setBounds(24, 122, 107, 27);
-		panel_6.add(bt_chat);
+		bt_chat.setBounds(85, 260, 107, 27);
+		mn2.add(bt_chat);
 
-		pnMain.add(mn2);//////////////////////////
-		bt_like = new JButton("좋아요") {
+		ImageIcon likeBt = new ImageIcon("img/likeIcon.png");
+		likeIcon = new JButton() {
 			public void paintComponent(Graphics g) {
 				Dimension d = getSize();
 				g.drawImage(likeBt.getImage(), 0, 0, d.width, d.height, null);
 			}
 		};
-		bt_like.setBounds(85, 360, 75, 75);
-		mn2.add(bt_like);
-		bt_comment = new JButton("댓글") {
+		likeIcon.setBounds(85, 360, 75, 75);
+		mn2.add(likeIcon);
+
+		ImageIcon commentBt = new ImageIcon("img/commentIcon.png");
+		commentIcon = new JButton() {
 			public void paintComponent(Graphics g) {
 				Dimension d = getSize();
 				g.drawImage(commentBt.getImage(), 0, 0, d.width, d.height, null);
 			}
 		};
-		bt_comment.setBounds(230, 360, 75, 75);
-		mn2.add(bt_comment);
+		commentIcon.setBounds(220, 360, 75, 75);
+		mn2.add(commentIcon);
 
+		person = new ImageIcon("img/p1.png"); // 여기서_로그인된_사용자로_프로필_바꿔주기
+		pIcon = new JLabel();
+		Image image = person.getImage();
+		Image reSized = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+		person.setImage(reSized);
+		pIcon.setIcon(person);
+		pIcon.setBounds(170, 40, 100, 100);
+		mn2.add(pIcon);
+
+		// mn2.setBorder(new LineBorder(new Color(0, 0, 0))); //볼더할까말까
+		pnMain.add(mn2);
+		searchRBack = new JLabel() {
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(sRBack.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
+		searchRBack.setBounds(0, 0, 446, 510);
+		searchRBack.setVisible(false);
+		mn2.add(searchRBack);
+		
 		pnMovie = new JPanel();
 		pnMovie.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mainBOARD.add(pnMovie, "pnMovie");
 		pnMovie.setLayout(new GridLayout(1, 2, 0, 0));
 
-		mv1 = new JPanel();
+		ImageIcon infoL = new ImageIcon("img/infoL.png");
+		mv1 = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(infoL.getImage(), 0, 0, null);
+				Dimension d = getSize();
+				g.drawImage(infoL.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
 		mv1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnMovie.add(mv1);
 		mv1.setLayout(null);
@@ -528,7 +527,14 @@ public class ClientGui extends JFrame {
 		mv2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mv2.setLayout(new CardLayout(0, 0));
 
-		mv2_1 = new JPanel();
+		ImageIcon infoR = new ImageIcon("img/infoR.png");
+		mv2_1 = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(infoR.getImage(), 0, 0, null);
+				Dimension d = getSize();
+				g.drawImage(infoR.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
 		mv2.add(mv2_1, "mv2_1");
 		mv2_1.setLayout(null);
 
@@ -578,6 +584,8 @@ public class ClientGui extends JFrame {
 		bt_mm1_2Return.addMouseListener(ma);
 		bt_chat.addMouseListener(ma);
 		this.addComponentListener(wa);
+		pIcon.addMouseListener(ma);
+		bt_mv2Write.addMouseListener(ma); // 글쓰기
 	}
 
 	public class mcl extends MouseAdapter {
@@ -607,8 +615,13 @@ public class ClientGui extends JFrame {
 				searchByAction();
 			} else if (e.getSource() == bt_mm1_2Return) {
 				mn1Card.show(mn1, "mm1_1");
+				searchRBack.setVisible(false);
 			} else if (e.getSource() == bt_chat) {
 				chat.windowOn();
+			} else if (e.getSource() == pIcon) {// 캐릭터 바꾸기
+				changeIconGUI.setVisible(true);
+			} else if (e.getSource() == bt_mv2Write) {
+				// 글쓰기 버튼..
 			}
 		}
 	}
@@ -712,6 +725,7 @@ public class ClientGui extends JFrame {
 		}
 
 		mn1Card.show(mn1, "mm1_2");
+		searchRBack.setVisible(true);
 
 		try {
 			sb.Search(type, what);
@@ -901,11 +915,30 @@ public class ClientGui extends JFrame {
 			mg.setCgui(chat);
 			mg.startChat();
 			// mg.getMovieBoxInfo();
+			
+			///////////////////////// 프로필바꾸기
+			changeIconGUI = new ChangeIcon(this); // 생성
+			changeIconGUI.setVisible(false);
+			/////////////////////////
 
 		} else {
 			JOptionPane.showMessageDialog(null, "아이디 혹은 패스워드가 일치하지않습니다.", "로그인 에러", JOptionPane.ERROR_MESSAGE);
 			tf_id.grabFocus();
 			/////
 		}
+	}
+	
+	public void setPersonIcon(String url){	//프로필수정해주기
+		person = new ImageIcon(url);
+		Image image = person.getImage();
+		Image reSized = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+		person.setImage(reSized);
+		pIcon.setIcon(person);
+	}
+	
+	public String getPersonIcon(){	//지금프로필받아오기
+		String url="";
+		url += pIcon.getIcon();
+		return url;
 	}
 }
