@@ -76,4 +76,30 @@ public class ServerDBwork {
 		return u;
 	}
 
+	public void changeIcon(User me, String iconUrl) {
+		Connection con = new ConnectionManager().getConnection();
+		try {
+			con.setAutoCommit(false);
+			String sql = "update usertable set userpics=? where userid=?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, iconUrl);
+			ps.setString(2, me.getId());
+			ps.executeUpdate();
+
+			con.commit();
+			con.setAutoCommit(true);
+
+		} catch (Exception e) {
+			try {
+				con.rollback();
+				con.setAutoCommit(true);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		cm.close(con);
+
+	}
+
 }

@@ -65,7 +65,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-public class ClientGui extends JFrame {	//
+public class ClientGui extends JFrame { //
 	private static final int fwidth = 900;
 	private static final int fheight = 540;
 	private JPanel pnBOARD, pnLogin, pnMain, pnMovie;
@@ -85,6 +85,7 @@ public class ClientGui extends JFrame {	//
 	private JButton bt_rgCancel, bt_rgReg;
 	private JPasswordField rg_pw;
 	private ClientManager mg;
+	private ClientGui myGui;
 	private String whoAmI;
 	private Container mainBOARD;
 	private JTable mBoxTable;
@@ -110,15 +111,17 @@ public class ClientGui extends JFrame {	//
 	private ImageIcon noImg;
 	private ChatGUI chat;
 	private JButton bt_chat;
-	
+	private User me;
+
 	private JButton likeIcon;
 	private JButton commentIcon;
-	private JLabel  pIcon;
+	private JLabel pIcon;
 	private JLabel searchRBack;
 	private ChangeIcon changeIconGUI;
 	private ImageIcon person;
 
 	public ClientGui() {////
+		myGui = this;
 
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -426,12 +429,13 @@ public class ClientGui extends JFrame {	//
 		commentIcon.setBounds(220, 360, 75, 75);
 		mn2.add(commentIcon);
 
-		person = new ImageIcon("img/p1.png"); // 여기서_로그인된_사용자로_프로필_바꿔주기
+		// person = new ImageIcon("img/p1.png"); // 여기서_로그인된_사용자로_프로필_바꿔주기
 		pIcon = new JLabel();
-		Image image = person.getImage();
-		Image reSized = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-		person.setImage(reSized);
-		pIcon.setIcon(person);
+		// Image image = person.getImage();
+		// Image reSized = image.getScaledInstance(100, 100,
+		// Image.SCALE_SMOOTH);
+		// person.setImage(reSized);
+		// pIcon.setIcon(person);
 		pIcon.setBounds(170, 40, 100, 100);
 		mn2.add(pIcon);
 
@@ -446,7 +450,7 @@ public class ClientGui extends JFrame {	//
 		searchRBack.setBounds(0, 0, 446, 510);
 		searchRBack.setVisible(false);
 		mn2.add(searchRBack);
-		
+
 		pnMovie = new JPanel();
 		pnMovie.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mainBOARD.add(pnMovie, "pnMovie");
@@ -572,6 +576,14 @@ public class ClientGui extends JFrame {	//
 
 	}
 
+	public User getMe() {
+		return me;
+	}
+
+	public void setMe(User me) {
+		this.me = me;
+	}
+
 	public void addListeners() {
 		MouseAdapter ma = new mcl();
 		WIndowAd wa = new WIndowAd();
@@ -619,7 +631,7 @@ public class ClientGui extends JFrame {	//
 			} else if (e.getSource() == bt_chat) {
 				chat.windowOn();
 			} else if (e.getSource() == pIcon) {// 캐릭터 바꾸기
-				changeIconGUI.setVisible(true);
+				changeIconGUI = new ChangeIcon(myGui, mg); // 생성
 			} else if (e.getSource() == bt_mv2Write) {
 				// 글쓰기 버튼..
 			}
@@ -632,7 +644,7 @@ public class ClientGui extends JFrame {	//
 		String mail = rg_ma.getText();
 		String phN = rg_ph.getText();
 
-		User nUser = new User(id, pw, mail, phN);
+		User nUser = new User(id, pw, mail, phN, "img/p1.png");
 		// int reaction =
 		mg.register(nUser);
 		/*
@@ -912,13 +924,16 @@ public class ClientGui extends JFrame {	//
 			mg.setUserId(result.getId());
 			chat = new ChatGUI(mg, this);
 			chat.setId(whoAmI);
+			String iconURL = result.getPic();
+			System.out.println("loginReactino" + iconURL);
+			setPersonIcon(iconURL);
 			mg.setCgui(chat);
 			mg.startChat();
 			// mg.getMovieBoxInfo();
-			
+
 			///////////////////////// 프로필바꾸기
-			changeIconGUI = new ChangeIcon(this); // 생성
-			changeIconGUI.setVisible(false);
+			// changeIconGUI = new ChangeIcon(this); // 생성
+			// changeIconGUI.setVisible(false);
 			/////////////////////////
 
 		} else {
@@ -927,17 +942,18 @@ public class ClientGui extends JFrame {	//
 			/////
 		}
 	}
-	
-	public void setPersonIcon(String url){	//프로필수정해주기
+
+	public void setPersonIcon(String url) { // 프로필수정해주기
+		System.out.println(url);
 		person = new ImageIcon(url);
 		Image image = person.getImage();
 		Image reSized = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		person.setImage(reSized);
 		pIcon.setIcon(person);
 	}
-	
-	public String getPersonIcon(){	//지금프로필받아오기
-		String url="";
+
+	public String getPersonIcon() { // 지금프로필받아오기
+		String url = "";
 		url += pIcon.getIcon();
 		return url;
 	}

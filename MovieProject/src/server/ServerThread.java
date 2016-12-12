@@ -101,6 +101,11 @@ public class ServerThread implements Runnable {
 					oio.writeUnshared(MeResult);
 				}
 				break;
+
+			case Data.ICONCHANGE:
+				//////////////
+				mg.changeIcon(me, (String) obj[2]);
+				break;
 			}
 
 		} catch (Exception e) {

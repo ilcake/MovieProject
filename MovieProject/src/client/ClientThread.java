@@ -60,6 +60,7 @@ public class ClientThread extends Thread {
 			gui.loginReaction(me);
 			gui.setMovieBoxInfo((ArrayList<MovieBoxInfo>) obj[2]);
 			cm.setMe(me);
+			gui.setMe(me);
 			break;
 		// case Data.GETMOVIEBOXINFO:
 		// gui.setMovieBoxInfo((ArrayList<MovieBoxInfo>) obj[1]);

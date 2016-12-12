@@ -17,20 +17,22 @@ import javax.swing.JRadioButton;
 import java.awt.Color;
 import javax.swing.JButton;
 
-public class ChangeIcon extends JFrame implements ActionListener{
+public class ChangeIcon extends JFrame implements ActionListener {
 
 	private String id;
 	private ClientGui cGUI;
 	private ImageIcon p1, p2, p3, p4, p5, p6, p7, p8, p9;
-	private JLabel pl1,pl2,pl3,pl4,pl5,pl6,pl7,pl8,pl9,now;
+	private JLabel pl1, pl2, pl3, pl4, pl5, pl6, pl7, pl8, pl9, now;
 	private JButton edit;
-	private String url1,url2,url3,url4,url5,url6,url7,url8,url9;
+	private String url1, url2, url3, url4, url5, url6, url7, url8, url9;
 	private ArrayList<JRadioButton> rBtList;
-	
-	public ChangeIcon(ClientGui cGUI) {
+	private ClientManager mg;
+
+	public ChangeIcon(ClientGui cGUI, ClientManager mg) {
 
 		this.cGUI = cGUI;
-		
+		this.mg = mg;
+
 		setSize(600, 500);
 		setTitle("Choose Your Character");
 		getContentPane().setLayout(null);
@@ -157,14 +159,14 @@ public class ChangeIcon extends JFrame implements ActionListener{
 		pl9.setIcon(p9);
 		pl9.setBounds(314, 313, 100, 100);
 		getContentPane().add(pl9);
-		
+
 		now = new JLabel("now");
 		ImageIcon nowIcon = new ImageIcon(cGUI.getPersonIcon());
 		nowIcon = imgResizing(nowIcon);
 		now.setIcon(nowIcon);
 		now.setBounds(450, 167, 100, 100);
 		getContentPane().add(now);
-		
+
 		edit = new JButton("수정");
 		edit.setBounds(464, 277, 73, 23);
 		getContentPane().add(edit);
@@ -179,10 +181,10 @@ public class ChangeIcon extends JFrame implements ActionListener{
 		setVisible(true);
 	}
 
-	public void setNowImage(String url){
+	public void setNowImage(String url) {
 		getContentPane().remove(now);
 		ImageIcon nowImg = new ImageIcon(url);
-		now = new JLabel(){
+		now = new JLabel() {
 			public void paintComponent(Graphics g) {
 				Dimension d = getSize();
 				g.drawImage(nowImg.getImage(), 0, 0, d.width, d.height, null);
@@ -191,40 +193,41 @@ public class ChangeIcon extends JFrame implements ActionListener{
 		now.setBounds(450, 167, 100, 100);
 		getContentPane().add(now);
 	}
-	
-	public ImageIcon imgResizing(ImageIcon imgicon){
+
+	public ImageIcon imgResizing(ImageIcon imgicon) {
 		Image image = imgicon.getImage();
 		Image reSized = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		imgicon.setImage(reSized);
 		return imgicon;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("1")) {
 			now.setIcon(p1);
-		}else if (e.getActionCommand().equals("2")) {
+		} else if (e.getActionCommand().equals("2")) {
 			now.setIcon(p2);
-		}else if (e.getActionCommand().equals("3")) {
+		} else if (e.getActionCommand().equals("3")) {
 			now.setIcon(p3);
-		}else if (e.getActionCommand().equals("4")) {
+		} else if (e.getActionCommand().equals("4")) {
 			now.setIcon(p4);
-		}else if (e.getActionCommand().equals("5")) {
+		} else if (e.getActionCommand().equals("5")) {
 			now.setIcon(p5);
-		}else if (e.getActionCommand().equals("6")) {
+		} else if (e.getActionCommand().equals("6")) {
 			now.setIcon(p6);
-		}else if (e.getActionCommand().equals("7")) {
+		} else if (e.getActionCommand().equals("7")) {
 			now.setIcon(p7);
-		}else if (e.getActionCommand().equals("8")) {
+		} else if (e.getActionCommand().equals("8")) {
 			now.setIcon(p8);
-		}else if (e.getActionCommand().equals("9")) {
+		} else if (e.getActionCommand().equals("9")) {
 			now.setIcon(p9);
-		}else if (e.getActionCommand().equals("수정")){
-			 int check = JOptionPane.showConfirmDialog(null, "프로필을 수정합니다.");
+		} else if (e.getActionCommand().equals("수정")) {
+			int check = JOptionPane.showConfirmDialog(null, "프로필을 수정합니다.");
 			if (check == 0) {
-				cGUI.setPersonIcon(""+now.getIcon());
-				this.setVisible(false);
-			} else if (check==2||check==-1){
+				cGUI.setPersonIcon("" + now.getIcon());
+				mg.setIcon("" + now.getIcon());
+				this.dispose();
+			} else if (check == 2 || check == -1) {
 				this.setVisible(false);
 			}
 		}

@@ -18,4 +18,6 @@ public class Data implements Serializable {
 	public static final int CHATMESSAGE = 44;
 	public static final int CHATUSERLIST = 55;
 
+	public static final int ICONCHANGE = 85;
+
 }

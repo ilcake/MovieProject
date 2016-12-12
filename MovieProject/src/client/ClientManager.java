@@ -116,4 +116,10 @@ public class ClientManager {
 
 	}
 
+	public void setIcon(String iconUrl) {
+		Object[] what = new Object[] { Data.ICONCHANGE, me, iconUrl };
+		whatTodo(what);
+
+	}
+
 }
