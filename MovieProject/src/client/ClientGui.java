@@ -31,6 +31,8 @@ import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
 import java.beans.AppletInitializer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,6 +50,7 @@ import java.awt.Dimension;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -57,6 +60,7 @@ import client.db.SearchBy;
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import java.awt.Font;
@@ -64,6 +68,7 @@ import java.awt.Graphics;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import java.awt.FlowLayout;
 
 public class ClientGui extends JFrame { //
 	private static final int fwidth = 900;
@@ -77,7 +82,7 @@ public class ClientGui extends JFrame { //
 	private JLabel lblNewLabel_3;
 	private JButton bt_Login;
 	private JLabel goRegi;
-	private CardLayout mainCard, lg2Card;
+	private CardLayout mainCard, lg2Card, mv2Card;
 	private JLabel lblNewLabel_2;
 	private JTextField rg_id;
 	private JLabel label, label_1, label_2, lb_mvIcon, lb_mvTitle, lb_miG;
@@ -101,7 +106,6 @@ public class ClientGui extends JFrame { //
 	private JScrollPane mv1_jsp;
 	private JButton bt_mv2Return;
 	private JButton bt_mv2Write;
-	private JButton bt_mv2Like;
 	private SearchBy sb;
 	private CardLayout mn1Card;
 	private JButton bt_mm1_2Return;
@@ -119,6 +123,15 @@ public class ClientGui extends JFrame { //
 	private JLabel searchRBack;
 	private ChangeIcon changeIconGUI;
 	private ImageIcon person;
+	private JTextArea ta_comment;
+	private JButton bt_mv2_2Return;
+	private JButton bt_mv2_2Sub;
+	private JLabel lb_mv2_pic;
+	private JLabel lb_grade;
+	private JPanel mv2;
+	private String sMovieCD;
+	private JLabel lblNewLabel_5;
+	private JPanel pn_mv2Grade;
 
 	public ClientGui() {////
 		myGui = this;
@@ -470,13 +483,13 @@ public class ClientGui extends JFrame { //
 
 		lb_mvIcon = new JLabel("", new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"), SwingConstants.CENTER);
 		lb_mvIcon.setSize(new Dimension(170, 215));
-		lb_mvIcon.setBounds(31, 49, 171, 222);
+		lb_mvIcon.setBounds(31, 49, 181, 235);
 		mv1.add(lb_mvIcon);
 
 		lb_mvTitle = new JLabel();
 		lb_mvTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lb_mvTitle.setFont(new Font("Dialog", Font.PLAIN, 21));
-		lb_mvTitle.setBounds(236, 49, 181, 80);
+		lb_mvTitle.setBounds(236, 49, 181, 67);
 		mv1.add(lb_mvTitle);
 
 		mv1_jsp = new JScrollPane();
@@ -489,7 +502,7 @@ public class ClientGui extends JFrame { //
 		ta_mvStory.setEditable(false);
 
 		pn_label = new JPanel();
-		pn_label.setBounds(236, 151, 64, 120);
+		pn_label.setBounds(237, 164, 64, 120);
 		mv1.add(pn_label);
 		pn_label.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -506,7 +519,7 @@ public class ClientGui extends JFrame { //
 		pn_label.add(lb_miA);
 
 		pn_info = new JPanel();
-		pn_info.setBounds(304, 151, 113, 120);
+		pn_info.setBounds(304, 164, 113, 120);
 		mv1.add(pn_info);
 		pn_info.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -526,10 +539,25 @@ public class ClientGui extends JFrame { //
 		lb_mvActor.setHorizontalAlignment(SwingConstants.CENTER);
 		pn_info.add(lb_mvActor);
 
-		JPanel mv2 = new JPanel();
+		JPanel pn_grade = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) pn_grade.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEADING);
+		pn_grade.setBounds(236, 120, 181, 40);
+		mv1.add(pn_grade);
+
+		JLabel lblNewLabel_4 = new JLabel("유저평점 :");
+		lblNewLabel_4.setHorizontalAlignment(SwingConstants.LEFT);
+		pn_grade.add(lblNewLabel_4);
+
+		lb_grade = new JLabel("           ");
+		lb_grade.setHorizontalAlignment(SwingConstants.RIGHT);
+		pn_grade.add(lb_grade);
+
+		mv2 = new JPanel();
 		pnMovie.add(mv2);
 		mv2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		mv2.setLayout(new CardLayout(0, 0));
+		mv2Card = new CardLayout(0, 0);
+		mv2.setLayout(mv2Card);
 
 		ImageIcon infoR = new ImageIcon("img/infoR.png");
 		mv2_1 = new JPanel() {
@@ -555,12 +583,33 @@ public class ClientGui extends JFrame { //
 		bt_mv2Write.setBounds(34, 417, 91, 27);
 		mv2_1.add(bt_mv2Write);
 
-		bt_mv2Like = new JButton("평점주기");
-		bt_mv2Like.setBounds(139, 417, 91, 27);
-		mv2_1.add(bt_mv2Like);
-
 		mv2_2 = new JPanel();
-		mv2.add(mv2_2, "v2_2");
+		mv2.add(mv2_2, "mv2_2");
+		mv2_2.setLayout(null);
+
+		ta_comment = new JTextArea();
+		ta_comment.setBounds(48, 173, 351, 163);
+		mv2_2.add(ta_comment);
+
+		bt_mv2_2Return = new JButton("back");
+		bt_mv2_2Return.setBounds(355, 423, 75, 71);
+		mv2_2.add(bt_mv2_2Return);
+
+		bt_mv2_2Sub = new JButton("SUBMIT");
+		bt_mv2_2Sub.setBounds(292, 349, 107, 27);
+		mv2_2.add(bt_mv2_2Sub);
+
+		lb_mv2_pic = new JLabel("pic");
+		lb_mv2_pic.setBounds(48, 78, 85, 85);
+		mv2_2.add(lb_mv2_pic);
+
+		lblNewLabel_5 = new JLabel("평점주기 :");
+		lblNewLabel_5.setBounds(147, 110, 75, 18);
+		mv2_2.add(lblNewLabel_5);
+
+		pn_mv2Grade = new JPanel();
+		pn_mv2Grade.setBounds(222, 92, 177, 51);
+		mv2_2.add(pn_mv2Grade);
 
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		int locWidth = (int) ((d.getWidth() - fwidth) / 2);
@@ -598,6 +647,8 @@ public class ClientGui extends JFrame { //
 		this.addComponentListener(wa);
 		pIcon.addMouseListener(ma);
 		bt_mv2Write.addMouseListener(ma); // 글쓰기
+		bt_mv2_2Return.addMouseListener(ma);
+		bt_mv2_2Sub.addMouseListener(ma);
 	}
 
 	public class mcl extends MouseAdapter {
@@ -618,8 +669,10 @@ public class ClientGui extends JFrame { //
 
 			} else if (e.getSource() == tb_search) {
 				int who = tb_search.getSelectedRow();
-				if (who != -1)
-					setMovieInfoPage(scList.get(who).getMvCode());
+				if (who != -1) {
+					sMovieCD = scList.get(who).getMvCode();
+					setMovieInfoPage(sMovieCD);
+				}
 				mainCard.show(mainBOARD, "pnMovie");
 			} else if (e.getSource() == bt_mv2Return) {
 				mainCard.show(mainBOARD, "pnMain");
@@ -634,6 +687,11 @@ public class ClientGui extends JFrame { //
 				changeIconGUI = new ChangeIcon(myGui, mg); // 생성
 			} else if (e.getSource() == bt_mv2Write) {
 				// 글쓰기 버튼..
+				mv2Card.show(mv2, "mv2_2");
+			} else if (e.getSource() == bt_mv2_2Return) {// 뒤로가기
+				mv2Card.show(mv2, "mv2_1");
+			} else if (e.getSource() == bt_mv2_2Sub) {// 코멘트 올리기
+				mv2Card.show(mv2, "mv2_1");
 			}
 		}
 	}
@@ -738,16 +796,34 @@ public class ClientGui extends JFrame { //
 
 		mn1Card.show(mn1, "mm1_2");
 		searchRBack.setVisible(true);
-
 		try {
 			sb.Search(type, what);
 			scList = sb.getSearchList();
 			setSearchTable();
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
 		}
+		/*
+		 * SwingWorker<Void, Void> mySwingWorker = new SwingWorker<Void, Void>()
+		 * {
+		 * 
+		 * @Override protected Void doInBackground() throws Exception {
+		 * 
+		 * sb.Search(type, what); scList = sb.getSearchList(); setSearchTable();
+		 * 
+		 * return null; } };
+		 * 
+		 * Loading ld = new Loading();
+		 * 
+		 * mySwingWorker.addPropertyChangeListener(new PropertyChangeListener()
+		 * {
+		 * 
+		 * @Override public void propertyChange(PropertyChangeEvent evt) { if
+		 * (evt.getPropertyName().equals("state")) { if (evt.getNewValue() ==
+		 * SwingWorker.StateValue.DONE) { ld.dispose(); } } } });
+		 * mySwingWorker.execute();
+		 */
+
 	}
 
 	public void setSearchTable() {
@@ -929,6 +1005,7 @@ public class ClientGui extends JFrame { //
 			setPersonIcon(iconURL);
 			mg.setCgui(chat);
 			mg.startChat();
+
 			// mg.getMovieBoxInfo();
 
 			///////////////////////// 프로필바꾸기
@@ -950,6 +1027,11 @@ public class ClientGui extends JFrame { //
 		Image reSized = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		person.setImage(reSized);
 		pIcon.setIcon(person);
+
+		Image reSized2 = image.getScaledInstance(85, 85, Image.SCALE_SMOOTH);
+		ImageIcon pp = new ImageIcon();
+		pp.setImage(reSized2);
+		lb_mv2_pic.setIcon(pp);
 	}
 
 	public String getPersonIcon() { // 지금프로필받아오기
@@ -957,4 +1039,13 @@ public class ClientGui extends JFrame { //
 		url += pIcon.getIcon();
 		return url;
 	}
+
+	public void setCommentPanel() {
+
+	}
+
+	public void writeComment() {
+
+	}
+
 }

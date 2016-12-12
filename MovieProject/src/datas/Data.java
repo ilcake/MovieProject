@@ -3,10 +3,16 @@ package datas;
 import java.io.Serializable;
 
 public class Data implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int REGISTER = 1;
 	public static final int LOGIN = 2;
 	public static final int LOGOUT = 3;
 	public static final int GETMOVIEBOXINFO = 4;
+	public static final int GETCOMMENT = 5;
+	public static final int WRITECOMMENT = 6;
 
 	public static final int RG_IDDUB = 1;
 	public static final int RG_SUCCESS = 10;

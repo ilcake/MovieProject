@@ -122,4 +122,10 @@ public class ClientManager {
 
 	}
 
+	public void getComments(String movieCD) {
+		Object[] what = new Object[] { Data.GETCOMMENT, movieCD };
+		whatTodo(what);
+
+	}
+
 }

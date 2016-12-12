@@ -12,10 +12,10 @@ import datas.User;
 public class ServerReceiver {
 	private ServerSocket ss;
 	private boolean flag;
-	public static ArrayList<ObjectOutputStream> usersList = new ArrayList();
-	public static ArrayList<ObjectOutputStream> chatusersList = new ArrayList();
-	public static ArrayList<String> userNicks = new ArrayList();
-	public static ArrayList<User> theUsers = new ArrayList();
+	public static ArrayList<ObjectOutputStream> usersList = new ArrayList<ObjectOutputStream>();
+	public static ArrayList<ObjectOutputStream> chatusersList = new ArrayList<ObjectOutputStream>();
+	public static ArrayList<String> userNicks = new ArrayList<String>();
+	public static ArrayList<User> theUsers = new ArrayList<User>();
 	private ServerGui gui;
 
 	public ServerReceiver(ServerGui gui) {

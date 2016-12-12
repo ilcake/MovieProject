@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import datas.Comment;
 import datas.ConnectionManager;
 import datas.Data;
 import datas.User;
@@ -99,7 +100,56 @@ public class ServerDBwork {
 			}
 		}
 		cm.close(con);
-
 	}
 
+	public ArrayList<Comment> getComment(String movieCD) {
+		ArrayList<Comment> cmList = new ArrayList<>();
+		Connection con = new ConnectionManager().getConnection();
+		try {
+			String sql = "select userid, usertext, grade, moviecd, userpic from usercomment";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			Comment c = null;
+			while (rs.next()) {
+				c = new Comment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4), rs.getString(5));
+				cmList.add(c);
+			}
+
+		} catch (Exception e) {
+
+		}
+		cm.close(con);
+		return cmList;
+	}
+
+	public boolean writeComment(Comment c) {
+		Connection con = new ConnectionManager().getConnection();
+		try {
+			con.setAutoCommit(false);
+			String sql = "insert into usercomment values(?,?,?,?,?)";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, c.getUserID());
+			ps.setString(2, c.getMovieCD());
+			ps.setString(3, c.getUserText());
+			ps.setDouble(4, c.getGrade());
+			ps.setString(5, c.getUserPic());
+			ps.executeUpdate();
+
+			con.commit();
+			con.setAutoCommit(true);
+			cm.close(con);
+			return true;
+
+		} catch (Exception e) {
+			try {
+				con.rollback();
+				con.setAutoCommit(true);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		cm.close(con);
+		return false;
+	}
 }

@@ -103,8 +103,11 @@ public class ServerThread implements Runnable {
 				break;
 
 			case Data.ICONCHANGE:
-				//////////////
 				mg.changeIcon(me, (String) obj[2]);
+				break;
+
+			case Data.GETCOMMENT:
+				/////////////
 				break;
 			}
 
