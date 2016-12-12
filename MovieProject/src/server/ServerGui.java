@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import datas.User;
 import vos.MovieBoxInfo;
 
 import java.awt.BorderLayout;
@@ -142,8 +143,13 @@ public class ServerGui extends JFrame {
 		}
 	}
 
-	public void setUserList(ArrayList<String> users) {
-		user.setListData(users.toArray());
+	public void setUserList(ArrayList<User> users) {
+		ArrayList<String> nicks = new ArrayList<>();
+		for (User k : users) {
+			nicks.add(k.getId());
+		}
+		if (nicks.size() != 0)
+			user.setListData(nicks.toArray());
 	}
 
 	public ArrayList<MovieBoxInfo> getMblist() {

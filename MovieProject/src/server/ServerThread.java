@@ -1,6 +1,5 @@
 package server;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -14,8 +13,7 @@ public class ServerThread implements Runnable {
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 	public ArrayList<ObjectOutputStream> usersList;
-	public static ArrayList<String> userNicks;
-	public static ArrayList<User> theUsers;
+	public ArrayList<User> theUsers;
 	private boolean flag = true;
 	private ServerDBwork mg;
 	private ServerGui gui;
@@ -32,13 +30,11 @@ public class ServerThread implements Runnable {
 	}
 
 	public ServerThread(Socket sk, ObjectOutputStream oos, ObjectInputStream ois,
-			ArrayList<ObjectOutputStream> usersList, ArrayList<String> userNicks, ArrayList<User> theUsers,
-			ServerGui gui, ServerReceiver sr) {
+			ArrayList<ObjectOutputStream> usersList, ArrayList<User> theUsers, ServerGui gui, ServerReceiver sr) {
 		this.sk = sk;
 		this.oos = oos;
 		this.ois = ois;
 		this.usersList = usersList;
-		this.userNicks = userNicks;
 		this.theUsers = theUsers;
 		this.gui = gui;
 		this.sr = sr;
@@ -75,7 +71,6 @@ public class ServerThread implements Runnable {
 				me = mg.login((String) obj[1], (String) obj[2]);
 				if (me != null) {
 					theUsers.add(me);
-					gui.setUserList(userNicks);
 				}
 				Object[] loginResult = new Object[] { Data.LOGIN, me, gui.getMblist() };
 				oos.writeUnshared(loginResult);
@@ -85,7 +80,12 @@ public class ServerThread implements Runnable {
 				break;
 
 			case Data.CHATLOGIN:
-				Object[] CLogresult = new Object[] { Data.CHATLOGIN, userNicks };
+				ArrayList<String> nicks = new ArrayList<>();
+
+				for (User k : theUsers)
+					nicks.add(k.getId());
+
+				Object[] CLogresult = new Object[] { Data.CHATLOGIN, nicks };
 				System.out.println("st : " + "유저 로그인 감지 --");
 				for (ObjectOutputStream oio : usersList) {
 					oio.writeUnshared(CLogresult);
@@ -96,6 +96,7 @@ public class ServerThread implements Runnable {
 			case Data.CHATMESSAGE:
 				String message = (String) obj[1];
 				Object[] MeResult = new Object[] { Data.CHATMESSAGE, message };
+
 				for (ObjectOutputStream oio : usersList) {
 					oio.writeUnshared(MeResult);
 				}
@@ -115,12 +116,15 @@ public class ServerThread implements Runnable {
 
 		gui.setMessage(userID + " 회원이 프로그램을 종료하였습니다.");
 		theUsers.remove(me);
-		userNicks.remove(userID);
-		gui.setUserCount(usersList.size());
+		gui.setUserCount(theUsers.size());
+		gui.setUserList(theUsers);
 
-		gui.setUserList(userNicks);
+		ArrayList<String> nicks = new ArrayList<>();
+		for (User k : theUsers) {
+			nicks.add(k.getId());
+		}
 
-		Object[] logRes = new Object[] { Data.CHATLOGOUT, userNicks, (userID + "회원이 퇴장하였습니다.") };
+		Object[] logRes = new Object[] { Data.CHATLOGOUT, nicks, (userID + "회원이 퇴장하였습니다.") };
 		try {
 			for (ObjectOutputStream ooos : usersList) {
 				ooos.writeUnshared(logRes);

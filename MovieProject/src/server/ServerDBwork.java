@@ -65,7 +65,6 @@ public class ServerDBwork {
 			while (rs.next()) {
 				u = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
 				gui.setMessage(u.getId() + " 회원이 접속하였습니다.");
-				thth.userNicks.add(u.getId());
 				thth.setUserID(u.getId());
 			}
 

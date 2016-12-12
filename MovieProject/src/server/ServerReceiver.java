@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import datas.User;
-import server.chat.ServerChat;
 
 public class ServerReceiver {
 	private ServerSocket ss;
@@ -47,7 +46,7 @@ public class ServerReceiver {
 			usersList.add(oos);
 			gui.setUserCount(usersList.size());
 			gui.setMessage(sk.getInetAddress() + "/ 접속하였습니다.");
-			ServerThread sth = new ServerThread(sk, oos, ois, usersList, userNicks, theUsers, gui, this);
+			ServerThread sth = new ServerThread(sk, oos, ois, usersList, theUsers, gui, this);
 			Thread th = new Thread(sth);
 			th.start();
 

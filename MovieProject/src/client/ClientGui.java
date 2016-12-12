@@ -595,9 +595,11 @@ public class ClientGui extends JFrame {
 				login();
 			} else if (e.getSource() == mBoxTable) {
 				////////////////////////////////////////////
+
 			} else if (e.getSource() == tb_search) {
 				int who = tb_search.getSelectedRow();
-				setMovieInfoPage(scList.get(who).getMvCode());
+				if (who != -1)
+					setMovieInfoPage(scList.get(who).getMvCode());
 				mainCard.show(mainBOARD, "pnMovie");
 			} else if (e.getSource() == bt_mv2Return) {
 				mainCard.show(mainBOARD, "pnMain");
@@ -849,24 +851,29 @@ public class ClientGui extends JFrame {
 		public void componentMoved(ComponentEvent e) {
 			// TODO Auto-generated method stub
 			super.componentMoved(e);
-			if (chat != null)
+			if (chat != null) {
 				chat.setThisLocation();
+			}
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public void componentShown(ComponentEvent e) {
 			// TODO Auto-generated method stub
 			super.componentShown(e);
-			if (chat != null)
+			if (chat != null) {
 				chat.show();
+			}
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public void componentHidden(ComponentEvent e) {
 			// TODO Auto-generated method stub
 			super.componentHidden(e);
-			if (chat != null)
+			if (chat != null) {
 				chat.hide();
+			}
 		}
 	}
 
