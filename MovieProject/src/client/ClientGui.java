@@ -46,17 +46,17 @@ import datas.Data;
 import datas.User;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
+import javax.swing.JScrollBar;
 
 public class ClientGui extends JFrame implements Runnable { //
 	private static final int fwidth = 900;
 	private static final int fheight = 540;
-	private JPanel pnBOARD, pnLogin, pnMain, pnMovie;
+	private JPanel pnLogin, pnMain, pnMovie;
 	private JPanel lg2, lg1, lg2_1, lg2_2;
 	private JPanel mm1_1, mm1_2, mm1_3, mm1_4, mv2_1, mv2_2, mv1, panel_6, mv2_panel, mn1, mn2;
 	private JPanel pn_search, pn_info;
 	private JTextField tf_id;
 	private JPasswordField tf_pw;
-	private JLabel lblNewLabel_3;
 	private JButton bt_Login;
 	private JLabel goRegi;
 	private CardLayout mainCard, lg2Card, mv2Card;
@@ -76,7 +76,7 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JScrollPane tableView;
 	private JTextField mn_search;
 	private JButton bt_search;
-	private JComboBox cb;
+	private JComboBox<String> cb;
 	private JTable tb_search;
 	private JScrollPane sp_search;
 	private JTextArea ta_mvStory;
@@ -110,6 +110,16 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JLabel lblNewLabel_5;
 	private JPanel pn_mv2Grade;
 	private LoadingPanel ld;
+	private JPanel pn_UserLike;
+	private JButton bt_mm1_3Return;
+	private JButton bt_mm1_4Return;
+	private JLabel lblNewLabel_3;
+	private JLabel lblNewLabel_6;
+	private JPanel pn_UserComment;
+	private JButton bt_mv2Like;
+	private JLabel lb_isLike;
+	private boolean isLike;
+	private MovieSearchInfo msi;
 
 	public ClientGui() {////
 		myGui = this;
@@ -133,7 +143,6 @@ public class ClientGui extends JFrame implements Runnable { //
 		} //
 
 		mainBOARD = getContentPane();
-		pnBOARD = new JPanel();
 		setTitle("MovieLovers");
 		setSize(fwidth, fheight);
 		mainCard = new CardLayout(0, 0);
@@ -362,9 +371,47 @@ public class ClientGui extends JFrame implements Runnable { //
 
 		mm1_3 = new JPanel();
 		mn1.add(mm1_3, "mm1_3");
+		mm1_3.setLayout(null);
+
+		pn_UserLike = new JPanel();
+		pn_UserLike.setBackground(Color.WHITE);
+		pn_UserLike.setBounds(62, 131, 323, 240);
+		mm1_3.add(pn_UserLike);
+
+		bt_mm1_3Return = new JButton("뒤로가기") {
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
+		bt_mm1_3Return.setBounds(30, 424, 40, 40);
+		mm1_3.add(bt_mm1_3Return);
+
+		lblNewLabel_3 = new JLabel("좋아요");
+		lblNewLabel_3.setBounds(195, 80, 62, 18);
+		mm1_3.add(lblNewLabel_3);
 
 		mm1_4 = new JPanel();
 		mn1.add(mm1_4, "mm1_4");
+		mm1_4.setLayout(null);
+
+		pn_UserComment = new JPanel();
+		pn_UserComment.setBackground(Color.WHITE);
+		pn_UserComment.setBounds(62, 61, 323, 315);
+		mm1_4.add(pn_UserComment);
+
+		bt_mm1_4Return = new JButton("뒤로가기") {
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
+		bt_mm1_4Return.setBounds(30, 424, 40, 40);
+		mm1_4.add(bt_mm1_4Return);
+
+		lblNewLabel_6 = new JLabel("코멘트");
+		lblNewLabel_6.setBounds(195, 31, 62, 18);
+		mm1_4.add(lblNewLabel_6);
 
 		ImageIcon boxOfficeR = new ImageIcon("./img/boxOfficeR.png");
 		mn2 = new JPanel() {
@@ -378,7 +425,7 @@ public class ClientGui extends JFrame implements Runnable { //
 
 		ImageIcon sRBack = new ImageIcon("img/searchR.png");
 
-		cb = new JComboBox();
+		cb = new JComboBox<String>();
 		cb.setBounds(85, 185, 99, 26);
 		mn2.add(cb);
 		cb.addItem("=====");
@@ -458,6 +505,13 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnMovie.add(mv1);
 		mv1.setLayout(null);
+
+		lb_isLike = new JLabel("");
+		lb_isLike.setOpaque(true);
+		lb_isLike.setHorizontalAlignment(SwingConstants.CENTER);
+		lb_isLike.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
+		lb_isLike.setBounds(162, 234, 50, 50);
+		mv1.add(lb_isLike);
 
 		lb_mvIcon = new JLabel("", new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"), SwingConstants.CENTER);
 		lb_mvIcon.setSize(new Dimension(170, 215));
@@ -567,6 +621,10 @@ public class ClientGui extends JFrame implements Runnable { //
 		bt_mv2Write.setBounds(34, 417, 91, 27);
 		mv2_1.add(bt_mv2Write);
 
+		bt_mv2Like = new JButton("좋아요");
+		bt_mv2Like.setBounds(139, 417, 91, 27);
+		mv2_1.add(bt_mv2Like);
+
 		ImageIcon writingR = new ImageIcon("img/writingR.png");
 		mv2_2 = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -639,12 +697,17 @@ public class ClientGui extends JFrame implements Runnable { //
 		bt_search.addMouseListener(ma);
 		bt_mv2Return.addMouseListener(ma);
 		bt_mm1_2Return.addMouseListener(ma);
+		bt_mm1_3Return.addMouseListener(ma);
+		bt_mm1_4Return.addMouseListener(ma);
 		bt_chat.addMouseListener(ma);
 		this.addComponentListener(wa);
 		pIcon.addMouseListener(ma);
 		bt_mv2Write.addMouseListener(ma); // 글쓰기
 		bt_mv2_2Return.addMouseListener(ma);
 		bt_mv2_2Sub.addMouseListener(ma);
+		likeIcon.addMouseListener(ma);
+		commentIcon.addMouseListener(ma);
+		bt_mv2Like.addMouseListener(ma);
 	}
 
 	public class mcl extends MouseAdapter {
@@ -688,6 +751,19 @@ public class ClientGui extends JFrame implements Runnable { //
 				mv2Card.show(mv2, "mv2_1");
 			} else if (e.getSource() == bt_mv2_2Sub) {// 코멘트 올리기
 				mv2Card.show(mv2, "mv2_1");
+			} else if (e.getSource() == bt_mm1_3Return) {
+				mn1Card.show(mn1, "mm1_1");
+			} else if (e.getSource() == bt_mm1_4Return) {
+				mn1Card.show(mn1, "mm1_1");
+			} else if (e.getSource() == likeIcon) {
+				mn1Card.show(mn1, "mm1_3");
+				///// 내가 좋아요 누른 영화들 확인
+			} else if (e.getSource() == commentIcon) {
+				mn1Card.show(mn1, "mm1_4");
+				///// 내가 남긴 코멘트 확인
+			} else if (e.getSource() == bt_mv2Like) {
+				////////// 좋아요눌렀을때?
+				actionLike();
 			}
 		}
 	}
@@ -744,17 +820,17 @@ public class ClientGui extends JFrame implements Runnable { //
 
 	public void setMovieBoxInfo(ArrayList<MovieBoxInfo> malist) {
 		dblist = malist;
-		Vector<String> column = new Vector();
+		Vector<String> column = new Vector<String>();
 		column.addElement("순위");
 		column.addElement("제목");
 		column.addElement("감독");
 		column.addElement("개봉일");
 
 		Vector<String> elements = null;
-		Vector<Vector> rowData1 = new Vector();
+		Vector<Vector> rowData1 = new Vector<Vector>();
 		for (int i = 0; i < dblist.size(); i++) {
 			MovieBoxInfo h = dblist.get(i);
-			elements = new Vector();
+			elements = new Vector<String>();
 			elements.addElement((i + 1) + "");
 			elements.addElement(h.getMovieNm());
 			elements.addElement(h.getDirector());
@@ -812,17 +888,21 @@ public class ClientGui extends JFrame implements Runnable { //
 			return;
 		}
 
-		Vector<String> column = new Vector();
+		mn1Card.show(mn1, "mm1_2");
+		searchRBack.setVisible(true);
+		mm1_1.revalidate();
+
+		Vector<String> column = new Vector<String>();
 		column.addElement("제목");
 		column.addElement("장르");
 		column.addElement("감독");
 		column.addElement("주연배우");
 
 		Vector<String> elements = null;
-		Vector<Vector> rowData1 = new Vector();
+		Vector<Vector<String>> rowData1 = new Vector<Vector<String>>();
 		for (int i = 0; i < scList.size(); i++) {
 			MovieSearchInfo h = scList.get(i);
-			elements = new Vector();
+			elements = new Vector<String>();
 			elements.addElement(h.getMvTitle());
 			elements.addElement(h.getMvGenre());
 			elements.addElement(h.getMvDirector());
@@ -849,12 +929,15 @@ public class ClientGui extends JFrame implements Runnable { //
 	}
 
 	public void setMovieInfoPage(String movieCode) {
+		mg.getIsLike(whoAmI, movieCode);
+
 		MovieSearchInfo m = null;
 		for (int i = 0; i < scList.size(); i++) {
 			if (scList.get(i).getMvCode().equals(movieCode)) {
 				m = scList.get(i);
 			}
 		}
+		msi = m;
 		String iconURL = m.getMvThumb();
 		String title = m.getMvTitle();
 		String genre = m.getMvGenre();
@@ -865,14 +948,14 @@ public class ClientGui extends JFrame implements Runnable { //
 
 		if (iconURL.equals("")) {
 			Image image = noImg.getImage();
-			Image reSized = image.getScaledInstance(171, 213, Image.SCALE_SMOOTH);
+			Image reSized = image.getScaledInstance(170, 215, Image.SCALE_SMOOTH);
 			noImg = new ImageIcon(reSized);
 			lb_mvIcon.setIcon(noImg);
 		} else {
 			try {
 				ImageIcon imgicon = new ImageIcon(ImageIO.read(new URL(iconURL)));
 				Image image = imgicon.getImage();
-				Image reSized = image.getScaledInstance(171, 213, Image.SCALE_SMOOTH);
+				Image reSized = image.getScaledInstance(170, 215, Image.SCALE_SMOOTH);
 				imgicon = new ImageIcon(reSized);
 				lb_mvIcon.setIcon(imgicon);
 			} catch (MalformedURLException e) {
@@ -883,6 +966,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				e.printStackTrace();
 			}
 		}
+
 		//
 		// lb_mvIcon.setSize(new Dimension(170, 215));
 		// lb_mvIcon.setBounds(31, 49, 171, 222);
@@ -922,6 +1006,9 @@ public class ClientGui extends JFrame implements Runnable { //
 		}
 		ta_mvStory.setCaretPosition(0);
 		//////////////////
+
+		lb_mvIcon.setSize(new Dimension(170, 215));
+		lb_mvIcon.setBounds(31, 49, 181, 235);
 		mv1.repaint();
 		mv1.revalidate();
 	}
@@ -951,7 +1038,7 @@ public class ClientGui extends JFrame implements Runnable { //
 			// TODO Auto-generated method stub
 			super.componentShown(e);
 			if (chat != null) {
-				chat.show();
+				chat.setVisible(true);
 			}
 		}
 
@@ -961,7 +1048,7 @@ public class ClientGui extends JFrame implements Runnable { //
 			// TODO Auto-generated method stub
 			super.componentHidden(e);
 			if (chat != null) {
-				chat.hide();
+				chat.setVisible(false);
 			}
 		}
 	}
@@ -984,6 +1071,7 @@ public class ClientGui extends JFrame implements Runnable { //
 			JOptionPane.showMessageDialog(null, "로그인이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
 			mainCard.show(mainBOARD, "pnMain");
 			whoAmI = result.getId();
+			me = result;
 			mg.setUserId(result.getId());
 			chat = new ChatGUI(mg, this);
 			chat.setId(whoAmI);
@@ -1027,13 +1115,33 @@ public class ClientGui extends JFrame implements Runnable { //
 		return url;
 	}
 
-	public void setCommentPanel() {
-
+	public void actionLike() {
+		///////////// who am i 랑 msi 를 보내주면 저장된다.
+		////////////////// 일단 좋아하는지 안좋아하는지 가져와서 아직 좋아요가 아니면 등록하면서 아이콘 등록해주고
+		// 원래 좋아하던거면 없애주기???
+		mg.userLike(whoAmI, msi);
+		mg.getIsLike(whoAmI, msi.getMvCode());
 	}
 
-	public void writeComment() {
-
+	public void reactionIsItLike(int reaction) {
+		if (reaction == Data.USERLIKETHIS) {
+			ImageIcon ig = new ImageIcon("./img/likeIcon.png");
+			Image image = ig.getImage();
+			Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			ig = new ImageIcon(reSized);
+			lb_isLike.setIcon(ig);
+			bt_mv2Like.setText("좋아요취소");
+		} else {
+			ImageIcon ig = new ImageIcon("./img/noImg.jpg");
+			Image image = ig.getImage();
+			Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			ig = new ImageIcon(reSized);
+			lb_isLike.setIcon(ig);
+			bt_mv2Like.setText("좋아요");
+		}
 	}
+
+	/////////////////////////////////////////////////////////////////
 
 	@Override
 	public void run() {
@@ -1048,8 +1156,5 @@ public class ClientGui extends JFrame implements Runnable { //
 
 		}
 		ld.dispose();
-		mn1Card.show(mn1, "mm1_2");
-		searchRBack.setVisible(true);
-		mm1_1.revalidate();
 	}
 }

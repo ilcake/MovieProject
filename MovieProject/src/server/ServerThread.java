@@ -5,8 +5,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import datas.Comment;
 import datas.Data;
 import datas.User;
+import vos.MovieSearchInfo;
 
 public class ServerThread implements Runnable {
 	private Socket sk;
@@ -109,8 +111,30 @@ public class ServerThread implements Runnable {
 				mg.changeIcon(me, (String) obj[2]);
 				break;
 
+			case Data.USERLIKE:
+				mg.saveUserLike((String) obj[1], (MovieSearchInfo) obj[2]);
+				break;
+
+			case Data.GETUSERLIKE_BY_CD:
+				int wht = mg.getUserLikebyCD((String) obj[1], (String) obj[2]);
+				Object[] gbCD = new Object[] { Data.GETUSERLIKE_BY_CD, wht };
+				oos.writeUnshared(gbCD);
+				break;
+
+			case Data.GETUSERLIKE_BY_ID:
+				ArrayList<MovieSearchInfo> sdList = mg.getUserLikebyID((String) obj[1]);
+				Object[] gBID = new Object[] { Data.GETUSERLIKE_BY_ID, sdList };
+				oos.writeUnshared(gBID);
+				break;
+
+			case Data.WRITECOMMENT:
+				mg.writeComment((Comment) obj[1]);
+				break;
+
 			case Data.GETCOMMENT:
-				/////////////
+				ArrayList<Comment> cmList = mg.getComment((String) obj[1]);
+				Object[] gComm = new Object[] { Data.GETCOMMENT, cmList };
+				oos.writeUnshared(gComm);
 				break;
 			}
 
@@ -135,14 +159,15 @@ public class ServerThread implements Runnable {
 		for (User k : theUsers) {
 			nicks.add(k.getId());
 		}
+		if (!userID.equals("미접속")) {
+			Object[] logRes = new Object[] { Data.CHATLOGOUT, nicks, (userID + "회원이 퇴장하였습니다.") };
+			try {
+				for (ObjectOutputStream ooos : usersList) {
+					ooos.writeUnshared(logRes);
+				}
+			} catch (Exception e) {
 
-		Object[] logRes = new Object[] { Data.CHATLOGOUT, nicks, (userID + "회원이 퇴장하였습니다.") };
-		try {
-			for (ObjectOutputStream ooos : usersList) {
-				ooos.writeUnshared(logRes);
 			}
-		} catch (Exception e) {
-
 		}
 
 	}

@@ -77,6 +77,10 @@ public class ClientThread extends Thread {
 		case Data.CHATLOGOUT:
 			cgui.setUserList((ArrayList<String>) obj[1]);
 			cgui.talk((String) obj[2]);
+
+		case Data.GETUSERLIKE_BY_CD:
+			gui.reactionIsItLike((int) obj[1]);
+			break;
 		}
 
 	}

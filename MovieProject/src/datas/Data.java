@@ -26,4 +26,10 @@ public class Data implements Serializable {
 
 	public static final int ICONCHANGE = 85;
 
+	public static final int USERLIKE = 99;
+	public static final int GETUSERLIKE_BY_CD = 16;
+	public static final int GETUSERLIKE_BY_ID = 17;
+
+	public static final int USERLIKETHIS = 666;
+
 }

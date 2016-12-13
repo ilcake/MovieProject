@@ -12,6 +12,7 @@ import client.chat.ChatThread;
 import datas.Data;
 import datas.User;
 import vos.MovieBoxInfo;
+import vos.MovieSearchInfo;
 
 public class ClientManager {
 	private Socket sk;
@@ -69,43 +70,7 @@ public class ClientManager {
 		whatTodo(what);
 	}
 
-	// public void getMovieBoxInfo() {
-	// Object[] what = new Object[] { Data.GETMOVIEBOXINFO };
-	// whatTodo(what);
-	// }
-
-	public void connection() {
-		try {
-			sk = new Socket("localhost", 17771);
-			oos = new ObjectOutputStream(sk.getOutputStream());
-			ois = new ObjectInputStream(sk.getInputStream());
-
-			cht = new ClientThread(ois, gui, this, cgui);
-			Thread th = new Thread(cht);
-			th.start();
-
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void whatTodo(Object[] what) {
-		try {
-			synchronized (this) {
-				System.out.println("cm : " + what[0]);
-				oos.writeObject(what);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void startChat() {
-		// cgui = new ChatGUI(this, gui);
 		Object[] what = new Object[] { Data.CHATLOGIN };
 		whatTodo(what);
 	}
@@ -128,4 +93,43 @@ public class ClientManager {
 
 	}
 
+	public void userLike(String whoAmI, MovieSearchInfo msi) {
+		Object[] what = new Object[] { Data.USERLIKE, whoAmI, msi };
+		whatTodo(what);
+	}
+
+	public void getIsLike(String id, String mvCD) {
+		Object[] what = new Object[] { Data.GETUSERLIKE_BY_CD, id, mvCD };
+		whatTodo(what);
+	}
+
+	public void whatTodo(Object[] what) {
+		try {
+			synchronized (this) {
+				oos.writeObject(what);
+				oos.flush();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void connection() {
+		try {
+			sk = new Socket("localhost", 17771);
+			oos = new ObjectOutputStream(sk.getOutputStream());
+			ois = new ObjectInputStream(sk.getInputStream());
+
+			cht = new ClientThread(ois, gui, this, cgui);
+			Thread th = new Thread(cht);
+			th.start();
+
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

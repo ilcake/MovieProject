@@ -12,6 +12,7 @@ import datas.ConnectionManager;
 import datas.Data;
 import datas.User;
 import vos.MovieBoxInfo;
+import vos.MovieSearchInfo;
 
 public class ServerDBwork {
 	private ConnectionManager cm;
@@ -151,5 +152,113 @@ public class ServerDBwork {
 		}
 		cm.close(con);
 		return false;
+	}
+
+	public void saveUserLike(String id, MovieSearchInfo msi) {
+		int isIt = getUserLikebyCD(id, msi.getMvCode());
+		Connection con = new ConnectionManager().getConnection();
+
+		if (isIt == Data.USERLIKETHIS) {
+			try {
+				con.setAutoCommit(false);
+				String sql = "delete userlike where userid=? and moviecd=?";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setString(1, id);
+				ps.setString(2, msi.getMvCode());
+				ps.executeUpdate();
+
+				con.commit();
+				con.setAutoCommit(true);
+
+			} catch (SQLException e) {
+
+				try {
+					con.rollback();
+					con.setAutoCommit(true);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+
+		} else {
+
+			try {
+				con.setAutoCommit(false);
+				String sql = "insert into userlike values(?,?,?,?,?,?,?,?,?)";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setString(1, id);
+				ps.setString(2, msi.getMvCode());
+				ps.setString(3, msi.getMvTitle());
+				ps.setString(4, msi.getMvGenre());
+				ps.setString(5, msi.getMvDirector());
+				ps.setString(6, msi.getMvActor());
+				ps.setString(7, msi.getMvThumb());
+				ps.setString(8, msi.getMvStory());
+				ps.setString(9, msi.getMvTm());
+				ps.executeUpdate();
+				con.commit();
+
+				con.setAutoCommit(true);
+				cm.close(con);
+
+			} catch (Exception e) {
+				try {
+					con.rollback();
+					con.setAutoCommit(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+
+		}
+		cm.close(con);
+	}
+
+	public int getUserLikebyCD(String id, String mvCd) {
+		int result = -1;
+		Connection con = new ConnectionManager().getConnection();
+		try {
+			String sql = "select userid, moviecd from userlike where userid=? and moviecd=?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.setString(2, mvCd);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+			}
+			cm.close(con);
+
+		} catch (Exception e) {
+			result = Data.FAIL;
+		}
+		cm.close(con);
+		return result;
+	}
+
+	public ArrayList<MovieSearchInfo> getUserLikebyID(String id) {
+		ArrayList<MovieSearchInfo> sList = new ArrayList<>();
+
+		Connection con = new ConnectionManager().getConnection();
+		try {
+			String sql = "select moviecd, title, genre, director, actor, thumb, story, mytm from userlike where userid=?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			MovieSearchInfo m = null;
+			while (rs.next()) {
+				m = new MovieSearchInfo(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+				sList.add(m);
+			}
+			cm.close(con);
+
+		} catch (Exception e) {
+
+		}
+		cm.close(con);
+
+		return sList;
 	}
 }
