@@ -1,74 +1,51 @@
 package client;
 
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-
-import datas.Data;
-import datas.User;
-import vos.MovieBoxInfo;
-import vos.MovieSearchInfo;
-
 import java.awt.CardLayout;
-import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import javax.swing.JTextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
-import java.awt.image.BufferedImage;
-import java.beans.AppletInitializer;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.swing.JButton;
-import javax.swing.JPasswordField;
-import java.awt.Color;
-
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import java.awt.Container;
-import java.awt.Dimension;
-
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingWorker;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 import client.chat.ChatGUI;
 import client.db.SearchBy;
-
-import javax.swing.JScrollPane;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import java.awt.Font;
-import java.awt.Graphics;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.FlowLayout;
+import datas.Data;
+import datas.User;
+import vos.MovieBoxInfo;
+import vos.MovieSearchInfo;
 
 public class ClientGui extends JFrame implements Runnable { //
 	private static final int fwidth = 900;
@@ -576,15 +553,28 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv2_panel.setBounds(34, 43, 380, 362);
 		mv2_1.add(mv2_panel);
 
-		bt_mv2Return = new JButton("뒤로가기");
-		bt_mv2Return.setBounds(323, 417, 91, 27);
+		bt_mv2Return = new JButton("뒤로가기") {
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
+		bt_mv2Return.setBounds(355, 423, 40, 40);
+		;
 		mv2_1.add(bt_mv2Return);
 
 		bt_mv2Write = new JButton("글쓰기");
 		bt_mv2Write.setBounds(34, 417, 91, 27);
 		mv2_1.add(bt_mv2Write);
 
-		mv2_2 = new JPanel();
+		ImageIcon writingR = new ImageIcon("img/writingR.png");
+		mv2_2 = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(writingR.getImage(), 0, 0, null);
+				Dimension d = getSize();
+				g.drawImage(writingR.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
 		mv2.add(mv2_2, "mv2_2");
 		mv2_2.setLayout(null);
 
@@ -592,8 +582,13 @@ public class ClientGui extends JFrame implements Runnable { //
 		ta_comment.setBounds(48, 173, 351, 163);
 		mv2_2.add(ta_comment);
 
-		bt_mv2_2Return = new JButton("back");
-		bt_mv2_2Return.setBounds(355, 423, 75, 71);
+		bt_mv2_2Return = new JButton("back") {
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
+		bt_mv2_2Return.setBounds(355, 423, 40, 40);
 		mv2_2.add(bt_mv2_2Return);
 
 		bt_mv2_2Sub = new JButton("SUBMIT");
@@ -710,9 +705,9 @@ public class ClientGui extends JFrame implements Runnable { //
 		 * switch (reaction) { case Data.FAIL:
 		 * JOptionPane.showMessageDialog(null, "중복된 아이디가 이미 존재합니다.", "회원가입 에러",
 		 * JOptionPane.ERROR_MESSAGE); rg_id.setText(""); break; case
-		 * Data.RG_SUCCESS: JOptionPane.showMessageDialog(null,
-		 * "회원가입이 완료되었습니다!", "환영합니다", JOptionPane.INFORMATION_MESSAGE);
-		 * lg2Card.show(lg2, "lg2_1"); break; }
+		 * Data.RG_SUCCESS: JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다!"
+		 * , "환영합니다", JOptionPane.INFORMATION_MESSAGE); lg2Card.show(lg2,
+		 * "lg2_1"); break; }
 		 */
 	}
 
@@ -767,7 +762,16 @@ public class ClientGui extends JFrame implements Runnable { //
 			rowData1.addElement(elements);
 		}
 
-		mBoxTable = new JTable(rowData1, column);
+		// mBoxTable = new JTable(rowData1, column);
+		// 테이블 내용 수정 불가------------------------
+		DefaultTableModel dtf = new DefaultTableModel(rowData1, column) {
+			public boolean isCellEditable(int rowIndex, int mColIndex) {
+				return false;
+			}
+		};
+		mBoxTable = new JTable(dtf);
+		// -----------------------------------------------
+
 		mBoxTable.getTableHeader().setReorderingAllowed(false);
 		mBoxTable.getColumnModel().getColumn(0).setPreferredWidth(4);
 		mBoxTable.getColumnModel().getColumn(0).setResizable(false);
@@ -826,7 +830,14 @@ public class ClientGui extends JFrame implements Runnable { //
 			rowData1.addElement(elements);
 		}
 
-		tb_search = new JTable(rowData1, column);
+		// 테이블 내용 수정 불가------------------------
+		DefaultTableModel dtf = new DefaultTableModel(rowData1, column) {
+			public boolean isCellEditable(int rowIndex, int mColIndex) {
+				return false;
+			}
+		};
+		tb_search = new JTable(dtf);
+		// -----------------------------------------------
 
 		tb_search.getTableHeader().setReorderingAllowed(false);
 		tb_search.setPreferredSize(new Dimension(pn_search.getSize()));
