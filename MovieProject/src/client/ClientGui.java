@@ -70,7 +70,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.FlowLayout;
 
-public class ClientGui extends JFrame { //
+public class ClientGui extends JFrame implements Runnable { //
 	private static final int fwidth = 900;
 	private static final int fheight = 540;
 	private JPanel pnBOARD, pnLogin, pnMain, pnMovie;
@@ -127,11 +127,12 @@ public class ClientGui extends JFrame { //
 	private JButton bt_mv2_2Return;
 	private JButton bt_mv2_2Sub;
 	private JLabel lb_mv2_pic;
-	private JLabel lb_grade;
+	private JLabel lb_grade, load;
 	private JPanel mv2;
 	private String sMovieCD;
 	private JLabel lblNewLabel_5;
 	private JPanel pn_mv2Grade;
+	private LoadingPanel ld;
 
 	public ClientGui() {////
 		myGui = this;
@@ -768,7 +769,6 @@ public class ClientGui extends JFrame { //
 
 		mBoxTable = new JTable(rowData1, column);
 		mBoxTable.getTableHeader().setReorderingAllowed(false);
-		// mBoxTable.setPreferredSize(new Dimension(tableView.getSize()));
 		mBoxTable.getColumnModel().getColumn(0).setPreferredWidth(4);
 		mBoxTable.getColumnModel().getColumn(0).setResizable(false);
 		DefaultTableCellRenderer celAlignCenter = new DefaultTableCellRenderer();
@@ -794,35 +794,10 @@ public class ClientGui extends JFrame { //
 			return;
 		}
 
-		mn1Card.show(mn1, "mm1_2");
-		searchRBack.setVisible(true);
-		try {
-			sb.Search(type, what);
-			scList = sb.getSearchList();
-			setSearchTable();
-		} catch (Exception e) {
+		ld = new LoadingPanel();
 
-		}
-		/*
-		 * SwingWorker<Void, Void> mySwingWorker = new SwingWorker<Void, Void>()
-		 * {
-		 * 
-		 * @Override protected Void doInBackground() throws Exception {
-		 * 
-		 * sb.Search(type, what); scList = sb.getSearchList(); setSearchTable();
-		 * 
-		 * return null; } };
-		 * 
-		 * Loading ld = new Loading();
-		 * 
-		 * mySwingWorker.addPropertyChangeListener(new PropertyChangeListener()
-		 * {
-		 * 
-		 * @Override public void propertyChange(PropertyChangeEvent evt) { if
-		 * (evt.getPropertyName().equals("state")) { if (evt.getNewValue() ==
-		 * SwingWorker.StateValue.DONE) { ld.dispose(); } } } });
-		 * mySwingWorker.execute();
-		 */
+		Thread th = new Thread(this);
+		th.start();
 
 	}
 
@@ -855,6 +830,7 @@ public class ClientGui extends JFrame { //
 
 		tb_search.getTableHeader().setReorderingAllowed(false);
 		tb_search.setPreferredSize(new Dimension(pn_search.getSize()));
+		tb_search.getColumnModel().getColumn(0).setPreferredWidth(100);
 		tb_search.setDragEnabled(false);
 		sp_search.setViewportView(tb_search);
 		tb_search.addMouseListener(new mcl());
@@ -1048,4 +1024,21 @@ public class ClientGui extends JFrame { //
 
 	}
 
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		try {
+			int type = cb.getSelectedIndex();
+			String what = mn_search.getText();
+			sb.Search(type, what);
+			scList = sb.getSearchList();
+			setSearchTable();
+		} catch (Exception e) {
+
+		}
+		ld.dispose();
+		mn1Card.show(mn1, "mm1_2");
+		searchRBack.setVisible(true);
+		mm1_1.revalidate();
+	}
 }

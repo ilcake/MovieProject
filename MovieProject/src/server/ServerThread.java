@@ -74,6 +74,7 @@ public class ServerThread implements Runnable {
 				}
 				Object[] loginResult = new Object[] { Data.LOGIN, me, gui.getMblist() };
 				oos.writeUnshared(loginResult);
+				gui.setUserList(theUsers);
 				break;
 
 			case Data.LOGOUT:
@@ -86,10 +87,11 @@ public class ServerThread implements Runnable {
 					nicks.add(k.getId());
 
 				Object[] CLogresult = new Object[] { Data.CHATLOGIN, nicks };
-				System.out.println("st : " + "유저 로그인 감지 --");
 				for (ObjectOutputStream oio : usersList) {
 					oio.writeUnshared(CLogresult);
+					oio.flush();
 				}
+				gui.setUserList(theUsers);
 
 				break;
 
@@ -99,6 +101,7 @@ public class ServerThread implements Runnable {
 
 				for (ObjectOutputStream oio : usersList) {
 					oio.writeUnshared(MeResult);
+					oio.flush();
 				}
 				break;
 
@@ -111,6 +114,7 @@ public class ServerThread implements Runnable {
 				break;
 			}
 
+			oos.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 
