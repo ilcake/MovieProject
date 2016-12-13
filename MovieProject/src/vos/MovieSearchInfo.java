@@ -1,9 +1,12 @@
 package vos;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class MovieSearchInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8257484628510956339L;
 	private String mvCode;
 	private String mvTitle;
 	private String mvGenre;

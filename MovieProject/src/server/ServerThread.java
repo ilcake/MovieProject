@@ -5,9 +5,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import datas.Comment;
 import datas.Data;
 import datas.User;
+import vos.UserComment;
 import vos.MovieSearchInfo;
 
 public class ServerThread implements Runnable {
@@ -128,11 +128,11 @@ public class ServerThread implements Runnable {
 				break;
 
 			case Data.WRITECOMMENT:
-				mg.writeComment((Comment) obj[1]);
+				mg.writeComment((UserComment) obj[1]);
 				break;
 
 			case Data.GETCOMMENT:
-				ArrayList<Comment> cmList = mg.getComment((String) obj[1]);
+				ArrayList<UserComment> cmList = mg.getComment((String) obj[1]);
 				Object[] gComm = new Object[] { Data.GETCOMMENT, cmList };
 				oos.writeUnshared(gComm);
 				break;

@@ -44,8 +44,10 @@ import client.chat.ChatGUI;
 import client.db.SearchBy;
 import datas.Data;
 import datas.User;
+import vos.UserComment;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
+import vos.PnComment;
 import vos.Stars;
 
 import javax.swing.JScrollBar;
@@ -126,7 +128,8 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JLabel lb_mv2_stars;
 	private JLabel lb_mv2_minus;
 	private JLabel lb_mv2_plus;
-	private Stars stars;
+	private Stars stars, myStar;
+	Dimension mv2Size;
 
 	public ClientGui() {////
 		myGui = this;
@@ -611,6 +614,8 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv2_panel = new JPanel();
 		mv2_panel.setBackground(new Color(128, 128, 128));
 		mv2_panel.setBounds(34, 43, 380, 362);
+		mv2Size = new Dimension(380, 360);
+		mv2_panel.setPreferredSize(mv2Size);
 		mv2_1.add(mv2_panel);
 
 		bt_mv2Return = new JButton("뒤로가기") {
@@ -674,9 +679,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv2_2.add(lblNewLabel_5);
 
 		lb_mv2_stars = new JLabel("별");
-		stars = new Stars(0);
 		lb_mv2_stars.setBounds(250, 107, 115, 25);
-		setStars(stars, lb_mv2_stars);
 		mv2_2.add(lb_mv2_stars);
 
 		lb_mv2_minus = new JLabel("마이너스");
@@ -781,9 +784,11 @@ public class ClientGui extends JFrame implements Runnable { //
 			} else if (e.getSource() == bt_mv2Write) {
 				// 글쓰기 버튼..
 				mv2Card.show(mv2, "mv2_2");
+				myStar = new Stars(0);
 			} else if (e.getSource() == bt_mv2_2Return) {// 뒤로가기
 				mv2Card.show(mv2, "mv2_1");
 			} else if (e.getSource() == bt_mv2_2Sub) {// 코멘트 올리기
+				writeComment();
 				mv2Card.show(mv2, "mv2_1");
 			} else if (e.getSource() == bt_mm1_3Return) {
 				mn1Card.show(mn1, "mm1_1");
@@ -799,18 +804,18 @@ public class ClientGui extends JFrame implements Runnable { //
 				////////// 좋아요눌렀을때?
 				actionLike();
 			} else if (e.getSource() == lb_mv2_minus) {// minus
-				if (stars.getStars() == 0) {
+				if (myStar.getStars() == 0) {
 					JOptionPane.showMessageDialog(null, "별점은 0~5점입니다.");
 				} else {
-					stars.minus();
-					setStars(stars, lb_mv2_stars);
+					myStar.minus();
+					setStars(myStar, lb_mv2_stars);
 				}
 			} else if (e.getSource() == lb_mv2_plus) {// plus
-				if (stars.getStars() == 10) {
+				if (myStar.getStars() == 10) {
 					JOptionPane.showMessageDialog(null, "별점은 0~5점입니다.");
 				} else {
-					stars.plus();
-					setStars(stars, lb_mv2_stars);
+					myStar.plus();
+					setStars(myStar, lb_mv2_stars);
 				}
 			}
 		}
@@ -1193,7 +1198,7 @@ public class ClientGui extends JFrame implements Runnable { //
 			bt_mv2Like.setText("좋아요");
 		}
 	}
-	
+
 	public void setStars(Stars stars, JLabel label) {
 		double s = stars.getStars();
 		if (s >= 0 && s < 1) {
@@ -1220,13 +1225,47 @@ public class ClientGui extends JFrame implements Runnable { //
 			label.setIcon(setStarLabel("img/5.png"));
 		}
 	}
-	
-	public ImageIcon setStarLabel(String url){
+
+	public ImageIcon setStarLabel(String url) {
 		ImageIcon starLabel = new ImageIcon(url);
 		Image image = starLabel.getImage();
-		image = image.getScaledInstance(115,25, Image.SCALE_SMOOTH);
+		image = image.getScaledInstance(115, 25, Image.SCALE_SMOOTH);
 		starLabel.setImage(image);
 		return starLabel;
+	}
+
+	public void writeComment() {
+		String userID = me.getId();
+		String userText = ta_comment.getText();
+		Double grade = myStar.getStars();
+		String movieCD = msi.getMvCode();
+		String userPic = me.getPic();
+
+		if (userText.equals("")) {
+			JOptionPane.showMessageDialog(null, "내용을 입력해 주십시오");
+			return;
+		} else if (grade == 0) {
+			JOptionPane.showMessageDialog(null, "평점을 설정해 주십시오");
+			return;
+		}
+
+		UserComment uc = new UserComment(userID, userText, grade, movieCD, userPic);
+		mg.writeComments(uc);
+		mg.getComments(msi.getMvCode());
+	}
+
+	public void getCommentReaction(ArrayList<UserComment> cCList) {
+		int count = 0;
+		int size = cCList.size();
+		if (size == 0)
+			return;
+		UserComment c = null;
+		for (int i = 0; i < size; i++) {
+			c = cCList.get(i);
+			JPanel pn = new PnComment(c, mv2_panel);
+			mv2_panel.add(pn);
+		}
+
 	}
 
 	/////////////////////////////////////////////////////////////////

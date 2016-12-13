@@ -13,6 +13,7 @@ import datas.Data;
 import datas.User;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
+import vos.UserComment;
 
 public class ClientManager {
 	private Socket sk;
@@ -85,6 +86,11 @@ public class ClientManager {
 		Object[] what = new Object[] { Data.ICONCHANGE, me, iconUrl };
 		whatTodo(what);
 
+	}
+
+	public void writeComments(UserComment c) {
+		Object[] what = new Object[] { Data.WRITECOMMENT, c };
+		whatTodo(what);
 	}
 
 	public void getComments(String movieCD) {

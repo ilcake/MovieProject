@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import datas.Comment;
 import datas.ConnectionManager;
 import datas.Data;
 import datas.User;
+import vos.UserComment;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
 
@@ -103,16 +103,16 @@ public class ServerDBwork {
 		cm.close(con);
 	}
 
-	public ArrayList<Comment> getComment(String movieCD) {
-		ArrayList<Comment> cmList = new ArrayList<>();
+	public ArrayList<UserComment> getComment(String movieCD) {
+		ArrayList<UserComment> cmList = new ArrayList<>();
 		Connection con = new ConnectionManager().getConnection();
 		try {
 			String sql = "select userid, usertext, grade, moviecd, userpic from usercomment";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
-			Comment c = null;
+			UserComment c = null;
 			while (rs.next()) {
-				c = new Comment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4), rs.getString(5));
+				c = new UserComment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4), rs.getString(5));
 				cmList.add(c);
 			}
 
@@ -123,7 +123,7 @@ public class ServerDBwork {
 		return cmList;
 	}
 
-	public boolean writeComment(Comment c) {
+	public boolean writeComment(UserComment c) {
 		Connection con = new ConnectionManager().getConnection();
 		try {
 			con.setAutoCommit(false);

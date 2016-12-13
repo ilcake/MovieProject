@@ -9,6 +9,7 @@ import client.chat.ChatGUI;
 import datas.Data;
 import datas.User;
 import vos.MovieBoxInfo;
+import vos.UserComment;
 
 public class ClientThread extends Thread {
 	private ObjectInputStream ois;
@@ -80,6 +81,10 @@ public class ClientThread extends Thread {
 
 		case Data.GETUSERLIKE_BY_CD:
 			gui.reactionIsItLike((int) obj[1]);
+			break;
+
+		case Data.GETCOMMENT:
+			// gui.getCommentReaction((ArrayList<UserComment>) obj[2]);
 			break;
 		}
 

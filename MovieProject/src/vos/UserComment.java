@@ -1,13 +1,19 @@
-package datas;
+package vos;
 
-public class Comment {
+import java.io.Serializable;
+
+public class UserComment implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2960151574478453452L;
 	private String userID;
 	private String userText;
 	private Double grade;
 	private String movieCD;
 	private String userPic;
 
-	public Comment(String userID, String userText, Double grade, String movieCD, String userPic) {
+	public UserComment(String userID, String userText, Double grade, String movieCD, String userPic) {
 		super();
 		this.userID = userID;
 		this.userText = userText;

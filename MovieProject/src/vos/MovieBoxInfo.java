@@ -3,6 +3,10 @@ package vos;
 import java.io.Serializable;
 
 public class MovieBoxInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4521787287364820813L;
 	private String movieNm;
 	private String movieCd;
 	private String director;
