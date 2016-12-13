@@ -192,9 +192,9 @@ public class SearchBy { // 제목으로 검색(1) 또는 감독(2)으로 검색
 
 		name = URLEncoder.encode(name, "UTF-8");
 
-		try {
+		try {	//키1:c1635cef98ea88052ed1414320cbccc4  / 키2:f88c5ef2439ea108f680e0016b2abb37
 			URL url = new URL("http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json"
-					+ "?key=c1635cef98ea88052ed1414320cbccc4" + "&" + addUrl + "=" + name + "&itemPerPage=" + 30);
+					+ "?key=f88c5ef2439ea108f680e0016b2abb37" + "&" + addUrl + "=" + name + "&itemPerPage=" + 30);
 			reader1 = new BufferedInputStream(url.openStream());
 			StringBuffer buffer = new StringBuffer();
 			int i;
@@ -243,7 +243,7 @@ public class SearchBy { // 제목으로 검색(1) 또는 감독(2)으로 검색
 		BufferedInputStream reader1 = null;
 		try {
 			URL url = new URL(" http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json"
-					+ "?key=c1635cef98ea88052ed1414320cbccc4" + "&movieCd=" + code);
+					+ "?key=f88c5ef2439ea108f680e0016b2abb37" + "&movieCd=" + code);
 			reader1 = new BufferedInputStream(url.openStream());
 			StringBuffer buffer = new StringBuffer();
 			int i;

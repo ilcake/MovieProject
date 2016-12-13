@@ -46,6 +46,8 @@ import datas.Data;
 import datas.User;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
+import vos.Stars;
+
 import javax.swing.JScrollBar;
 
 public class ClientGui extends JFrame implements Runnable { //
@@ -120,6 +122,11 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JLabel lb_isLike;
 	private boolean isLike;
 	private MovieSearchInfo msi;
+
+	private JLabel lb_mv2_stars;
+	private JLabel lb_mv2_minus;
+	private JLabel lb_mv2_plus;
+	private Stars stars;
 
 	public ClientGui() {////
 		myGui = this;
@@ -366,7 +373,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
 			}
 		};
-		bt_mm1_2Return.setBounds(30, 424, 40, 40);
+		bt_mm1_2Return.setBounds(30, 424, 103, 27);
 		mm1_2.add(bt_mm1_2Return);
 
 		mm1_3 = new JPanel();
@@ -384,7 +391,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
 			}
 		};
-		bt_mm1_3Return.setBounds(30, 424, 40, 40);
+		bt_mm1_3Return.setBounds(30, 424, 103, 27);
 		mm1_3.add(bt_mm1_3Return);
 
 		lblNewLabel_3 = new JLabel("좋아요");
@@ -406,7 +413,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
 			}
 		};
-		bt_mm1_4Return.setBounds(30, 424, 40, 40);
+		bt_mm1_4Return.setBounds(30, 424, 103, 27);
 		mm1_4.add(bt_mm1_4Return);
 
 		lblNewLabel_6 = new JLabel("코멘트");
@@ -572,17 +579,16 @@ public class ClientGui extends JFrame implements Runnable { //
 		pn_info.add(lb_mvActor);
 
 		JPanel pn_grade = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) pn_grade.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEADING);
 		pn_grade.setBounds(236, 120, 181, 40);
 		mv1.add(pn_grade);
+		pn_grade.setLayout(null);
 
-		JLabel lblNewLabel_4 = new JLabel("유저평점 :");
-		lblNewLabel_4.setHorizontalAlignment(SwingConstants.LEFT);
+		JLabel lblNewLabel_4 = new JLabel("별점:");
+		lblNewLabel_4.setBounds(12, 11, 38, 16);
 		pn_grade.add(lblNewLabel_4);
 
-		lb_grade = new JLabel("           ");
-		lb_grade.setHorizontalAlignment(SwingConstants.RIGHT);
+		lb_grade = new JLabel("별L");
+		lb_grade.setBounds(54, 7, 115, 25);
 		pn_grade.add(lb_grade);
 
 		mv2 = new JPanel();
@@ -613,7 +619,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
 			}
 		};
-		bt_mv2Return.setBounds(355, 423, 40, 40);
+		bt_mv2Return.setBounds(314, 435, 103, 27);
 		;
 		mv2_1.add(bt_mv2Return);
 
@@ -646,10 +652,16 @@ public class ClientGui extends JFrame implements Runnable { //
 				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
 			}
 		};
-		bt_mv2_2Return.setBounds(355, 423, 40, 40);
+		bt_mv2_2Return.setBounds(314, 435, 103, 27);
 		mv2_2.add(bt_mv2_2Return);
 
-		bt_mv2_2Sub = new JButton("SUBMIT");
+		ImageIcon submitBt = new ImageIcon("img/submitBt.png");
+		bt_mv2_2Sub = new JButton("SUBMIT") {
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(submitBt.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
 		bt_mv2_2Sub.setBounds(292, 349, 107, 27);
 		mv2_2.add(bt_mv2_2Sub);
 
@@ -661,9 +673,29 @@ public class ClientGui extends JFrame implements Runnable { //
 		lblNewLabel_5.setBounds(147, 110, 75, 18);
 		mv2_2.add(lblNewLabel_5);
 
-		pn_mv2Grade = new JPanel();
-		pn_mv2Grade.setBounds(222, 92, 177, 51);
-		mv2_2.add(pn_mv2Grade);
+		lb_mv2_stars = new JLabel("별");
+		stars = new Stars(0);
+		lb_mv2_stars.setBounds(250, 107, 115, 25);
+		setStars(stars, lb_mv2_stars);
+		mv2_2.add(lb_mv2_stars);
+
+		lb_mv2_minus = new JLabel("마이너스");
+		lb_mv2_minus.setBounds(220, 107, 25, 25);
+		ImageIcon minus = new ImageIcon("img/minus.png");
+		Image image = minus.getImage();
+		image = image.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		minus.setImage(image);
+		lb_mv2_minus.setIcon(minus);
+		mv2_2.add(lb_mv2_minus);
+
+		lb_mv2_plus = new JLabel("플러스");
+		lb_mv2_plus.setBounds(370, 107, 25, 25);
+		ImageIcon plus = new ImageIcon("img/plus.png");
+		Image image2 = plus.getImage();
+		image2 = image2.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		plus.setImage(image2);
+		lb_mv2_plus.setIcon(plus);
+		mv2_2.add(lb_mv2_plus);
 
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		int locWidth = (int) ((d.getWidth() - fwidth) / 2);
@@ -708,6 +740,8 @@ public class ClientGui extends JFrame implements Runnable { //
 		likeIcon.addMouseListener(ma);
 		commentIcon.addMouseListener(ma);
 		bt_mv2Like.addMouseListener(ma);
+		lb_mv2_minus.addMouseListener(ma);
+		lb_mv2_plus.addMouseListener(ma);
 	}
 
 	public class mcl extends MouseAdapter {
@@ -764,6 +798,20 @@ public class ClientGui extends JFrame implements Runnable { //
 			} else if (e.getSource() == bt_mv2Like) {
 				////////// 좋아요눌렀을때?
 				actionLike();
+			} else if (e.getSource() == lb_mv2_minus) {// minus
+				if (stars.getStars() == 0) {
+					JOptionPane.showMessageDialog(null, "별점은 0~5점입니다.");
+				} else {
+					stars.minus();
+					setStars(stars, lb_mv2_stars);
+				}
+			} else if (e.getSource() == lb_mv2_plus) {// plus
+				if (stars.getStars() == 10) {
+					JOptionPane.showMessageDialog(null, "별점은 0~5점입니다.");
+				} else {
+					stars.plus();
+					setStars(stars, lb_mv2_stars);
+				}
 			}
 		}
 	}
@@ -1011,6 +1059,11 @@ public class ClientGui extends JFrame implements Runnable { //
 		lb_mvIcon.setBounds(31, 49, 181, 235);
 		mv1.repaint();
 		mv1.revalidate();
+
+		// 여기에서 평균별점 넣어주기------------------------------------
+		double avg = 9.9;// 여기서 영화코드로 구한 평균더블값을 넣어주자
+		Stars avgStar = new Stars(avg);
+		setStars(avgStar, lb_grade);
 	}
 
 	public void setChatGUI(ChatGUI chat) {
@@ -1139,6 +1192,41 @@ public class ClientGui extends JFrame implements Runnable { //
 			lb_isLike.setIcon(ig);
 			bt_mv2Like.setText("좋아요");
 		}
+	}
+	
+	public void setStars(Stars stars, JLabel label) {
+		double s = stars.getStars();
+		if (s >= 0 && s < 1) {
+			label.setIcon(setStarLabel("img/0.png"));
+		} else if (s >= 1 && s < 2) {
+			label.setIcon(setStarLabel("img/0_5.png"));
+		} else if (s >= 2 && s < 3) {
+			label.setIcon(setStarLabel("img/1.png"));
+		} else if (s >= 3 && s < 4) {
+			label.setIcon(setStarLabel("img/1_5.png"));
+		} else if (s >= 4 && s < 5) {
+			label.setIcon(setStarLabel("img/2.png"));
+		} else if (s >= 5 && s < 6) {
+			label.setIcon(setStarLabel("img/2_5.png"));
+		} else if (s >= 6 && s < 7) {
+			label.setIcon(setStarLabel("img/3.png"));
+		} else if (s >= 7 && s < 8) {
+			label.setIcon(setStarLabel("img/3_5.png"));
+		} else if (s >= 8 && s < 9) {
+			label.setIcon(setStarLabel("img/4.png"));
+		} else if (s >= 9 && s < 10) {
+			label.setIcon(setStarLabel("img/4_5.png"));
+		} else if (s >= 10) {
+			label.setIcon(setStarLabel("img/5.png"));
+		}
+	}
+	
+	public ImageIcon setStarLabel(String url){
+		ImageIcon starLabel = new ImageIcon(url);
+		Image image = starLabel.getImage();
+		image = image.getScaledInstance(115,25, Image.SCALE_SMOOTH);
+		starLabel.setImage(image);
+		return starLabel;
 	}
 
 	/////////////////////////////////////////////////////////////////

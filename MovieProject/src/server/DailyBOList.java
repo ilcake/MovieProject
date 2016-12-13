@@ -105,10 +105,10 @@ public class DailyBOList {///// 변화!
 		calendar1.add(Calendar.DATE, -1);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String yesterday = sdf.format(calendar1.getTime());
-		try {
+		try {		//키1:c1635cef98ea88052ed1414320cbccc4  / 키2:f88c5ef2439ea108f680e0016b2abb37
 			URL url = new URL(
 					"http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/" + "searchDailyBoxOfficeList.json"
-							+ "?key=c1635cef98ea88052ed1414320cbccc4" + "&targetDt=" + yesterday);
+							+ "?key=f88c5ef2439ea108f680e0016b2abb37" + "&targetDt=" + yesterday);
 			reader = new BufferedInputStream(url.openStream());
 			StringBuffer buffer = new StringBuffer();
 			int i;
@@ -127,7 +127,7 @@ public class DailyBOList {///// 변화!
 		BufferedInputStream reader1 = null;
 		try {
 			URL InfoUrl = new URL(" http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json"
-					+ "?key=c1635cef98ea88052ed1414320cbccc4" + "&movieCd=" + mCode);
+					+ "?key=f88c5ef2439ea108f680e0016b2abb37" + "&movieCd=" + mCode);
 			reader1 = new BufferedInputStream(InfoUrl.openStream());
 			StringBuffer buffer = new StringBuffer();
 			int i;
