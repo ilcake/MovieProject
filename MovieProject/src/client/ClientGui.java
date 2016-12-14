@@ -49,6 +49,7 @@ import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
 import vos.PnComment;
 import vos.PnLike;
+import vos.PnUserComment;
 import vos.Stars;
 
 import javax.swing.JScrollBar;
@@ -127,11 +128,11 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JLabel lb_mv2_minus;
 	private JLabel lb_mv2_plus;
 	private Stars myStar;
-	private Dimension mv2Size;
+	private Dimension mv2Size, ucSize;
 	private JScrollPane jsp_board;
 	private MouseAdapter ma;
 	private JScrollPane jsp_UserLike;
-	private JScrollPane scrollPane;
+	private JScrollPane jsp;
 
 	public ClientGui() {////
 		myGui = this;
@@ -423,13 +424,15 @@ public class ClientGui extends JFrame implements Runnable { //
 		mn1.add(mm1_4, "mm1_4");
 		mm1_4.setLayout(null);
 
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(30, 141, 385, 300);
-		mm1_4.add(scrollPane);
+		jsp = new JScrollPane();
+		jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		jsp.setBounds(30, 141, 385, 300);
+		mm1_4.add(jsp);
 
 		pn_UserComment = new JPanel();
-		pn_UserComment.setPreferredSize(new Dimension(370, 280));
-		scrollPane.setViewportView(pn_UserComment);
+		ucSize = new Dimension(370, 280);
+		pn_UserComment.setPreferredSize(ucSize);
+		jsp.setViewportView(pn_UserComment);
 		pn_UserComment.setBackground(Color.WHITE);
 
 		bt_mm1_4Return = new JButton("뒤로가기") {
@@ -844,6 +847,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				mg.getUserLikebyID(whoAmI);
 			} else if (e.getSource() == commentIcon) {
 				mn1Card.show(mn1, "mm1_4");
+				mg.getMyComment(whoAmI);
 				searchRBack.setVisible(false);
 				///// 내가 남긴 코멘트 확인
 			} else if (e.getSource() == bt_mv2Like) {
@@ -1332,7 +1336,7 @@ public class ClientGui extends JFrame implements Runnable { //
 			c = cCList.get(i);
 			JPanel pn = new PnComment(c);
 			setPreferredSize(new Dimension((int) (mv2Size.getWidth() - 65), 80));
-			if (i > 4) {
+			if (i > 3) {
 				d.setSize(d.getWidth(), d.getHeight() + height);
 				mv2_panel.setPreferredSize(d);
 			}
@@ -1340,6 +1344,30 @@ public class ClientGui extends JFrame implements Runnable { //
 			mv2_panel.add(pn);
 		}
 		mv2_panel.revalidate();
+		this.revalidate();
+	}
+
+	public void getMyCommentReaction(ArrayList<UserComment> usc) {
+		pn_UserComment.removeAll();
+		pn_UserComment.setPreferredSize(ucSize);
+		Dimension d = new Dimension(ucSize.getSize());
+		int size = usc.size();
+		int height = 110;
+		if (size == 0)
+			return;
+		UserComment c = null;
+		for (int i = 0; i < size; i++) {
+			c = usc.get(i);
+			JPanel pn = new PnUserComment(c);
+			setPreferredSize(new Dimension((int) (ucSize.getWidth() - 65), 80));
+			if (i > 3) {
+				d.setSize(d.getWidth(), d.getHeight() + height);
+				pn_UserComment.setPreferredSize(d);
+			}
+			setCommentML(pn);
+			pn_UserComment.add(pn);
+		}
+		pn_UserComment.revalidate();
 		this.revalidate();
 	}
 
@@ -1370,10 +1398,6 @@ public class ClientGui extends JFrame implements Runnable { //
 			setLikeML(p);
 		}
 		pn_UserLike.revalidate();
-	}
-
-	public void getMyCommentReaction() {
-
 	}
 
 	/////////////////////////////////////////////////////////////////

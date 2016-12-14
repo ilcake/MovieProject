@@ -97,6 +97,10 @@ public class ClientThread extends Thread {
 		case Data.GETAVGGRADE:
 			gui.reActionAvgGrade((double) obj[1]);
 			break;
+
+		case Data.GETMYCOMMENT:
+			gui.getMyCommentReaction((ArrayList<UserComment>) obj[1]);
+			break;
 		}
 
 	}

@@ -144,7 +144,9 @@ public class ServerThread implements Runnable {
 				break;
 
 			case Data.GETMYCOMMENT:
-
+				ArrayList<UserComment> usc = mg.getMyComment((String) obj[1]);
+				Object[] gmcd = new Object[] { Data.GETMYCOMMENT, usc };
+				oos.writeUnshared(gmcd);
 				break;
 
 			}

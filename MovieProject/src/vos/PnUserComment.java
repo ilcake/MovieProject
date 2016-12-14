@@ -10,14 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class PnComment extends JPanel {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6357216688207012046L;
+public class PnUserComment extends JPanel {
 	private UserComment c;
 
-	public PnComment(UserComment c) {
+	public PnUserComment(UserComment c) {
 		this.c = c;
 		mkComment();
 	}
@@ -33,14 +29,16 @@ public class PnComment extends JPanel {
 	public void mkComment() {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		setLayout(new BorderLayout(0, 0));
-		setPreferredSize(new Dimension(355, 80));
+		setPreferredSize(new Dimension(350, 80));
 		JLabel lb_icon = new JLabel("");
-		ImageIcon icn = new ImageIcon(c.getUserPic());
+		//////
+
+		ImageIcon icn = new ImageIcon(c.getThumb());
 		Image image = icn.getImage();
 		Image reSized = image.getScaledInstance(45, 45, Image.SCALE_SMOOTH);
 		icn = new ImageIcon(reSized);
-
 		lb_icon.setIcon(icn);
+		//////////
 		add(lb_icon, BorderLayout.WEST);
 		String userText = c.getUserText();
 		JTextArea ta_Te = new JTextArea();
@@ -56,14 +54,12 @@ public class PnComment extends JPanel {
 			} else {
 				ta_Te.append("\n");
 			}
-
 		}
 		add(ta_Te, BorderLayout.CENTER);
 		ta_Te.setEditable(false);
 
-		JLabel lb_nick = new JLabel(c.getUserID());
+		JLabel lb_nick = new JLabel(c.getTitle());
 		add(lb_nick, BorderLayout.NORTH);
 
 	}
-
 }
