@@ -668,7 +668,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv2_1.add(bt_mv2Return);
 
 		ImageIcon writeBt = new ImageIcon("img/writeBt.png");
-		bt_mv2Write = new JButton("글쓰기"){
+		bt_mv2Write = new JButton("글쓰기") {
 			public void paintComponent(Graphics g) {
 				Dimension d = getSize();
 				g.drawImage(writeBt.getImage(), 0, 0, d.width, d.height, null);
@@ -682,7 +682,6 @@ public class ClientGui extends JFrame implements Runnable { //
 		bt_mv2Like.setOpaque(false);
 		bt_mv2Like.setBounds(153, 435, 107, 33);
 		mv2_1.add(bt_mv2Like);
-
 
 		ImageIcon writingR = new ImageIcon("img/writingR.png");
 		mv2_2 = new JPanel() {
@@ -1257,7 +1256,7 @@ public class ClientGui extends JFrame implements Runnable { //
 			Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			ig = new ImageIcon(reSized);
 			lb_isLike.setIcon(ig);
-//			bt_mv2Like.setText("좋아요취소");
+			// bt_mv2Like.setText("좋아요취소");
 			ImageIcon cancelBt = new ImageIcon("img/cancelBt.png");
 			Image cancel = cancelBt.getImage();
 			cancel = cancel.getScaledInstance(107, 33, Image.SCALE_SMOOTH);
@@ -1269,7 +1268,7 @@ public class ClientGui extends JFrame implements Runnable { //
 			Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			ig = new ImageIcon(reSized);
 			lb_isLike.setIcon(ig);
-//			bt_mv2Like.setText("좋아요");
+			// bt_mv2Like.setText("좋아요");
 			ImageIcon movieLikeBt = new ImageIcon("img/movieLikeBt.png");
 			Image like = movieLikeBt.getImage();
 			like = like.getScaledInstance(107, 33, Image.SCALE_SMOOTH);
@@ -1346,7 +1345,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv2_panel.setPreferredSize(mv2Size);
 		Dimension d = new Dimension(mv2Size.getSize());
 		int size = cCList.size();
-		int height = 111;
+		int height = 102;
 		if (size == 0)
 			return;
 		UserComment c = null;
@@ -1370,7 +1369,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		pn_UserComment.setPreferredSize(ucSize);
 		Dimension d = new Dimension(ucSize.getSize());
 		int size = usc.size();
-		int height = 110;
+		int height = 93;
 		if (size == 0)
 			return;
 		UserComment c = null;

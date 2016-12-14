@@ -4,7 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,12 +36,28 @@ public class PnUserComment extends JPanel {
 		setPreferredSize(new Dimension(350, 80));
 		JLabel lb_icon = new JLabel("");
 		//////
-
-		ImageIcon icn = new ImageIcon(c.getThumb());
-		Image image = icn.getImage();
-		Image reSized = image.getScaledInstance(45, 45, Image.SCALE_SMOOTH);
-		icn = new ImageIcon(reSized);
-		lb_icon.setIcon(icn);
+		ImageIcon noImg = new ImageIcon("./img/noImg.jpg");
+		String iconURL = c.getThumb();
+		if (iconURL.equals("")) {
+			Image image = noImg.getImage();
+			Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			noImg = new ImageIcon(reSized);
+			lb_icon.setIcon(noImg);
+		} else {
+			try {
+				ImageIcon imgicon = new ImageIcon(ImageIO.read(new URL(iconURL)));
+				Image image = imgicon.getImage();
+				Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+				imgicon = new ImageIcon(reSized);
+				lb_icon.setIcon(imgicon);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		//////////
 		add(lb_icon, BorderLayout.WEST);
 		String userText = c.getUserText();

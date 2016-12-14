@@ -106,8 +106,10 @@ public class ServerDBwork {
 	public ArrayList<UserComment> getComment(String movieCD) {
 		ArrayList<UserComment> cmList = new ArrayList<>();
 		Connection con = new ConnectionManager().getConnection();
+		String userIcon;
+
 		try {
-			String sql = "select userid, usertext, grade, moviecd, userpic, thumb, title from usercomment where moviecd=?";
+			String sql = "select e.userid, e.usertext, e.grade, e.moviecd, d.userpics, e.thumb, e.title from usercomment e join usertable d on e.userid=d.userid where moviecd=?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, movieCD);
 			ResultSet rs = ps.executeQuery();
@@ -130,7 +132,7 @@ public class ServerDBwork {
 		ArrayList<UserComment> cmList = new ArrayList<>();
 		Connection con = new ConnectionManager().getConnection();
 		try {
-			String sql = "select userid, usertext, grade, moviecd, userpic, thumb, title from usercomment where userid=?";
+			String sql = "select e.userid, e.usertext, e.grade, e.moviecd, d.userpics, e.thumb, e.title from usercomment e join usertable d on e.userid=d.userid where e.userid=?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, id);
 			ResultSet rs = ps.executeQuery();
