@@ -120,6 +120,12 @@ public class ClientManager {
 		whatTodo(what);
 	}
 
+	public void getMyComment(String id) {
+		Object[] what = new Object[] { Data.GETMYCOMMENT, id };
+		whatTodo(what);
+
+	}
+
 	public void whatTodo(Object[] what) {
 		try {
 			synchronized (this) {

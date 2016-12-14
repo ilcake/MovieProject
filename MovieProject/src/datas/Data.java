@@ -13,6 +13,7 @@ public class Data implements Serializable {
 	public static final int GETMOVIEBOXINFO = 4;
 	public static final int GETCOMMENT = 5;
 	public static final int WRITECOMMENT = 6;
+	public static final int GETMYCOMMENT = 7;
 
 	public static final int RG_IDDUB = 1;
 	public static final int RG_SUCCESS = 10;

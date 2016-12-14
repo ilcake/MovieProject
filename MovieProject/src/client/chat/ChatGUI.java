@@ -82,13 +82,13 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		textArea.setLineWrap(true);
 
 		textField = new JTextField();
-		textField.setBounds(12, 471, 197, 21);
+		textField.setBounds(12, 471, 197, 27);
 		getContentPane().add(textField);
 		textField.setColumns(10);
 		textField.addActionListener(this);
 
 		btnNewButton = new JButton("GO");
-		btnNewButton.setBounds(221, 470, 51, 23);
+		btnNewButton.setBounds(221, 470, 51, 28);
 		getContentPane().add(btnNewButton);
 		btnNewButton.addActionListener(this);
 
@@ -110,7 +110,7 @@ public class ChatGUI extends JFrame implements ActionListener { //
 		};
 		////////////////////////////////////////////////////////////////////////////////////////
 		chatPanel.setBounds(new Rectangle(0, 0, 300, 540));
-		this.add(chatPanel);
+		getContentPane().add(chatPanel);
 
 		setSize(300, 540);
 		setVisible(true);

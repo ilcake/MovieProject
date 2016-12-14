@@ -143,6 +143,10 @@ public class ServerThread implements Runnable {
 				oos.writeUnshared(avgg);
 				break;
 
+			case Data.GETMYCOMMENT:
+
+				break;
+
 			}
 
 			oos.flush();

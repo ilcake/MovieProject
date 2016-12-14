@@ -110,27 +110,23 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JButton bt_mv2_2Return;
 	private JButton bt_mv2_2Sub;
 	private JLabel lb_mv2_pic;
-	private JLabel lb_grade, load;
+	private JLabel lb_grade;
 	private JPanel mv2;
 	private String sMovieCD;
 	private JLabel lblNewLabel_5;
-	private JPanel pn_mv2Grade;
 	private LoadingPanel ld;
 	private JPanel pn_UserLike;
 	private JButton bt_mm1_3Return;
 	private JButton bt_mm1_4Return;
-	private JLabel lblNewLabel_3;
-	private JLabel lblNewLabel_6;
 	private JPanel pn_UserComment;
 	private JButton bt_mv2Like;
 	private JLabel lb_isLike;
-	private boolean isLike;
 	private MovieSearchInfo msi;
 
 	private JLabel lb_mv2_stars;
 	private JLabel lb_mv2_minus;
 	private JLabel lb_mv2_plus;
-	private Stars stars, myStar;
+	private Stars myStar;
 	private Dimension mv2Size;
 	private JScrollPane jsp_board;
 	private MouseAdapter ma;
@@ -212,12 +208,12 @@ public class ClientGui extends JFrame implements Runnable { //
 		lg2_1.add(lblNewLabel_1);
 
 		tf_id = new JTextField();
-		tf_id.setBounds(39, 442, 116, 24);
+		tf_id.setBounds(39, 442, 116, 27);
 		lg2_1.add(tf_id);
 		tf_id.setColumns(10);
 
 		tf_pw = new JPasswordField();
-		tf_pw.setBounds(201, 442, 116, 24);
+		tf_pw.setBounds(201, 442, 116, 27);
 		tf_pw.setEchoChar('*');
 		lg2_1.add(tf_pw);
 
@@ -386,7 +382,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		mm1_2.add(bt_mm1_2Return);
 
 		ImageIcon likeItL = new ImageIcon("img/likeItL.png");
-		mm1_3 = new JPanel(){
+		mm1_3 = new JPanel() {
 			public void paintComponent(Graphics g) {
 				Dimension d = getSize();
 				g.drawImage(likeItL.getImage(), 0, 0, d.width, d.height, null);
@@ -413,12 +409,12 @@ public class ClientGui extends JFrame implements Runnable { //
 		bt_mm1_3Return.setBounds(30, 424, 103, 27);
 		mm1_3.add(bt_mm1_3Return);
 
-//		lblNewLabel_3 = new JLabel("좋아요");
-//		lblNewLabel_3.setBounds(195, 80, 62, 18);
-//		mm1_3.add(lblNewLabel_3);
+		// lblNewLabel_3 = new JLabel("좋아요");
+		// lblNewLabel_3.setBounds(195, 80, 62, 18);
+		// mm1_3.add(lblNewLabel_3);
 
 		ImageIcon commentL = new ImageIcon("img/commentL.png");
-		mm1_4 = new JPanel(){
+		mm1_4 = new JPanel() {
 			public void paintComponent(Graphics g) {
 				Dimension d = getSize();
 				g.drawImage(commentL.getImage(), 0, 0, d.width, d.height, null);
@@ -426,7 +422,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		};
 		mn1.add(mm1_4, "mm1_4");
 		mm1_4.setLayout(null);
-		
+
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(30, 141, 385, 300);
 		mm1_4.add(scrollPane);
@@ -445,9 +441,9 @@ public class ClientGui extends JFrame implements Runnable { //
 		bt_mm1_4Return.setBounds(30, 450, 103, 27);
 		mm1_4.add(bt_mm1_4Return);
 
-//		lblNewLabel_6 = new JLabel("코멘트");
-//		lblNewLabel_6.setBounds(195, 31, 62, 18);
-//		mm1_4.add(lblNewLabel_6);
+		// lblNewLabel_6 = new JLabel("코멘트");
+		// lblNewLabel_6.setBounds(195, 31, 62, 18);
+		// mm1_4.add(lblNewLabel_6);
 
 		ImageIcon boxOfficeR = new ImageIcon("./img/boxOfficeR.png");
 		mn2 = new JPanel() {
@@ -473,9 +469,8 @@ public class ClientGui extends JFrame implements Runnable { //
 		mn2.add(mn_search);
 		mn_search.setColumns(10);
 
-		
 		ImageIcon searchBt = new ImageIcon("img/searchBt.png");
-		bt_search = new JButton("SEARCH"){
+		bt_search = new JButton("SEARCH") {
 			public void paintComponent(Graphics g) {
 				Dimension d = getSize();
 				g.drawImage(searchBt.getImage(), 0, 0, d.width, d.height, null);
@@ -486,7 +481,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		mn2.add(bt_search);
 
 		ImageIcon chatBt = new ImageIcon("img/chatBt.png");
-		bt_chat = new JButton("CHAT"){
+		bt_chat = new JButton("CHAT") {
 			public void paintComponent(Graphics g) {
 				Dimension d = getSize();
 				g.drawImage(chatBt.getImage(), 0, 0, d.width, d.height, null);
@@ -1304,6 +1299,8 @@ public class ClientGui extends JFrame implements Runnable { //
 		Double grade = myStar.getStars();
 		String movieCD = msi.getMvCode();
 		String userPic = me.getPic();
+		String thumb = msi.getMvThumb();
+		String title = msi.getMvTitle();
 
 		if (userText.equals("")) {
 			JOptionPane.showMessageDialog(null, "내용을 입력해 주십시오");
@@ -1313,10 +1310,11 @@ public class ClientGui extends JFrame implements Runnable { //
 			return;
 		}
 
-		UserComment uc = new UserComment(userID, userText, grade, movieCD, userPic);
+		UserComment uc = new UserComment(userID, userText, grade, movieCD, userPic, thumb, title);
 		mg.writeComments(uc);
 		ta_comment.setText("");
 		myStar = new Stars(0);
+		mg.getComments(movieCD);
 		setStars(myStar, lb_mv2_stars);
 		mv2Card.show(mv2, "mv2_1");
 	}
@@ -1358,7 +1356,6 @@ public class ClientGui extends JFrame implements Runnable { //
 		setStars(avgStar, lb_grade);
 		mv1.repaint();
 		mv1.revalidate();
-
 	}
 
 	public void getLikeByIdReaction(ArrayList<MovieSearchInfo> lkList) {
@@ -1373,6 +1370,10 @@ public class ClientGui extends JFrame implements Runnable { //
 			setLikeML(p);
 		}
 		pn_UserLike.revalidate();
+	}
+
+	public void getMyCommentReaction() {
+
 	}
 
 	/////////////////////////////////////////////////////////////////

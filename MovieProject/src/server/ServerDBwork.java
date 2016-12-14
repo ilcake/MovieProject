@@ -107,14 +107,14 @@ public class ServerDBwork {
 		ArrayList<UserComment> cmList = new ArrayList<>();
 		Connection con = new ConnectionManager().getConnection();
 		try {
-			String sql = "select userid, usertext, grade, moviecd, userpic from usercomment where moviecd=?";
+			String sql = "select userid, usertext, grade, moviecd, userpic, thumb, title from usercomment where moviecd=?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, movieCD);
 			ResultSet rs = ps.executeQuery();
 			UserComment c = null;
 			while (rs.next()) {
-				c = new UserComment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
-						rs.getString(5));
+				c = new UserComment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7));
 				cmList.add(c);
 				System.out.println("serverDB : " + c);
 			}
@@ -126,18 +126,18 @@ public class ServerDBwork {
 		return cmList;
 	}
 
-	public ArrayList<UserComment> getCommentByID(String id) {
+	public ArrayList<UserComment> getMyComment(String id) {
 		ArrayList<UserComment> cmList = new ArrayList<>();
 		Connection con = new ConnectionManager().getConnection();
 		try {
-			String sql = "select userid, usertext, grade, moviecd, userpic from usercomment where userid=?";
+			String sql = "select userid, usertext, grade, moviecd, userpic, thumb, title from usercomment where userid=?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, id);
 			ResultSet rs = ps.executeQuery();
 			UserComment c = null;
 			while (rs.next()) {
-				c = new UserComment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
-						rs.getString(5));
+				c = new UserComment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7));
 				cmList.add(c);
 				System.out.println("serverDB : " + c);
 			}
@@ -153,13 +153,15 @@ public class ServerDBwork {
 		Connection con = new ConnectionManager().getConnection();
 		try {
 			con.setAutoCommit(false);
-			String sql = "insert into usercomment values(?,?,?,?,?)";
+			String sql = "insert into usercomment values(?,?,?,?,?,?,?)";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, c.getUserID());
 			ps.setString(2, c.getMovieCD());
 			ps.setString(3, c.getUserText());
 			ps.setDouble(4, c.getGrade());
 			ps.setString(5, c.getUserPic());
+			ps.setString(6, c.getThumb());
+			ps.setString(7, c.getTitle());
 			ps.executeUpdate();
 
 			con.commit();
