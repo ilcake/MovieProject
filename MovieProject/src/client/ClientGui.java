@@ -809,7 +809,11 @@ public class ClientGui extends JFrame implements Runnable { //
 			} else if (e.getSource() == bt_Login) {
 				login();
 			} else if (e.getSource() == mBoxTable) {
-				////////////////////////////////////////////
+				int wh = mBoxTable.getSelectedRow();
+				if (wh != -1) {
+					String gC = dblist.get(wh).getMovieCd();
+					mg.getComments(gC);
+				} /////////////////////////////////
 
 			} else if (e.getSource() == tb_search) {
 				int who = tb_search.getSelectedRow();
