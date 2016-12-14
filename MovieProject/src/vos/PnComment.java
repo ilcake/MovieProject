@@ -14,14 +14,12 @@ public class PnComment extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5700602024588640613L;
+	private static final long serialVersionUID = 6357216688207012046L;
 	private UserComment c;
-	private JPanel mother;
 
-	public PnComment(UserComment c, JPanel mother) {
+	public PnComment(UserComment c) {
 		this.c = c;
-		this.mother = mother;
-
+		mkComment();
 	}
 
 	public UserComment getC() {
@@ -35,6 +33,7 @@ public class PnComment extends JPanel {
 	public void mkComment() {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		setLayout(new BorderLayout(0, 0));
+		setPreferredSize(new Dimension(355, 80));
 		JLabel lb_icon = new JLabel("");
 		ImageIcon icn = new ImageIcon(c.getUserPic());
 		Image image = icn.getImage();
@@ -53,8 +52,6 @@ public class PnComment extends JPanel {
 		JLabel lb_nick = new JLabel(c.getUserID());
 		add(lb_nick, BorderLayout.NORTH);
 
-		Dimension d = mother.getSize();
-		setPreferredSize(new Dimension((int) (d.getWidth() - 50), 80));
 	}
 
 }

@@ -129,7 +129,8 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JLabel lb_mv2_minus;
 	private JLabel lb_mv2_plus;
 	private Stars stars, myStar;
-	Dimension mv2Size;
+	private Dimension mv2Size;
+	private JScrollPane jsp_board;
 
 	public ClientGui() {////
 		myGui = this;
@@ -609,13 +610,15 @@ public class ClientGui extends JFrame implements Runnable { //
 		};
 		mv2.add(mv2_1, "mv2_1");
 		mv2_1.setLayout(null);
+		mv2Size = new Dimension(370, 350);
+		jsp_board = new JScrollPane();
+		jsp_board.setBounds(34, 43, 385, 365);
+		mv2_1.add(jsp_board);
 
 		mv2_panel = new JPanel();
-		mv2_panel.setBackground(new Color(128, 128, 128));
-		mv2_panel.setBounds(34, 43, 380, 362);
-		mv2Size = new Dimension(380, 360);
+		jsp_board.setViewportView(mv2_panel);
+		mv2_panel.setBackground(UIManager.getColor("Button.background"));
 		mv2_panel.setPreferredSize(mv2Size);
-		mv2_1.add(mv2_panel);
 
 		bt_mv2Return = new JButton("뒤로가기") {
 			public void paintComponent(Graphics g) {
@@ -767,6 +770,8 @@ public class ClientGui extends JFrame implements Runnable { //
 				if (who != -1) {
 					sMovieCD = scList.get(who).getMvCode();
 					setMovieInfoPage(sMovieCD);
+					mg.getComments(sMovieCD);
+					System.out.println("cgui >>: " + sMovieCD);
 				}
 				mainCard.show(mainBOARD, "pnMovie");
 			} else if (e.getSource() == bt_mv2Return) {
@@ -784,11 +789,15 @@ public class ClientGui extends JFrame implements Runnable { //
 				// 글쓰기 버튼..
 				mv2Card.show(mv2, "mv2_2");
 				myStar = new Stars(0);
+				setStars(myStar, lb_mv2_stars);
 			} else if (e.getSource() == bt_mv2_2Return) {// 뒤로가기
 				mv2Card.show(mv2, "mv2_1");
+				myStar = new Stars(0);
+				setStars(myStar, lb_mv2_stars);
+				ta_comment.setText("");
 			} else if (e.getSource() == bt_mv2_2Sub) {// 코멘트 올리기
 				writeComment();
-				mv2Card.show(mv2, "mv2_1");
+				// mv2Card.show(mv2, "mv2_1");
 			} else if (e.getSource() == bt_mm1_3Return) {
 				mn1Card.show(mn1, "mm1_1");
 			} else if (e.getSource() == bt_mm1_4Return) {
@@ -1202,7 +1211,9 @@ public class ClientGui extends JFrame implements Runnable { //
 
 	public void setStars(Stars stars, JLabel label) {
 		double s = stars.getStars();
-		if (s >= 0 && s < 1) {
+		if (s < 0) {
+			label.setIcon(setStarLabel("img/noStar.png"));
+		} else if (s >= 0 && s < 1) {
 			label.setIcon(setStarLabel("img/0.png"));
 		} else if (s >= 1 && s < 2) {
 			label.setIcon(setStarLabel("img/0_5.png"));
@@ -1252,28 +1263,30 @@ public class ClientGui extends JFrame implements Runnable { //
 
 		UserComment uc = new UserComment(userID, userText, grade, movieCD, userPic);
 		mg.writeComments(uc);
-		mg.getComments(msi.getMvCode());
 		ta_comment.setText("");
+		myStar = new Stars(0);
+		setStars(myStar, lb_mv2_stars);
+		mv2Card.show(mv2, "mv2_1");
 	}
 
 	public void getCommentReaction(ArrayList<UserComment> cCList) {
-		int count = 0;
 		int size = cCList.size();
 		if (size == 0)
 			return;
 		UserComment c = null;
 		for (int i = 0; i < size; i++) {
 			c = cCList.get(i);
-			JPanel pn = new PnComment(c, mv2_panel);
+			JPanel pn = new PnComment(c);
+			Dimension d = mv2_panel.getSize();
+
+			setPreferredSize(new Dimension((int) (d.getWidth() - 50), 80));
 			mv2_panel.add(pn);
 		}
-
+		mv2_panel.revalidate();
+		this.revalidate();
 	}
 
 	public void reActionAvgGrade(double avg) {
-		if (avg == Data.FAIL) {
-			avg = 0.0;
-		}
 		Stars avgStar = new Stars(avg);
 		setStars(avgStar, lb_grade);
 		mv1.repaint();
@@ -1285,7 +1298,6 @@ public class ClientGui extends JFrame implements Runnable { //
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			int type = cb.getSelectedIndex();
 			String what = mn_search.getText();
@@ -1293,7 +1305,7 @@ public class ClientGui extends JFrame implements Runnable { //
 			scList = sb.getSearchList();
 			setSearchTable();
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		ld.dispose();
 	}
