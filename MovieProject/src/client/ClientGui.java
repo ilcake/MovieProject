@@ -135,6 +135,7 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JScrollPane jsp_board;
 	private MouseAdapter ma;
 	private JScrollPane jsp_UserLike;
+	private JScrollPane scrollPane;
 
 	public ClientGui() {////
 		myGui = this;
@@ -384,13 +385,19 @@ public class ClientGui extends JFrame implements Runnable { //
 		bt_mm1_2Return.setBounds(30, 424, 103, 27);
 		mm1_2.add(bt_mm1_2Return);
 
-		mm1_3 = new JPanel();
+		ImageIcon likeItL = new ImageIcon("img/likeItL.png");
+		mm1_3 = new JPanel(){
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(likeItL.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
 		mn1.add(mm1_3, "mm1_3");
 		mm1_3.setLayout(null);
 
 		jsp_UserLike = new JScrollPane();
 		jsp_UserLike.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		jsp_UserLike.setBounds(62, 131, 323, 240);
+		jsp_UserLike.setBounds(62, 157, 323, 240);
 		mm1_3.add(jsp_UserLike);
 
 		pn_UserLike = new JPanel();
@@ -406,18 +413,28 @@ public class ClientGui extends JFrame implements Runnable { //
 		bt_mm1_3Return.setBounds(30, 424, 103, 27);
 		mm1_3.add(bt_mm1_3Return);
 
-		lblNewLabel_3 = new JLabel("좋아요");
-		lblNewLabel_3.setBounds(195, 80, 62, 18);
-		mm1_3.add(lblNewLabel_3);
+//		lblNewLabel_3 = new JLabel("좋아요");
+//		lblNewLabel_3.setBounds(195, 80, 62, 18);
+//		mm1_3.add(lblNewLabel_3);
 
-		mm1_4 = new JPanel();
+		ImageIcon commentL = new ImageIcon("img/commentL.png");
+		mm1_4 = new JPanel(){
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(commentL.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
 		mn1.add(mm1_4, "mm1_4");
 		mm1_4.setLayout(null);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(30, 141, 385, 300);
+		mm1_4.add(scrollPane);
 
 		pn_UserComment = new JPanel();
+		pn_UserComment.setPreferredSize(new Dimension(370, 280));
+		scrollPane.setViewportView(pn_UserComment);
 		pn_UserComment.setBackground(Color.WHITE);
-		pn_UserComment.setBounds(62, 61, 323, 315);
-		mm1_4.add(pn_UserComment);
 
 		bt_mm1_4Return = new JButton("뒤로가기") {
 			public void paintComponent(Graphics g) {
@@ -425,12 +442,12 @@ public class ClientGui extends JFrame implements Runnable { //
 				g.drawImage(backBt.getImage(), 0, 0, d.width, d.height, null);
 			}
 		};
-		bt_mm1_4Return.setBounds(30, 424, 103, 27);
+		bt_mm1_4Return.setBounds(30, 450, 103, 27);
 		mm1_4.add(bt_mm1_4Return);
 
-		lblNewLabel_6 = new JLabel("코멘트");
-		lblNewLabel_6.setBounds(195, 31, 62, 18);
-		mm1_4.add(lblNewLabel_6);
+//		lblNewLabel_6 = new JLabel("코멘트");
+//		lblNewLabel_6.setBounds(195, 31, 62, 18);
+//		mm1_4.add(lblNewLabel_6);
 
 		ImageIcon boxOfficeR = new ImageIcon("./img/boxOfficeR.png");
 		mn2 = new JPanel() {
@@ -814,10 +831,12 @@ public class ClientGui extends JFrame implements Runnable { //
 				mn1Card.show(mn1, "mm1_1");
 			} else if (e.getSource() == likeIcon) {
 				mn1Card.show(mn1, "mm1_3");
+				searchRBack.setVisible(false);
 				///// 내가 좋아요 누른 영화들 확인
 				mg.getUserLikebyID(whoAmI);
 			} else if (e.getSource() == commentIcon) {
 				mn1Card.show(mn1, "mm1_4");
+				searchRBack.setVisible(false);
 				///// 내가 남긴 코멘트 확인
 			} else if (e.getSource() == bt_mv2Like) {
 				////////// 좋아요눌렀을때?
