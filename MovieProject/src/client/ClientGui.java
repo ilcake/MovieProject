@@ -120,7 +120,7 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JButton bt_mm1_3Return;
 	private JButton bt_mm1_4Return;
 	private JPanel pn_UserComment;
-	private JButton bt_mv2Like;
+	private JLabel bt_mv2Like;
 	private JLabel lb_isLike;
 	private MovieSearchInfo msi;
 
@@ -667,13 +667,22 @@ public class ClientGui extends JFrame implements Runnable { //
 		;
 		mv2_1.add(bt_mv2Return);
 
-		bt_mv2Write = new JButton("글쓰기");
-		bt_mv2Write.setBounds(34, 417, 91, 27);
+		ImageIcon writeBt = new ImageIcon("img/writeBt.png");
+		bt_mv2Write = new JButton("글쓰기"){
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(writeBt.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
+		bt_mv2Write.setOpaque(false);
+		bt_mv2Write.setBounds(34, 435, 107, 33);
 		mv2_1.add(bt_mv2Write);
 
-		bt_mv2Like = new JButton("좋아요");
-		bt_mv2Like.setBounds(139, 417, 91, 27);
+		bt_mv2Like = new JLabel("좋아요");
+		bt_mv2Like.setOpaque(false);
+		bt_mv2Like.setBounds(153, 435, 107, 33);
 		mv2_1.add(bt_mv2Like);
+
 
 		ImageIcon writingR = new ImageIcon("img/writingR.png");
 		mv2_2 = new JPanel() {
@@ -1248,14 +1257,24 @@ public class ClientGui extends JFrame implements Runnable { //
 			Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			ig = new ImageIcon(reSized);
 			lb_isLike.setIcon(ig);
-			bt_mv2Like.setText("좋아요취소");
+//			bt_mv2Like.setText("좋아요취소");
+			ImageIcon cancelBt = new ImageIcon("img/cancelBt.png");
+			Image cancel = cancelBt.getImage();
+			cancel = cancel.getScaledInstance(107, 33, Image.SCALE_SMOOTH);
+			cancelBt = new ImageIcon(cancel);
+			bt_mv2Like.setIcon(cancelBt);
 		} else {
 			ImageIcon ig = new ImageIcon("./img/dislike.png");
 			Image image = ig.getImage();
 			Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			ig = new ImageIcon(reSized);
 			lb_isLike.setIcon(ig);
-			bt_mv2Like.setText("좋아요");
+//			bt_mv2Like.setText("좋아요");
+			ImageIcon movieLikeBt = new ImageIcon("img/movieLikeBt.png");
+			Image like = movieLikeBt.getImage();
+			like = like.getScaledInstance(107, 33, Image.SCALE_SMOOTH);
+			movieLikeBt = new ImageIcon(like);
+			bt_mv2Like.setIcon(movieLikeBt);
 		}
 	}
 
