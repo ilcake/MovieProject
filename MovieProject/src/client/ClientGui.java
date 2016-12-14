@@ -473,14 +473,27 @@ public class ClientGui extends JFrame implements Runnable { //
 		mn2.add(mn_search);
 		mn_search.setColumns(10);
 
-		bt_search = new JButton("SEARCH");
+		
+		ImageIcon searchBt = new ImageIcon("img/searchBt.png");
+		bt_search = new JButton("SEARCH"){
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(searchBt.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
 		bt_search.setFont(new Font("굴림", Font.BOLD, 15));
-		bt_search.setBounds(243, 260, 107, 27);
+		bt_search.setBounds(243, 260, 107, 31);
 		mn2.add(bt_search);
 
-		bt_chat = new JButton("CHAT");
+		ImageIcon chatBt = new ImageIcon("img/chatBt.png");
+		bt_chat = new JButton("CHAT"){
+			public void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				g.drawImage(chatBt.getImage(), 0, 0, d.width, d.height, null);
+			}
+		};
 		bt_chat.setFont(new Font("굴림", Font.BOLD, 15));
-		bt_chat.setBounds(85, 260, 107, 27);
+		bt_chat.setBounds(85, 260, 107, 31);
 		mn2.add(bt_chat);
 
 		ImageIcon likeBt = new ImageIcon("img/likeIcon.png");
