@@ -809,7 +809,6 @@ public class ClientGui extends JFrame implements Runnable { //
 					sMovieCD = scList.get(who).getMvCode();
 					setMovieInfoPage(sMovieCD);
 					mg.getComments(sMovieCD);
-					System.out.println("cgui >>: " + sMovieCD);
 				}
 				mainCard.show(mainBOARD, "pnMovie");
 			} else if (e.getSource() == bt_mv2Return) {
