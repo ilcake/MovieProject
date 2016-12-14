@@ -42,10 +42,19 @@ public class PnComment extends JPanel {
 
 		lb_icon.setIcon(icn);
 		add(lb_icon, BorderLayout.WEST);
-
+		String userText = c.getUserText();
 		JTextArea ta_Te = new JTextArea();
 		ta_Te.setLineWrap(true);
-		ta_Te.setText(c.getUserText());
+		String cutted = userText;
+		String[] didi = cutted.split("\n");
+		System.out.println(didi.length);
+		for (int i = 0; i < didi.length; i++) {
+			ta_Te.append(didi[i]);
+			if (i > 1) {
+				ta_Te.append(".......");
+				break;
+			}
+		}
 		add(ta_Te, BorderLayout.CENTER);
 		ta_Te.setEditable(false);
 

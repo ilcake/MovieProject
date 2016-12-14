@@ -107,8 +107,32 @@ public class ServerDBwork {
 		ArrayList<UserComment> cmList = new ArrayList<>();
 		Connection con = new ConnectionManager().getConnection();
 		try {
-			String sql = "select userid, usertext, grade, moviecd, userpic from usercomment";
+			String sql = "select userid, usertext, grade, moviecd, userpic from usercomment where moviecd=?";
 			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, movieCD);
+			ResultSet rs = ps.executeQuery();
+			UserComment c = null;
+			while (rs.next()) {
+				c = new UserComment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+						rs.getString(5));
+				cmList.add(c);
+				System.out.println("serverDB : " + c);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		cm.close(con);
+		return cmList;
+	}
+
+	public ArrayList<UserComment> getCommentByID(String id) {
+		ArrayList<UserComment> cmList = new ArrayList<>();
+		Connection con = new ConnectionManager().getConnection();
+		try {
+			String sql = "select userid, usertext, grade, moviecd, userpic from usercomment where userid=?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, id);
 			ResultSet rs = ps.executeQuery();
 			UserComment c = null;
 			while (rs.next()) {

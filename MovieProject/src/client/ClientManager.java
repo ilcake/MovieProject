@@ -109,6 +109,12 @@ public class ClientManager {
 		whatTodo(what);
 	}
 
+	public void getUserLikebyID(String id) {
+		Object[] what = new Object[] { Data.GETUSERLIKE_BY_ID, id };
+		whatTodo(what);
+
+	}
+
 	public void getAvgGrade(String mvCD) {
 		Object[] what = new Object[] { Data.GETAVGGRADE, mvCD };
 		whatTodo(what);

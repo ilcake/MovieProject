@@ -9,6 +9,7 @@ import client.chat.ChatGUI;
 import datas.Data;
 import datas.User;
 import vos.MovieBoxInfo;
+import vos.MovieSearchInfo;
 import vos.UserComment;
 
 public class ClientThread extends Thread {
@@ -85,9 +86,14 @@ public class ClientThread extends Thread {
 			gui.reactionIsItLike((int) obj[1]);
 			break;
 
+		case Data.GETUSERLIKE_BY_ID:
+			gui.getLikeByIdReaction((ArrayList<MovieSearchInfo>) obj[1]);
+			break;
+
 		case Data.GETCOMMENT:
 			gui.getCommentReaction((ArrayList<UserComment>) obj[1]);
 			break;
+
 		case Data.GETAVGGRADE:
 			gui.reActionAvgGrade((double) obj[1]);
 			break;
