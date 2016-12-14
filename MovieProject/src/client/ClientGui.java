@@ -517,7 +517,6 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv1.setLayout(null);
 
 		lb_isLike = new JLabel("");
-		lb_isLike.setOpaque(true);
 		lb_isLike.setHorizontalAlignment(SwingConstants.CENTER);
 		lb_isLike.setIcon(new ImageIcon("C:\\Users\\kita\\Downloads\\bmo.gif"));
 		lb_isLike.setBounds(162, 234, 50, 50);
@@ -983,6 +982,7 @@ public class ClientGui extends JFrame implements Runnable { //
 
 	public void setMovieInfoPage(String movieCode) {
 		mg.getIsLike(whoAmI, movieCode);
+		mg.getAvgGrade(movieCode);
 
 		MovieSearchInfo m = null;
 		for (int i = 0; i < scList.size(); i++) {
@@ -1066,9 +1066,10 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv1.revalidate();
 
 		// 여기에서 평균별점 넣어주기------------------------------------
-		double avg = 9.9;// 여기서 영화코드로 구한 평균더블값을 넣어주자
-		Stars avgStar = new Stars(avg);
-		setStars(avgStar, lb_grade);
+		// double avg = 9.9;// 여기서 영화코드로 구한 평균더블값을 넣어주자
+		// Stars avgStar = new Stars(avg);
+		// setStars(avgStar, lb_grade);
+		this.revalidate();
 	}
 
 	public void setChatGUI(ChatGUI chat) {
@@ -1183,14 +1184,14 @@ public class ClientGui extends JFrame implements Runnable { //
 
 	public void reactionIsItLike(int reaction) {
 		if (reaction == Data.USERLIKETHIS) {
-			ImageIcon ig = new ImageIcon("./img/likeIcon.png");
+			ImageIcon ig = new ImageIcon("./img/like.png");
 			Image image = ig.getImage();
 			Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			ig = new ImageIcon(reSized);
 			lb_isLike.setIcon(ig);
 			bt_mv2Like.setText("좋아요취소");
 		} else {
-			ImageIcon ig = new ImageIcon("./img/noImg.jpg");
+			ImageIcon ig = new ImageIcon("./img/dislike.png");
 			Image image = ig.getImage();
 			Image reSized = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			ig = new ImageIcon(reSized);
@@ -1252,6 +1253,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		UserComment uc = new UserComment(userID, userText, grade, movieCD, userPic);
 		mg.writeComments(uc);
 		mg.getComments(msi.getMvCode());
+		ta_comment.setText("");
 	}
 
 	public void getCommentReaction(ArrayList<UserComment> cCList) {
@@ -1265,6 +1267,17 @@ public class ClientGui extends JFrame implements Runnable { //
 			JPanel pn = new PnComment(c, mv2_panel);
 			mv2_panel.add(pn);
 		}
+
+	}
+
+	public void reActionAvgGrade(double avg) {
+		if (avg == Data.FAIL) {
+			avg = 0.0;
+		}
+		Stars avgStar = new Stars(avg);
+		setStars(avgStar, lb_grade);
+		mv1.repaint();
+		mv1.revalidate();
 
 	}
 

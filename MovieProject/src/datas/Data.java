@@ -32,4 +32,6 @@ public class Data implements Serializable {
 
 	public static final int USERLIKETHIS = 666;
 
+	public static final int GETAVGGRADE = 232;
+
 }

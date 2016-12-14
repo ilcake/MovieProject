@@ -136,6 +136,13 @@ public class ServerThread implements Runnable {
 				Object[] gComm = new Object[] { Data.GETCOMMENT, cmList };
 				oos.writeUnshared(gComm);
 				break;
+
+			case Data.GETAVGGRADE:
+				double avgG = mg.getMovieAvgGrade((String) obj[1]);
+				Object[] avgg = new Object[] { Data.GETAVGGRADE, avgG };
+				oos.writeUnshared(avgg);
+				break;
+
 			}
 
 			oos.flush();
@@ -149,16 +156,13 @@ public class ServerThread implements Runnable {
 	public void logOut() {
 		System.out.println("로그아웃~");
 		usersList.remove(oos);
-
-		gui.setMessage(userID + " 회원이 프로그램을 종료하였습니다.");
 		theUsers.remove(me);
-		gui.setUserCount(theUsers.size());
-		gui.setUserList(theUsers);
 
 		ArrayList<String> nicks = new ArrayList<>();
 		for (User k : theUsers) {
 			nicks.add(k.getId());
 		}
+
 		if (!userID.equals("미접속")) {
 			Object[] logRes = new Object[] { Data.CHATLOGOUT, nicks, (userID + "회원이 퇴장하였습니다.") };
 			try {
@@ -169,6 +173,9 @@ public class ServerThread implements Runnable {
 
 			}
 		}
+		gui.setMessage(userID + " 회원이 프로그램을 종료하였습니다.");
+		gui.setUserCount(theUsers.size());
+		gui.setUserList(theUsers);
 
 	}
 

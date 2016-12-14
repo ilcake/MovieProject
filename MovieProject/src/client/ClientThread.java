@@ -54,9 +54,11 @@ public class ClientThread extends Thread {
 	@SuppressWarnings("unchecked")
 	private void action(int proto, Object[] obj) {
 		switch (proto) {
+
 		case Data.REGISTER:
 			gui.registerReaction((int) obj[1]);
 			break;
+
 		case Data.LOGIN:
 			User me = (User) obj[1];
 			gui.loginReaction(me);
@@ -64,20 +66,20 @@ public class ClientThread extends Thread {
 			cm.setMe(me);
 			gui.setMe(me);
 			break;
-		// case Data.GETMOVIEBOXINFO:
-		// gui.setMovieBoxInfo((ArrayList<MovieBoxInfo>) obj[1]);
-		// break;
+
 		case Data.CHATLOGIN:
 			ArrayList<String> usersdd = (ArrayList<String>) obj[1];
-			// cgui.setUserList(usersdd);
 			cgui.list.setListData(usersdd.toArray());
 			break;
+
 		case Data.CHATMESSAGE:
 			cgui.talk((String) obj[1]);
 			break;
+
 		case Data.CHATLOGOUT:
 			cgui.setUserList((ArrayList<String>) obj[1]);
 			cgui.talk((String) obj[2]);
+			break;
 
 		case Data.GETUSERLIKE_BY_CD:
 			gui.reactionIsItLike((int) obj[1]);
@@ -86,19 +88,11 @@ public class ClientThread extends Thread {
 		case Data.GETCOMMENT:
 			// gui.getCommentReaction((ArrayList<UserComment>) obj[2]);
 			break;
+		case Data.GETAVGGRADE:
+			gui.reActionAvgGrade((double) obj[1]);
+			break;
 		}
 
 	}
 
-	public void getMovieBoxInfo() {
-
-	}
-
-	public void chatLogin() {
-
-	}
-
-	public void chatMessage() {
-
-	}
 }

@@ -112,12 +112,13 @@ public class ServerDBwork {
 			ResultSet rs = ps.executeQuery();
 			UserComment c = null;
 			while (rs.next()) {
-				c = new UserComment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4), rs.getString(5));
+				c = new UserComment(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+						rs.getString(5));
 				cmList.add(c);
 			}
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		cm.close(con);
 		return cmList;
@@ -227,11 +228,13 @@ public class ServerDBwork {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
+				result = Data.USERLIKETHIS;
 			}
 			cm.close(con);
 
 		} catch (Exception e) {
 			result = Data.FAIL;
+			e.printStackTrace();
 		}
 		cm.close(con);
 		return result;
@@ -255,10 +258,29 @@ public class ServerDBwork {
 			cm.close(con);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 
 		}
 		cm.close(con);
 
 		return sList;
+	}
+
+	public Double getMovieAvgGrade(String movieCd) {
+		double grade = (double) Data.FAIL;
+		Connection con = new ConnectionManager().getConnection();
+		try {
+			String sql = "select moviecd, avg(grade) gg from usercomment where moviecd=? group by (moviecd)";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, movieCd);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				grade = rs.getDouble(2);
+			}
+		} catch (Exception e) {
+
+		}
+		cm.close(con);
+		return grade;
 	}
 }

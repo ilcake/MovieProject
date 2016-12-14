@@ -109,6 +109,11 @@ public class ClientManager {
 		whatTodo(what);
 	}
 
+	public void getAvgGrade(String mvCD) {
+		Object[] what = new Object[] { Data.GETAVGGRADE, mvCD };
+		whatTodo(what);
+	}
+
 	public void whatTodo(Object[] what) {
 		try {
 			synchronized (this) {
