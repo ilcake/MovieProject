@@ -312,4 +312,8 @@ public class ServerDBwork {
 		cm.close(con);
 		return grade;
 	}
+
+	public void updateComment() {
+
+	}
 }

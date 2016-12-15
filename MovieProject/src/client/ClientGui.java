@@ -138,6 +138,8 @@ public class ClientGui extends JFrame implements Runnable { //
 	private JScrollPane jsp_UserLike;
 	private JScrollPane jsp;
 	private StringGiver sg;
+	private JScrollPane jsp_comm;
+	private JButton bt_trailer;
 
 	public ClientGui() {////
 		myGui = this;
@@ -576,7 +578,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv1.add(lb_mvTitle);
 
 		mv1_jsp = new JScrollPane();
-		mv1_jsp.setBounds(31, 307, 386, 131);
+		mv1_jsp.setBounds(31, 307, 386, 102);
 		mv1.add(mv1_jsp);
 
 		ta_mvStory = new JTextArea();
@@ -634,6 +636,10 @@ public class ClientGui extends JFrame implements Runnable { //
 		lb_grade = new JLabel("별L");
 		lb_grade.setBounds(54, 7, 115, 25);
 		pn_grade.add(lb_grade);
+
+		bt_trailer = new JButton("트레일러");
+		bt_trailer.setBounds(31, 435, 107, 27);
+		mv1.add(bt_trailer);
 
 		mv2 = new JPanel();
 		pnMovie.add(mv2);
@@ -699,10 +705,13 @@ public class ClientGui extends JFrame implements Runnable { //
 		mv2.add(mv2_2, "mv2_2");
 		mv2_2.setLayout(null);
 
+		jsp_comm = new JScrollPane();
+		jsp_comm.setBounds(48, 173, 351, 163);
+		mv2_2.add(jsp_comm);
+
 		ta_comment = new JTextArea();
-		ta_comment.setBounds(48, 173, 351, 163);
+		jsp_comm.setViewportView(ta_comment);
 		ta_comment.setLineWrap(true);
-		mv2_2.add(ta_comment);
 
 		bt_mv2_2Return = new JButton("back") {
 			public void paintComponent(Graphics g) {
@@ -798,6 +807,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		bt_mv2Like.addMouseListener(ma);
 		lb_mv2_minus.addMouseListener(ma);
 		lb_mv2_plus.addMouseListener(ma);
+		bt_trailer.addMouseListener(ma);
 		this.addComponentListener(wa);
 	}
 
@@ -899,6 +909,9 @@ public class ClientGui extends JFrame implements Runnable { //
 				MyText itsMe = (MyText) e.getSource();
 				System.out.println(itsMe.getComment()); // 여기야여기!!지혜야 여기봐라!!!
 				CommentDetail cd = new CommentDetail(itsMe.getComment());
+			} else if (e.getSource() == bt_trailer) {
+				String searchString = (msi.getMvTitle() + ", 영화, 공식 트레일러, 예고편");
+				sg.giveWEBVieW(searchString);
 			}
 		}
 	}
