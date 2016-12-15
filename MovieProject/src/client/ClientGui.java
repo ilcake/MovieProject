@@ -45,6 +45,7 @@ import client.chat.ChatGUI;
 import client.db.SearchBy;
 import datas.Data;
 import datas.User;
+import gSearch.StringGiver;
 import vos.UserComment;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
@@ -135,6 +136,7 @@ public class ClientGui extends JFrame implements Runnable { //
 	private MouseAdapter ma, mll;
 	private JScrollPane jsp_UserLike;
 	private JScrollPane jsp;
+	private StringGiver sg;
 
 	public ClientGui() {////
 		myGui = this;
@@ -761,6 +763,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		addListeners();
 		mg = new ClientManager(this);
 		sb = new SearchBy();
+		sg = new StringGiver();
 		setIcon();
 
 	}
@@ -814,6 +817,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				int wh = mBoxTable.getSelectedRow();
 				if (wh != -1) {
 					String gC = dblist.get(wh).getMovieCd();
+					sg.giveWEBVieW(dblist.get(wh).getMovieNm() + ", 영화, 공식 트레일러");
 					mg.getComments(gC);
 				} /////////////////////////////////
 
@@ -891,7 +895,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				System.out.println(mc.getMvTitle());
 			} else if (e.getSource() instanceof MyText) {
 				MyText itsMe = (MyText) e.getSource();
-				System.out.println(itsMe.getComment());	//여기야여기!!지혜야 여기봐라!!!
+				System.out.println(itsMe.getComment()); // 여기야여기!!지혜야 여기봐라!!!
 				CommentDetail cd = new CommentDetail(itsMe.getComment());
 			}
 		}
@@ -1367,7 +1371,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				d.setSize(d.getWidth(), d.getHeight() + height);
 				mv2_panel.setPreferredSize(d);
 			}
-//			setCommentML(pn);
+			// setCommentML(pn);
 			pn.getTa_Te().addMouseListener(ma);
 			mv2_panel.add(pn);
 		}
