@@ -45,15 +45,16 @@ public class StringGiver extends JFrame {
 	public void giveWEBVieW(String uurr) {
 		uurr = sk.SearchUWant(uurr);
 		uurr = getURRR(uurr);
-		System.out.println(uurr);
+		// new WEB(uurr);
 		try {
 			Desktop.getDesktop().browse(new URI(uurr));
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// e.printStackTrace();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
 		}
 
 	}

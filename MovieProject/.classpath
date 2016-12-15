@@ -16,5 +16,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/kita/Documents/카카오톡 받은 파일/swt-win64-3.6.2.jar/DJNativeSwing.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kita/Documents/카카오톡 받은 파일/swt-win64-3.6.2.jar/DJNativeSwing-SWT.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

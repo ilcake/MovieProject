@@ -46,6 +46,7 @@ import client.db.SearchBy;
 import datas.Data;
 import datas.User;
 import gSearch.StringGiver;
+import gSearch.YoutubeViewer;
 import vos.UserComment;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
@@ -817,7 +818,8 @@ public class ClientGui extends JFrame implements Runnable { //
 				int wh = mBoxTable.getSelectedRow();
 				if (wh != -1) {
 					String gC = dblist.get(wh).getMovieCd();
-					sg.giveWEBVieW(dblist.get(wh).getMovieNm() + ", 영화, 공식 트레일러");
+					String searchString = (dblist.get(wh).getMovieNm() + ", 영화, 공식 트레일러");
+					sg.giveWEBVieW(searchString);
 					mg.getComments(gC);
 				} /////////////////////////////////
 
