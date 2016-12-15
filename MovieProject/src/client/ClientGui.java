@@ -891,7 +891,8 @@ public class ClientGui extends JFrame implements Runnable { //
 				System.out.println(mc.getMvTitle());
 			} else if (e.getSource() instanceof MyText) {
 				MyText itsMe = (MyText) e.getSource();
-				System.out.println(itsMe.getComment());
+				System.out.println(itsMe.getComment());	//여기야여기!!지혜야 여기봐라!!!
+				CommentDetail cd = new CommentDetail(itsMe.getComment());
 			}
 		}
 	}
@@ -1360,13 +1361,14 @@ public class ClientGui extends JFrame implements Runnable { //
 		UserComment c = null;
 		for (int i = 0; i < size; i++) {
 			c = cCList.get(i);
-			JPanel pn = new PnComment(c);
+			PnComment pn = new PnComment(c);
 			setPreferredSize(new Dimension((int) (mv2Size.getWidth() - 65), 80));
 			if (i > 3) {
 				d.setSize(d.getWidth(), d.getHeight() + height);
 				mv2_panel.setPreferredSize(d);
 			}
-			setCommentML(pn);
+//			setCommentML(pn);
+			pn.getTa_Te().addMouseListener(ma);
 			mv2_panel.add(pn);
 		}
 		mv2_panel.revalidate();
