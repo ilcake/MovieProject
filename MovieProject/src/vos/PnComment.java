@@ -11,11 +11,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class PnComment extends JPanel {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6357216688207012046L;
 	private UserComment c;
+	private MyText ta_Te;
+
+	public MyText getTa_Te() {
+		return ta_Te;
+	}
+
+	public void setTa_Te(MyText ta_Te) {
+		this.ta_Te = ta_Te;
+	}
 
 	public PnComment(UserComment c) {
 		this.c = c;
@@ -43,7 +48,8 @@ public class PnComment extends JPanel {
 		lb_icon.setIcon(icn);
 		add(lb_icon, BorderLayout.WEST);
 		String userText = c.getUserText();
-		JTextArea ta_Te = new JTextArea();
+		ta_Te = new MyText(c);
+
 		ta_Te.setLineWrap(true);
 		String cutted = userText;
 		String[] didi = cutted.split("\n");

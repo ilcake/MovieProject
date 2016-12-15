@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -47,6 +48,7 @@ import datas.User;
 import vos.UserComment;
 import vos.MovieBoxInfo;
 import vos.MovieSearchInfo;
+import vos.MyText;
 import vos.PnComment;
 import vos.PnLike;
 import vos.PnUserComment;
@@ -130,7 +132,7 @@ public class ClientGui extends JFrame implements Runnable { //
 	private Stars myStar;
 	private Dimension mv2Size, ucSize;
 	private JScrollPane jsp_board;
-	private MouseAdapter ma;
+	private MouseAdapter ma, mll;
 	private JScrollPane jsp_UserLike;
 	private JScrollPane jsp;
 
@@ -754,7 +756,7 @@ public class ClientGui extends JFrame implements Runnable { //
 		setLocation(locWidth, locHeight);
 		setResizable(false);
 		setVisible(true);
-
+		mll = new mll();
 		ma = new mcl();
 		addListeners();
 		mg = new ClientManager(this);
@@ -887,6 +889,9 @@ public class ClientGui extends JFrame implements Runnable { //
 				PnLike p = (PnLike) e.getSource();
 				MovieSearchInfo mc = p.getMs();
 				System.out.println(mc.getMvTitle());
+			} else if (e.getSource() instanceof MyText) {
+				MyText itsMe = (MyText) e.getSource();
+				System.out.println(itsMe.getComment());
 			}
 		}
 	}
@@ -1379,13 +1384,15 @@ public class ClientGui extends JFrame implements Runnable { //
 		UserComment c = null;
 		for (int i = 0; i < size; i++) {
 			c = usc.get(i);
-			JPanel pn = new PnUserComment(c);
+			PnUserComment pn = new PnUserComment(c);
 			setPreferredSize(new Dimension((int) (ucSize.getWidth() - 65), 80));
 			if (i > 3) {
 				d.setSize(d.getWidth(), d.getHeight() + height);
 				pn_UserComment.setPreferredSize(d);
 			}
-			setCommentML(pn);
+			// pn.getTa_Te().addMouseListener(mll);
+			// setCommentML(pn);
+			pn.getTa_Te().addMouseListener(ma);
 			pn_UserComment.add(pn);
 		}
 		pn_UserComment.revalidate();
@@ -1398,6 +1405,11 @@ public class ClientGui extends JFrame implements Runnable { //
 
 	public void setLikeML(JLabel lb) {
 		lb.addMouseListener(ma);
+	}
+
+	public void addMouseAdd(JComponent thd) {
+		thd.addMouseListener(ma);
+
 	}
 
 	public void reActionAvgGrade(double avg) {
@@ -1419,6 +1431,18 @@ public class ClientGui extends JFrame implements Runnable { //
 			setLikeML(p);
 		}
 		pn_UserLike.revalidate();
+	}
+
+	public class mll extends MouseAdapter {
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			super.mousePressed(e);
+			JTextArea p = (JTextArea) e.getSource();
+			System.out.println(p.getText());
+		}
+
 	}
 
 	/////////////////////////////////////////////////////////////////
