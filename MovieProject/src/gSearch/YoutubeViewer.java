@@ -7,8 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import chrriis.dj.nativeswing.swtimpl.NativeInterface;
-import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
+//import chrriis.dj.nativeswing.swtimpl.NativeInterface;
+//import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
 
 public class YoutubeViewer {
 	StringGiver sg;
@@ -26,7 +26,7 @@ public class YoutubeViewer {
 		sg = new StringGiver();
 		String url = urrr = sg.getURRR(urrr);
 
-		NativeInterface.open();
+		// NativeInterface.open();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				JFrame frame = new JFrame("YouTube Viewer");
@@ -37,12 +37,12 @@ public class YoutubeViewer {
 				frame.setVisible(true);
 			}
 		});
-		NativeInterface.runEventPump();
+		// NativeInterface.runEventPump();
 		// don't forget to properly close native components
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			@Override
 			public void run() {
-				NativeInterface.close();
+				// NativeInterface.close();
 			}
 		}));
 
@@ -50,10 +50,10 @@ public class YoutubeViewer {
 
 	public static JPanel getBrowserPanel(String where) {
 		JPanel webBrowserPanel = new JPanel(new BorderLayout());
-		JWebBrowser webBrowser = new JWebBrowser();
-		webBrowserPanel.add(webBrowser, BorderLayout.CENTER);
-		webBrowser.setBarsVisible(false);
-		webBrowser.navigate(where);
+		// JWebBrowser webBrowser = new JWebBrowser();
+		// webBrowserPanel.add(webBrowser, BorderLayout.CENTER);
+		// webBrowser.setBarsVisible(false);
+		// webBrowser.navigate(where);
 		// webBrowser.navigate(urrr);
 		// "https://www.youtube.com/v/8c8sBrMvqWY?version=3&enablejsapi=1&playerapiid=ytplayer"
 		return webBrowserPanel;

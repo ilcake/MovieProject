@@ -843,6 +843,7 @@ public class ClientGui extends JFrame implements Runnable { //
 				mainCard.show(mainBOARD, "pnMovie");
 			} else if (e.getSource() == bt_mv2Return) {
 				mainCard.show(mainBOARD, "pnMain");
+				mv2_panel.removeAll();
 			} else if (e.getSource() == bt_search) {
 				searchByAction();
 			} else if (e.getSource() == bt_mm1_2Return) {

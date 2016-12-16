@@ -139,7 +139,8 @@ public class ClientManager {
 
 	public void connection() {
 		try {
-			sk = new Socket("localhost", 17771);
+			// 10.10.5.30
+			sk = new Socket("10.10.5.30", 17771);
 			oos = new ObjectOutputStream(sk.getOutputStream());
 			ois = new ObjectInputStream(sk.getInputStream());
 
